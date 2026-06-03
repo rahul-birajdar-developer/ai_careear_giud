@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 function CareerPaths() {
+    const navigate = useNavigate();
     return (
         <>
             <section id="career-paths">
@@ -20,7 +23,7 @@ function CareerPaths() {
                                 <div className="demand-fill" style={{ width: "95%" }}></div>
                             </div><span>95%</span>
                         </div>
-                        <button className="path-explore">Explore This Path →</button>
+                        <button className="path-explore" onClick={() => navigate("/career/AI-ML-Engineer")}>Explore This Path →</button>
                     </div>
                     <div className="path-card reveal reveal-delay-1" >
                         <span className="path-icon">📱</span>
@@ -35,7 +38,7 @@ function CareerPaths() {
                                 <div className="demand-fill" style={{ width: "88%" }}></div>
                             </div><span>88%</span>
                         </div>
-                        <button className="path-explore">Explore This Path →</button>
+                        <button className="path-explore" onClick={() => navigate("/career/Product-Manager")}  >Explore This Path →</button>
                     </div>
                     <div className="path-card reveal reveal-delay-2" >
                         <span className="path-icon">📊</span>
@@ -50,7 +53,7 @@ function CareerPaths() {
                                 <div className="demand-fill" style={{ width: "90%" }}></div>
                             </div><span>90%</span>
                         </div>
-                        <button className="path-explore">Explore This Path →</button>
+                        <button className="path-explore" onClick={() => navigate("/career/Data-Scientist")}>Explore This Path →</button>
                     </div>
                     <div className="path-card reveal reveal-delay-3" >
                         <span className="path-icon">☁️</span>
@@ -65,7 +68,7 @@ function CareerPaths() {
                                 <div className="demand-fill" style={{ width: "92%" }}></div>
                             </div><span>92%</span>
                         </div>
-                        <button className="path-explore">Explore This Path →</button>
+                        <button className="path-explore" onClick={() => navigate("/career/Cloud-Architect")}>Explore This Path →</button>
                     </div>
                     <div className="path-card reveal" >
                         <span className="path-icon">🎨</span>
@@ -80,7 +83,7 @@ function CareerPaths() {
                                 <div className="demand-fill" style={{ width: "80%" }}></div>
                             </div><span>80%</span>
                         </div>
-                        <button className="path-explore">Explore This Path →</button>
+                        <button className="path-explore" onClick={() => navigate("/career/UX-UI-Designer")}>Explore This Path →</button>
                     </div>
                     <div className="path-card reveal reveal-delay-1" >
                         <span className="path-icon">🔐</span>
@@ -95,7 +98,7 @@ function CareerPaths() {
                                 <div className="demand-fill" style={{ width: "94%" }}></div>
                             </div><span>94%</span>
                         </div>
-                        <button className="path-explore">Explore This Path →</button>
+                        <button className="path-explore" onClick={() => navigate("/career/Cybersecurity-Analyst")}>Explore This Path →</button>
                     </div>
                     <div className="path-card reveal reveal-delay-2" >
                         <span className="path-icon">⚙️</span>
@@ -110,7 +113,7 @@ function CareerPaths() {
                                 <div className="demand-fill" style={{ width: "89%" }}></div>
                             </div><span>89%</span>
                         </div>
-                        <button className="path-explore">Explore This Path →</button>
+                        <button className="path-explore" onClick={() => navigate("/career/DevOps-Engineer")}>Explore This Path →</button>
                     </div>
                     <div className="path-card reveal reveal-delay-3" >
                         <span className="path-icon">💻</span>
@@ -125,7 +128,7 @@ function CareerPaths() {
                                 <div className="demand-fill" style={{ width: "85%" }}></div>
                             </div><span>85%</span>
                         </div>
-                        <button className="path-explore">Explore This Path →</button>
+                        <button className="path-explore" onClick={() => navigate("/career/Full-Stack-Developer")}>Explore This Path →</button>
                     </div>
                 </div>
             </section>

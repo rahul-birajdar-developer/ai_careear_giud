@@ -337,7 +337,7 @@ Return only the question.
                                 }}
                                 id="intCounter"
                             >
-                                Q {questionNo}/5
+                                Q {questionNo}
                             </div>
 
                         </div>

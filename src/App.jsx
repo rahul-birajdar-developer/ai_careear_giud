@@ -9,6 +9,7 @@ import AppNavBar from './Component/AppNavbar'
 import CareerPaths from './Component/CareerPaths'
 import Footer from './Component/Footer'
 import HomePage from './Component/HomePage'
+import CareerDetails from './Component/CareerDetails'
 // import LoginPage from './Component/LoginPage'
 import SalaryIntelligence from './Component/SalaryIntelligence'
 import SkillGapAnalyzer from './Component/SkillGapAnalyzer'
@@ -30,6 +31,10 @@ function App() {
         <Route path='/resumeanalyze' element={<AiResumeAnalyze />} />
         <Route path='/skillgapanalyze' element={<SkillGapAnalyzer />} />
         <Route path='/roadmap' element={<AiLearningRoadMap />} />
+        <Route
+          path="/career/:careerName"
+          element={<CareerDetails />}
+        />
         <Route path='/salary' element={<SalaryIntelligence />} />
         <Route path='/interview' element={<AiInterViewCoach />} />
         <Route path='/coverletter' element={<AiCoverLetterWriter />} />

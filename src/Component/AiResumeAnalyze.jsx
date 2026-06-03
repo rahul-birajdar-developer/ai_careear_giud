@@ -67,6 +67,10 @@ function AiResumeAnalyze() {
 
     const analyzeResume = async () => {
         if (!resumeText.trim()) return;
+        if (!resumeText.trim()) {
+            alert("Resume text is empty");
+            return;
+        }
 
         setLoading(true);
 
@@ -96,6 +100,7 @@ ${resumeText}
 
         try {
             const response = await askGemini(prompt);
+            console.log("AI Analysis Response:", response);
             setAnalysis(response);
         }
         catch (error) {
@@ -156,7 +161,11 @@ ${resumeText}
                             <div className="drop-icon">📄</div>
                             <div className="drop-title">Drop your resume here</div>
                             <div className="drop-sub">Supports PDF, DOCX, TXT files</div>
-                            <button className="drop-browse" htmlFor="resumeFile" type="button" onClick={() => fileInputRef.current.click()}>Browse File</button>
+                            <button className="drop-browse" type="button" onDrop={analyzeResume} onClick={() => {
+                                console.log("Button clicked");
+                                console.log(fileInputRef.current);
+                                fileInputRef.current?.click();
+                            }}>Browse File</button>
                             <input type="file" id="resumeFile" onChange={handleFileChange} accept=".pdf,.docx,.txt" style={{ display: "none" }} ref={fileInputRef} />
                         </div>
                         <div className="analyzer-paste">
