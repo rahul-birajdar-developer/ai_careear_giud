@@ -15,9 +15,9 @@ function AppNavBar() {
                     <li><Link to="/guide">AI Guide</Link></li>
                     <li><Link to="/tools">Tools</Link></li>
                     <li><Link to="/careerpaths">Explore Careers</Link></li>
-                    <li><Link to="/roadmap">Roadmap</Link></li>
-                    <li><Link to="/salary">Salary</Link></li>
-                    <li><Link to="/interview">Interview Prep</Link></li>
+                    <li><Link to="/profile">
+                        Profile
+                    </Link></li>
                 </ul>
                 <div className="nav-cta">
                     <button className="btn-ghost"

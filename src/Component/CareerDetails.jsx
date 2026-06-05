@@ -1,163 +1,120 @@
 import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
+import { askGemini } from "../Services/gemini";
 
 function CareerDetails() {
+    const [aiReport, setAiReport] = useState("");
+    const [loading, setLoading] = useState(false);
     const { careerName } = useParams();
 
-    const careers = {
-        "AI-ML-Engineer": {
-            title: "AI / ML Engineer",
-            icon: "🤖",
-            salary: "₹18L–₹45L · $120K–$220K",
-            demand: "95%",
-            overview:
-                "AI/ML Engineers design and build intelligent systems using machine learning, deep learning, and generative AI technologies.",
-            skills: [
-                "Python",
-                "Machine Learning",
-                "TensorFlow",
-                "PyTorch",
-                "Deep Learning",
-                "LLMs",
-                "LangChain",
-                "RAG"
-            ],
-            roadmap: [
-                "Learn Python & Math Fundamentals",
-                "Master Machine Learning",
-                "Learn Deep Learning",
-                "Build AI Projects",
-                "Learn LLMs & Generative AI",
-                "Prepare for Interviews"
-            ],
-            projects: [
-                "Resume Analyzer",
-                "AI Chatbot",
-                "Image Classifier",
-                "Recommendation System"
-            ],
-            companies: [
-                "Google",
-                "OpenAI",
-                "Microsoft",
-                "Meta",
-                "Amazon"
-            ]
-        },
-        "Product-Manager": {
-            title: "Product Manager",
-            icon: "📱",
-            salary: "₹15L–₹35L · $100K–$180K",
-            demand: "88%",
-            overview:
-                "Product Managers define and execute the strategy for digital products, working closely with engineering, design, and business teams.",
-            skills: [
-                "Product Strategy",
-                "User Research",
-                "Agile Methodologies",
-                "Data Analysis",
-                "Stakeholder Management"
-            ],
-            roadmap: [
-                "Learn Product Management Fundamentals",
-                "Master User Research Techniques",
-                "Understand Agile & Scrum",
-                "Develop Data Analysis Skills",
-                "Build Stakeholder Communication Abilities"
-            ],
-            projects: [
-                "Product Roadmap Planning",
-                "User Persona Development",
-                "Feature Prioritization Exercise"
-            ],
-            companies: [
-                "Google",
-                "Apple",
-                "Microsoft",
-                "Meta",
-                "Amazon"
-            ]
+    const displayWordByWord = (text) => {
+        setAiReport("");
+
+        const words = text.split(" ");
+        let index = 0;
+
+        const interval = setInterval(() => {
+            if (index < words.length) {
+                setAiReport(prev => prev + words[index] + " ");
+                index++;
+            } else {
+                clearInterval(interval);
+            }
+        }, 30);
+    };
+
+    const generateAIReport = async () => {
+        if (!careerName) return;
+        setLoading(true);
+
+        const prompt = `
+You are an expert career advisor.
+
+Analyze the career: ${careerName}.
+
+Rules:
+- Keep the entire response under 500 words.
+- Use long bullet points.
+- Maximum 5 points per section.
+- No long explanations.
+
+Provide:
+## overview
+## Future Scope
+## Salary Growth
+## Top Skills
+## Certifications
+## Interview Tips
+## Learning Resource
+`;
+
+        try {
+            const response = await askGemini(prompt);
+            await displayWordByWord(response);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
         }
     };
 
-    const career = careers[careerName];
+    useEffect(() => {
+        const loadReport = async () => {
+            if (!careerName) return;
+            await generateAIReport();
+        };
 
-    if (!career) {
+        loadReport();
+    }, [careerName]);
+
+
+
+    if (!careerName) {
         return <h2>Career Not Found</h2>;
     }
 
     return (
         <section className="career-details">
-            <div className="career-hero">
-                <span className="career-icon">{career.icon}</span>
-                <h1>{career.title}</h1>
-                <p>{career.overview}</p>
-
-                <div className="career-stats">
-                    <div>
-                        <h3>Salary</h3>
-                        <p>{career.salary}</p>
-                    </div>
-
-                    <div>
-                        <h3>Demand</h3>
-                        <p>{career.demand}</p>
-                    </div>
+            <div className="career-section">
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: "20px"
+                    }}
+                >
+                    <h2>🤖 AI Career Insights</h2>
                 </div>
+
+                {loading ? (
+                    <p>Generating AI Insights...</p>
+                ) : aiReport ? (
+                    <ReactMarkdown>
+                        {aiReport}
+                    </ReactMarkdown>
+                ) : (
+                    <p>
+                        Click "Generate Report" to get AI-powered
+                        insights, certifications, interview tips,
+                        salary growth, and future opportunities.
+                    </p>
+                )}
             </div>
 
-            <div className="career-section">
-                <h2>Required Skills</h2>
-
-                <div className="skills-grid">
-                    {career.skills.map((skill, index) => (
-                        <span key={index} className="skill-chip">
-                            {skill}
-                        </span>
-                    ))}
-                </div>
-            </div>
-
-            <div className="career-section">
-                <h2>Learning Roadmap</h2>
-
-                {career.roadmap.map((step, index) => (
-                    <div key={index} className="roadmap-step">
-                        <span>{index + 1}</span>
-                        <p>{step}</p>
-                    </div>
-                ))}
-            </div>
-
-            <div className="career-section">
-                <h2>Recommended Projects</h2>
-
-                <ul>
-                    {career.projects.map((project, index) => (
-                        <li key={index}>{project}</li>
-                    ))}
-                </ul>
-            </div>
-
-            <div className="career-section">
-                <h2>Top Companies Hiring</h2>
-
-                <div className="companies">
-                    {career.companies.map((company, index) => (
-                        <span key={index} className="company-chip">
-                            {company}
-                        </span>
-                    ))}
-                </div>
-            </div>
 
             <div className="career-actions">
+                <button
+                    className="career-btn"
+                    onClick={generateAIReport}
+                >
+                    🤖 Generate AI Career Report
+                </button>
                 <button className="career-btn">
                     📚 Generate AI Roadmap
                 </button>
 
-                <button className="career-btn">
-                    🎯 Analyze Skill Gap
-                </button>
 
                 <button className="career-btn">
                     🎤 Interview Preparation

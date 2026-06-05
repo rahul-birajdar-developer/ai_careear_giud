@@ -8,7 +8,14 @@ function CareerPaths() {
                 <div className="section-title">Explore Career Paths</div>
                 <p className="section-sub">Discover the most in-demand, high-growth careers of 2026 with real salary data and
                     AI-powered entry roadmaps.</p>
-
+                <div style={{ padding: "30px", maxWidth: "1000px", margin: "0 auto" }}>
+                    <div className="chat-input-row">
+                        <div className="chat-input-wrap" >
+                            <input className="chat-input"  id="chatInput" placeholder="e.g. Frontend Developer"></input>
+                        </div>
+                        <button className="send-btn" style={{ backgroundColor: "#007bff", color: "#fff", padding: "10px 80px" }} id="sendBtn" >Search</button>
+                    </div>
+                </div>
                 <div className="paths-grid">
                     <div className="path-card reveal" >
                         <span className="path-icon">🤖</span>

@@ -15,6 +15,7 @@ import SalaryIntelligence from './Component/SalaryIntelligence'
 import SkillGapAnalyzer from './Component/SkillGapAnalyzer'
 import SocialFeedBack from './Component/SocialFeedback'
 import { Route, Routes } from 'react-router-dom'
+import UserProfile from './Component/UserProfile'
 
 function App() {
 
@@ -34,6 +35,10 @@ function App() {
         <Route
           path="/career/:careerName"
           element={<CareerDetails />}
+        />
+        <Route
+          path="/profile"
+          element={<UserProfile />}
         />
         <Route path='/salary' element={<SalaryIntelligence />} />
         <Route path='/interview' element={<AiInterViewCoach />} />
