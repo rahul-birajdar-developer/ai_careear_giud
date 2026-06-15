@@ -10,42 +10,52 @@ import CareerPaths from './Component/CareerPaths'
 import Footer from './Component/Footer'
 import HomePage from './Component/HomePage'
 import CareerDetails from './Component/CareerDetails'
-// import LoginPage from './Component/LoginPage'
+import LoginPage from './Component/LoginPage'
 import SalaryIntelligence from './Component/SalaryIntelligence'
 import SkillGapAnalyzer from './Component/SkillGapAnalyzer'
 import SocialFeedBack from './Component/SocialFeedback'
 import { Route, Routes } from 'react-router-dom'
 import UserProfile from './Component/UserProfile'
-
+import { useState } from 'react'
 function App() {
+  const [isLogin, setIsLogin] = useState(false)
 
   return (
     <>
-      {/* <LoginPage /> */}
-      <AppNavBar />
-      <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/home' element={<HomePage />} />
-        <Route path='/tools' element={<AiTools />} />
-        <Route path='/guide' element={<AiGuide />} />
-        <Route path='/careerpaths' element={<CareerPaths />} />
-        <Route path='/resumeanalyze' element={<AiResumeAnalyze />} />
-        <Route path='/skillgapanalyze' element={<SkillGapAnalyzer />} />
-        <Route path='/roadmap' element={<AiLearningRoadMap />} />
-        <Route
-          path="/career/:careerName"
-          element={<CareerDetails />}
-        />
-        <Route
-          path="/profile"
-          element={<UserProfile />}
-        />
-        <Route path='/salary' element={<SalaryIntelligence />} />
-        <Route path='/interview' element={<AiInterViewCoach />} />
-        <Route path='/coverletter' element={<AiCoverLetterWriter />} />
-        <Route path='/feedback' element={<SocialFeedBack />} />
-      </Routes>
-      <Footer />
+      {isLogin ? (
+        <Routes>
+          <Route path='/signup' element={<LoginPage />} />
+        </Routes>
+      ) : (
+        <>
+          <AppNavBar setIsLogin={setIsLogin} />
+          <Routes>
+            <Route path='/' element={<HomePage />} />
+            <Route path='/home' element={<HomePage />} />
+            <Route path='/tools' element={<AiTools />} />
+            <Route path='/guide' element={<AiGuide />} />
+            <Route path='/careerpaths' element={<CareerPaths />} />
+            <Route path='/resumeanalyze' element={<AiResumeAnalyze />} />
+            <Route path='/skillgapanalyze' element={<SkillGapAnalyzer />} />
+            <Route path='/roadmap' element={<AiLearningRoadMap />} />
+            <Route
+              path="/career/:careerName"
+              element={<CareerDetails />}
+            />
+            <Route
+              path="/profile"
+              element={<UserProfile />}
+            />
+            <Route path='/salary' element={<SalaryIntelligence />} />
+            <Route path='/interview' element={<AiInterViewCoach />} />
+            <Route path='/coverletter' element={<AiCoverLetterWriter />} />
+            <Route path='/feedback' element={<SocialFeedBack />} />
+          </Routes>
+          <Footer />
+        </>
+      )
+      }
+
     </>
   )
 }

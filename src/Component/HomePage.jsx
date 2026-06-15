@@ -28,7 +28,7 @@ function HomePage() {
                             </button>
                         </Link>
                     </div>
-                    <div className="hero-pills">
+                    {/* <div className="hero-pills">
                         <Link to="/resumeanalyze">
                             <div className="hero-pill" style={{ cursor: "pointer" }}><span>📄</span> Resume Analysis</div>
                         </Link>
@@ -47,7 +47,7 @@ function HomePage() {
                         <Link to="/skillgapanalyze">
                             <div className="hero-pill" style={{ cursor: "pointer" }}><span>🔍</span> Skill Gap Analysis</div>
                         </Link>
-                    </div>
+                    </div> */}
                 </div>
             </section>
         </>

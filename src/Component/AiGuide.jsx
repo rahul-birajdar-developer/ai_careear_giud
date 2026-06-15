@@ -206,10 +206,9 @@ Always prioritize helping users achieve their career goals.
     return (
         <>
             <section id="ai-guide">
-                <div className="section-tag">Core Feature</div>
                 <div className="section-title">Your Personal AI Career Advisor</div>
-                <p className="section-sub">Tell us about yourself and ask anything — career switches, upskilling, job hunting,
-                    work-life questions, or industry insights.</p>
+                {/* <p className="section-sub">Tell us about yourself and ask anything — career switches, upskilling, job hunting,
+                    work-life questions, or industry insights.</p> */}
 
                 <div className="guide-layout">
                     <div className="guide-sidebar">
