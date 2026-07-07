@@ -6,11 +6,39 @@ function LoginPage() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [profileImage, setProfileImage] = useState("")
     const [conformPassowrd, setConformPassword] = useState("");
+    // const [from, setFrom] = ({
+    //     name: "",
+    //     email: "",
+    //     password: "",
+    //     profileImage: ""
+    // })
 
     const handleRegister = (e) => {
         e.preventDefault();
         console.log(name, email, password, conformPassowrd)
+
+        if (!name) {
+            alert("Enter the name !!")
+            return;
+        }
+        if (!email) {
+            alert("Emater the email !!")
+            return;
+        }
+        if (!password) {
+            alert("Enter the password !!")
+            return;
+        }
+        if (!profileImage) {
+            alert("Upload the image !!")
+            return;
+        }
+        if (password != conformPassowrd) {
+            alert("password don't match the secound password !!")
+            return;
+        }
     }
 
     return (
@@ -81,6 +109,15 @@ function LoginPage() {
                                 placeholder="Confirm Password"
                                 value={conformPassowrd}
                                 onChange={(e) => setConformPassword(e.target.value)}
+                                required
+                            />
+                        )}
+                        {!isLogin && (
+                            <input
+                                type="file"
+                                accept="image/*"
+                                value={profileImage}
+                                onChange={(e) => setProfileImage(e.target.files[0])}
                                 required
                             />
                         )}
