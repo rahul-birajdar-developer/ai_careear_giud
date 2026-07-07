@@ -11,7 +11,6 @@ function LoginPage() {
     const handleRegister = (e) => {
         e.preventDefault();
         console.log(name, email, password, conformPassowrd)
-
     }
 
     return (
@@ -53,7 +52,6 @@ function LoginPage() {
                         </button>
                     </div>
                     <form className="auth-form">
-
                         {!isLogin && (
                             <input
                                 type="text"
@@ -63,7 +61,6 @@ function LoginPage() {
                                 required
                             />
                         )}
-
                         <input
                             type="email"
                             placeholder="Email Address"
@@ -71,7 +68,6 @@ function LoginPage() {
                             onChange={(e) => setEmail(e.target.value)}
                             required
                         />
-
                         <input
                             type="password"
                             placeholder="Password"
@@ -79,7 +75,6 @@ function LoginPage() {
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
-
                         {!isLogin && (
                             <input
                                 type="password"
@@ -89,13 +84,11 @@ function LoginPage() {
                                 required
                             />
                         )}
-
                         {isLogin && (
                             <div className="forgot-password">
                                 Forgot Password?
                             </div>
                         )}
-
                         <button
                             type="submit"
                             className="auth-btn"
@@ -105,13 +98,10 @@ function LoginPage() {
                                 ? "Sign In"
                                 : "Create Account"}
                         </button>
-
                     </form>
-
                     <div className="divider">
                         <span>OR</span>
                     </div>
-
                     <button className="google-btn">
                         <img
                             src="https://www.svgrepo.com/show/475656/google-color.svg"
@@ -119,9 +109,7 @@ function LoginPage() {
                         />
                         Continue with Google
                     </button>
-
                 </div>
-
             </div>
         </div>
     );
