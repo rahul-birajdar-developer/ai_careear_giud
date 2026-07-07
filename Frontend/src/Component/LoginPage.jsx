@@ -8,14 +8,14 @@ function LoginPage() {
     // const [password, setPassword] = useState("");
     // const [profileImage, setProfileImage] = useState("")
     const [conformPassowrd, setConformPassword] = useState("");
-    const [form, setForm] = ({
+    const [form, setForm] = useState({
         name: "",
         email: "",
         password: "",
-        profileImage: ""
-    })
+        profileImage: null,
+    });
 
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
         console.log(form.name, form.email, form.password, conformPassowrd)
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -27,7 +27,7 @@ function LoginPage() {
             alert("Emater the email !!")
             return;
         }
-        if (emailRegex.test(form.email)) {
+        if (!emailRegex.test(form.email)) {
             alert("Please enter a valid email address !!");
             return;
         }
@@ -44,6 +44,26 @@ function LoginPage() {
             return;
         }
 
+        const data = new FormData();
+
+        data.append("name", form.name);
+        data.append("email", form.email);
+        data.append("password", form.password);
+        data.append("profileImage", form.profileImage);
+
+        const response = await fetch(
+            "http://localhost:7000/api/users/register", {
+            method: "POST",
+            body: data,
+        });
+
+        if (!response.ok) {
+            alert("Something error try later !!")
+        }
+    }
+
+    const handleLogin = () => {
+        console.log("Login Successfully !!")
     }
 
     return (
@@ -105,7 +125,7 @@ function LoginPage() {
                             type="password"
                             placeholder="Password"
                             value={form.password}
-                            onChange={(e) => setForm({ ...form, passowrd: e.target.value })}
+                            onChange={(e) => setForm({ ...form, password: e.target.value })}
                             required
                         />
                         {!isLogin && (
@@ -121,9 +141,9 @@ function LoginPage() {
                             <input
                                 type="file"
                                 accept="image/*"
-                                value={form.profileImage}
-                                onChange={(e) => setForm({ ...form, profileImage: e.target.files[0] })}
-                                required
+                                onChange={(e) =>
+                                    setForm({ ...form, profileImage: e.target.files[0] })
+                                }
                             />
                         )}
                         {isLogin && (
@@ -134,7 +154,7 @@ function LoginPage() {
                         <button
                             type="submit"
                             className="auth-btn"
-                            onClick={(e) => handleRegister(e)}
+                            onClick={isLogin ? handleLogin : handleRegister}
                         >
                             {isLogin
                                 ? "Sign In"

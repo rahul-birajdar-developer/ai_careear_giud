@@ -7,9 +7,9 @@ import userRoute from "./routes/user.route.js"
 const app = express();
 
 app.use(cors({
-    origin: process.env.CORES_ORIGIN,
-    credentials: true
-}))
+    origin: "http://localhost:5173", // React/Vite
+    credentials: true,
+}));
 
 app.use(express.json({ limit: "20kb" }))
 app.use(express.urlencoded({ extended: true, limit: "20kb" }))
