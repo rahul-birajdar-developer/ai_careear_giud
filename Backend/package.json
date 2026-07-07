@@ -4,7 +4,7 @@
   "description": "BAckend for creear mind ai",
   "license": "ISC",
   "author": "Rahul Birajdar",
-  "type": "commonjs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.js"
