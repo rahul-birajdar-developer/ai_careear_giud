@@ -3,42 +3,47 @@ import "../login.css";
 
 function LoginPage() {
     const [isLogin, setIsLogin] = useState(true);
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [profileImage, setProfileImage] = useState("")
+    // const [name, setName] = useState("");
+    // const [email, setEmail] = useState("");
+    // const [password, setPassword] = useState("");
+    // const [profileImage, setProfileImage] = useState("")
     const [conformPassowrd, setConformPassword] = useState("");
-    // const [from, setFrom] = ({
-    //     name: "",
-    //     email: "",
-    //     password: "",
-    //     profileImage: ""
-    // })
+    const [form, setForm] = ({
+        name: "",
+        email: "",
+        password: "",
+        profileImage: ""
+    })
 
     const handleRegister = (e) => {
         e.preventDefault();
-        console.log(name, email, password, conformPassowrd)
-
-        if (!name) {
+        console.log(form.name, form.email, form.password, conformPassowrd)
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!form.name) {
             alert("Enter the name !!")
             return;
         }
-        if (!email) {
+        if (!form.email) {
             alert("Emater the email !!")
             return;
         }
-        if (!password) {
+        if (emailRegex.test(form.email)) {
+            alert("Please enter a valid email address !!");
+            return;
+        }
+        if (!form.password) {
             alert("Enter the password !!")
             return;
         }
-        if (!profileImage) {
+        if (!form.profileImage) {
             alert("Upload the image !!")
             return;
         }
-        if (password != conformPassowrd) {
+        if (form.password != conformPassowrd) {
             alert("password don't match the secound password !!")
             return;
         }
+
     }
 
     return (
@@ -84,23 +89,23 @@ function LoginPage() {
                             <input
                                 type="text"
                                 placeholder="Full Name"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
+                                value={form.name}
+                                onChange={(e) => setForm({ ...form, name: e.target.value })}
                                 required
                             />
                         )}
                         <input
                             type="email"
                             placeholder="Email Address"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={form.email}
+                            onChange={(e) => setForm({ ...form, email: e.target.value })}
                             required
                         />
                         <input
                             type="password"
                             placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            value={form.password}
+                            onChange={(e) => setForm({ ...form, passowrd: e.target.value })}
                             required
                         />
                         {!isLogin && (
@@ -116,8 +121,8 @@ function LoginPage() {
                             <input
                                 type="file"
                                 accept="image/*"
-                                value={profileImage}
-                                onChange={(e) => setProfileImage(e.target.files[0])}
+                                value={form.profileImage}
+                                onChange={(e) => setForm({ ...form, profileImage: e.target.files[0] })}
                                 required
                             />
                         )}
