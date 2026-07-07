@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema({
-    fullName: {
+    name: {
         type: String,
         required: true,
         trim: true
@@ -15,13 +15,6 @@ const userSchema = new mongoose.Schema({
         sparse: true
     },
 
-    phone: {
-        type: String,
-        required: true,
-        unique: true,
-        match: /^[0-9]{10}$/,
-    },
-
     password: {
         type: String,
         required: true
@@ -29,15 +22,6 @@ const userSchema = new mongoose.Schema({
 
     profileImage: String,
 
-    isVerified: {
-        type: Boolean,
-        default: false
-    },
-
-    isBlocked: {
-        type: Boolean,
-        default: false
-    },
     refreshToken: {
         type: String,
     },
@@ -67,7 +51,7 @@ userSchema.methods.generateAccessToken = function () {
         {
             _id: this._id,
             email: this.email,
-            fullName: this.fullName,
+            fullName: this.name,
         },
         process.env.ACCESS_TOKEN_SECRET,
         {

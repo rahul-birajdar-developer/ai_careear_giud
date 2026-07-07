@@ -47,12 +47,12 @@ const userRegister = asyncHandler(async (req, res) => {
     // return res
 
     // step 1 : get user details from frontend
-    const { fullName, email, phone, password } = req.body;
-    // console.log("req.body", req.body);
-    // console.log("req.files", req.files);
+    const { name, email, password } = req.body;
+    console.log("req.body", req.body);
+    console.log("req.files", req.files);
 
     // step 2 : validation - not empty
-    if (!fullName || !email || !phone || !password) {
+    if (!name || !email || !password) {
         throw new ApiErrorHandling(400, "Please fill all the fields");
     }
 
@@ -61,19 +61,19 @@ const userRegister = asyncHandler(async (req, res) => {
         throw new ApiErrorHandling(400, "Please enter a valid email");
     }
 
-    if (phone && !phone.match(/^[0-9]{10}$/)) {
-        throw new ApiErrorHandling(400, "Please enter a valid phone number");
-    }
+    // if (phone && !phone.match(/^[0-9]{10}$/)) {
+    //     throw new ApiErrorHandling(400, "Please enter a valid phone number");
+    // }
 
     // step 3 : check if user already exists: username, email
-    const userExists = await User.findOne({ $or: [{ email }, { phone }] });
+    const userExists = await User.findOne({ $or: [{ email }] });
     if (userExists) {
         throw new ApiErrorHandling(400, "User already exists");
     }
 
     // upload the image in the cloudinary
     const profileImage = req.files?.profileImage?.[0]?.path;
-    // console.log("profileImage", profileImage);
+    console.log("profileImage", profileImage);
     if (!profileImage) {
         throw new ApiErrorHandling(400, "Profile image is required");
     }
@@ -83,16 +83,15 @@ const userRegister = asyncHandler(async (req, res) => {
     }
 
     // step 4 : create user object - create entry in db
-    // console.log(req.body);
-    // console.log(uploadedImage);
+    console.log(req.body);
+    console.log(uploadedImage);
     const user = await User.create({
-        fullName,
+        name,
         email,
-        phone,
         password,
         profileImage: uploadedImage.url
     });
-    // console.log("user", user.refreshToken);
+    console.log("user", user.refreshToken);
 
     // step 5 : remove password and refresh token field from response
     const createdUser = await User.findById(user._id).select("-password -refreshToken");
