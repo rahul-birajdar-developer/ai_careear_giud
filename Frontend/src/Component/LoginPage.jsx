@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "../login.css";
 import { useNavigate } from "react-router-dom";
+import api from "../api/axios.js";
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -47,52 +48,50 @@ function LoginPage() {
         }
 
         const data = new FormData();
-
         data.append("name", form.name);
         data.append("email", form.email);
         data.append("password", form.password);
         data.append("profileImage", form.profileImage);
-
-        const response = await fetch(
-            "http://localhost:7000/api/users/register", {
-            method: "POST",
-            body: data,
-        });
-
-        if (!response.ok) {
-            alert("Something error try later !!")
-        }
-
-        if (response.ok) {
-            
-            navigate("/profile")
+        //console.log(form.profileImage)
+        try {
+            const response = await api.post(
+                "/users/register",
+                data
+            );
+            console.log(response.data);
+            setIsLogin(true)
+        } catch (error) {
+            console.log(error);
+            alert(
+                error.response?.data?.message || "Something went wrong"
+            );
         }
     }
 
     const handleLogin = async (e) => {
         e.preventDefault();
-
-        const response = await fetch("http://localhost:7000/api/users/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
+        try {
+            const response = await api.post("/users/login", {
                 email: form.email,
                 password: form.password,
-            }),
-        });
+            });
 
-        const data = await response.json();
+            localStorage.setItem(
+                "token",
+                response.data.accessToken
+            );
 
-        if (!response.ok) {
-            alert(data.message);
-            return;
+            alert("Login successful!");
+
+            navigate("/profile");
+
+        } catch (error) {
+            console.log(error.response?.data);
+
+            alert(
+                error.response?.data?.message || "Login failed"
+            );
         }
-
-        console.log(data);
-        alert("Login successful!");
-        navigate("/profile")
     };
 
     return (
