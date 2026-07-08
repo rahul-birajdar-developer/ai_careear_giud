@@ -1,7 +1,9 @@
 import { useState } from "react";
 import "../login.css";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
+    const nevigate = useNavigate();
     const [isLogin, setIsLogin] = useState(true);
     // const [name, setName] = useState("");
     // const [email, setEmail] = useState("");
@@ -17,7 +19,7 @@ function LoginPage() {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        console.log(form.name, form.email, form.password, conformPassowrd)
+        //console.log(form.name, form.email, form.password, conformPassowrd)
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!form.name) {
             alert("Enter the name !!")
@@ -60,11 +62,37 @@ function LoginPage() {
         if (!response.ok) {
             alert("Something error try later !!")
         }
+
+        if (response.ok) {
+            nevigate("/profile")
+        }
     }
 
-    const handleLogin = () => {
-        console.log("Login Successfully !!")
-    }
+    const handleLogin = async (e) => {
+        e.preventDefault();
+
+        const response = await fetch("http://localhost:7000/api/users/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email: form.email,
+                password: form.password,
+            }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.message);
+            return;
+        }
+
+        console.log(data);
+        alert("Login successful!");
+        nevigate("/profile")
+    };
 
     return (
         <div className="auth-page">

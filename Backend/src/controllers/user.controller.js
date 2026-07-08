@@ -22,7 +22,7 @@ const generateAccessTokenAndRefreshToken = async (userId) => {
         const accessToken = await user.generateAccessToken();
         const refreshToken = await user.generateRefreshToken();
         // Store the refresh token in the user's document for future validation
-        console.log("Refresh Token:", refreshToken);
+        // console.log("Refresh Token:", refreshToken);
         user.refreshToken = refreshToken;
         // Save the user document with the new refresh token, bypassing validation to avoid potential issues with other fields
         await user.save({ validateBeforeSave: false });
@@ -48,8 +48,8 @@ const userRegister = asyncHandler(async (req, res) => {
 
     // step 1 : get user details from frontend
     const { name, email, password } = req.body;
-    console.log("req.body", req.body);
-    console.log("req.files", req.files);
+    // console.log("req.body", req.body);
+    // console.log("req.files", req.files);
 
     // step 2 : validation - not empty
     if (!name || !email || !password) {
@@ -73,7 +73,7 @@ const userRegister = asyncHandler(async (req, res) => {
 
     // upload the image in the cloudinary
     const profileImage = req.files?.profileImage?.[0]?.path;
-    console.log("profileImage", profileImage);
+    // console.log("profileImage", profileImage);
     if (!profileImage) {
         throw new ApiErrorHandling(400, "Profile image is required");
     }
@@ -83,15 +83,15 @@ const userRegister = asyncHandler(async (req, res) => {
     }
 
     // step 4 : create user object - create entry in db
-    console.log(req.body);
-    console.log(uploadedImage);
+    // console.log(req.body);
+    // console.log(uploadedImage);
     const user = await User.create({
         name,
         email,
         password,
         profileImage: uploadedImage.url
     });
-    console.log("user", user.refreshToken);
+    // console.log("user", user.refreshToken);
 
     // step 5 : remove password and refresh token field from response
     const createdUser = await User.findById(user._id).select("-password -refreshToken");
