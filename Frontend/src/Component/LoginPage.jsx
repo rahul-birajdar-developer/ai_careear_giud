@@ -3,7 +3,7 @@ import "../login.css";
 import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
-    const nevigate = useNavigate();
+    const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(true);
     // const [name, setName] = useState("");
     // const [email, setEmail] = useState("");
@@ -64,7 +64,8 @@ function LoginPage() {
         }
 
         if (response.ok) {
-            nevigate("/profile")
+            
+            navigate("/profile")
         }
     }
 
@@ -91,7 +92,7 @@ function LoginPage() {
 
         console.log(data);
         alert("Login successful!");
-        nevigate("/profile")
+        navigate("/profile")
     };
 
     return (

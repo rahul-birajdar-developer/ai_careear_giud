@@ -86,6 +86,7 @@ const userRegister = asyncHandler(async (req, res) => {
     // console.log(req.body);
     // console.log(uploadedImage);
     const user = await User.create({
+        userId: "U" + Date.now(),
         name,
         email,
         password,
