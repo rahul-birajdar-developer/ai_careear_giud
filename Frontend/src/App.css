@@ -130,6 +130,12 @@ nav {
     transition: color 0.2s;
 }
 
+.home{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .nav-links li:hover {
     color: var(--cyan);
 }

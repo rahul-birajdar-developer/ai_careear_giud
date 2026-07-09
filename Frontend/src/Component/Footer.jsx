@@ -174,7 +174,7 @@ function Footer() {
 
                     <p>
                         © 2026 CareerMind AI. All rights reserved.
-                        Powered by Claude AI.
+                        Powered by CareerMind AI
                     </p>
 
                     <div className="footer-social">

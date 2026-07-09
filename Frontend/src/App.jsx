@@ -15,14 +15,11 @@ import SalaryIntelligence from './Component/SalaryIntelligence'
 import SkillGapAnalyzer from './Component/SkillGapAnalyzer'
 import SocialFeedBack from './Component/SocialFeedback'
 import { Route, Routes } from 'react-router-dom'
-import UserProfile from './Component/UserProfile';
 import ProtectedRoutes from './context/ProtectedRoutes'
+import ProfilePage from './Component/userProfile'
 function App() {
-
   return (
     <>
-
-
       <AppNavBar />
       <Routes>
         <Route path='/signup' element={<LoginPage />} />
@@ -40,7 +37,7 @@ function App() {
         />
         <Route
           path="/profile"
-          element={<ProtectedRoutes><UserProfile /></ProtectedRoutes>}
+          element={<ProtectedRoutes><ProfilePage /></ProtectedRoutes>}
         />
         <Route path='/salary' element={<ProtectedRoutes><SalaryIntelligence /></ProtectedRoutes>} />
         <Route path='/interview' element={<ProtectedRoutes><AiInterViewCoach /></ProtectedRoutes>} />
