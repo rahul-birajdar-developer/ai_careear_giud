@@ -1,6 +1,17 @@
-
-
+import { useEffect } from "react";
+import api from "../api/axios";
 function UserProfile() {
+    useEffect(() => {
+        const getCurrentUser = async () => {
+            try {
+                const response = await api.get("/users/me")
+                console.log(response);
+            } catch (error) {
+                console.log(error.response?.data);
+            }
+        }
+        getCurrentUser();
+    }, [])
     return (
         <section className="profile-dashboard">
 
