@@ -543,7 +543,7 @@ export default function ProfilePage() {
             <style>{GLOBAL_CSS}</style>
 
             {/* App shell */}
-            <div style={{ display: "grid", height: "100dvh", overflow: "hidden", padding: "40px" }}>
+            <div style={{ display: "grid", height: "100dvh", overflow: "hidden", padding: "20px", marginTop: "50px" }}>
 
                 <div style={{ display: "grid", gridTemplateColumns: "220px 1fr", overflow: "hidden" }}>
                     <Sidebar activeItem={activeItem} setActiveItem={setActiveItem} />

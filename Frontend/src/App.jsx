@@ -46,7 +46,7 @@ function App() {
           <Route path="/skillgapanalyze" element={<SkillGapAnalyzer />} />
           <Route path="/roadmap" element={<AiLearningRoadMap />} />
           <Route path="/career/:careerName" element={<CareerDetails />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/dashboard" element={<ProfilePage />} />
           <Route path="/salary" element={<SalaryIntelligence />} />
           <Route path="/interview" element={<AiInterViewCoach />} />
           <Route path="/coverletter" element={<AiCoverLetterWriter />} />

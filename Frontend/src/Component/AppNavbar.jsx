@@ -17,7 +17,7 @@ function AppNavBar() {
         { icon: "Monitor", label: "AI Guide", path: "/guide", },
         { icon: "Grid", label: "Tools", path: "/tools", },
         { icon: "Search", label: "Explore Careers", path: "/careerpaths" },
-        { icon: "Grid", label: "Dashboard", path: "/profile" },
+        { icon: "Grid", label: "Dashboard", path: "/dashboard" },
     ];
 
     const Icons = {
@@ -56,7 +56,7 @@ function AppNavBar() {
             <nav style={{
                 background: "#0f1520", borderBottom: "1px solid rgba(255,255,255,.07)",
                 display: "flex", alignItems: "center", padding: "0 50px",
-                height: "65px", position: "relative", zIndex: 100, flexShrink: 0,
+                height: "65px", position: "fixed", zIndex: 100, flexShrink: 0,
                 gap: "15rem"
             }}>
                 {/* Brand */}
