@@ -277,7 +277,7 @@ Always prioritize helping users achieve their career goals.
                     <div className="chat-panel">
                         <div className="chat-header">
                             <div className="chat-header-left">
-                                <div className="ai-avatar">🧭</div>
+                                <div className="ai-avatar">🧠</div>
                                 <div>
                                     <div className="ai-name">CareerMind AI</div>
                                     <div className="ai-status">Online — Ready to guide you</div>
@@ -293,7 +293,7 @@ Always prioritize helping users achieve their career goals.
                             {messages.map((msg, index) => (
                                 <div key={index} className={`msg ${msg.role}`}>
                                     <div className={`msg-avatar ${msg.role}`}>
-                                        {msg.role === "ai" ? "🧭" : "👤"}
+                                        {msg.role === "ai" ? "🧠" : "👤"}
                                     </div>
 
                                     <div>

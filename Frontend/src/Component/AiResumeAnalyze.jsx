@@ -75,24 +75,21 @@ function AiResumeAnalyze() {
         setLoading(true);
 
         const prompt = `
-You are an expert ATS Resume Analyzer.
+You are an ATS Resume Analyzer.
 
-Analyze this resume and provide:
+Analyze the resume.
 
-# ATS Score
-Give score out of 100.
+Return ONLY valid JSON.
 
-# Strengths
-List strong points.
-
-# Weaknesses
-List missing areas.
-
-# Skills Detected
-List technical and soft skills.
-
-# Improvement Suggestions
-Provide actionable recommendations.
+{
+  "score": ,
+  "strengths": [],
+  "weaknesses": [],
+  "skills": [],
+  "suggestions": [],
+  "careerFit": "",
+  "summary": ""
+}
 
 Resume:
 ${resumeText}

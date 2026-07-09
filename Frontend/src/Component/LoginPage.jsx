@@ -83,7 +83,7 @@ function LoginPage() {
 
             alert("Login successful!");
 
-            navigate("/profile");
+            navigate("/dashboard");
 
         } catch (error) {
             console.log(error.response?.data);
