@@ -7,7 +7,7 @@ import userRoute from "./routes/user.route.js"
 const app = express();
 
 app.use(cors({
-    origin: "http://localhost:5174", // React/Vite
+    origin: "http://localhost:5173", // React/Vite
     credentials: true,
 }));
 

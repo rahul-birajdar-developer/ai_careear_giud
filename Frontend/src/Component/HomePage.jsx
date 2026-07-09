@@ -7,10 +7,10 @@ function HomePage() {
                 <div className="hero-orb2"></div>
                 <div className="hero-grid-lines"></div>
                 <div className="hero-content">
-                    <div className="hero-eyebrow">✦ Powered by Claude AI</div>
+                    <div className="hero-eyebrow">Trusted by Students & Professionals</div>
                     <h1>
-                        <span className="line1">Your Career, Guided</span>
-                        <span className="line2">by Artificial Intelligence</span>
+                        <span className="line1">Your Personal </span>
+                        <span className="line2">AI Career Coach</span>
                     </h1>
                     <p className="hero-sub">Get personalized career advice, resume analysis, interview coaching, skill roadmaps, and
                         salary insights — all powered by advanced AI that understands your unique journey.</p>
@@ -18,13 +18,13 @@ function HomePage() {
                         <Link to="guide">
                             <button className="btn-hero btn-hero-primary"
                             >
-                                🚀 Chat with AI Career Guide
+                                🚀 Start Free
                             </button>
                         </Link>
                         <Link to="/tools">
                             <button className="btn-hero btn-hero-secondary"
                             >
-                                Explore All Tools
+                                Explore Features
                             </button>
                         </Link>
                     </div>

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function AppNavBar({ setIsLogin }) {
+function AppNavBar() {
     return (
         <>
             <nav>
@@ -16,13 +16,12 @@ function AppNavBar({ setIsLogin }) {
                     <li><Link to="/tools">Tools</Link></li>
                     <li><Link to="/careerpaths">Explore Careers</Link></li>
                     <li><Link to="/profile">
-                        Profile
+                        Dashboard
                     </Link></li>
                 </ul>
                 <div className="nav-cta">
                     <Link to="/signup">
                         <button className="btn-ghost"
-                            onClick={() => setIsLogin(true)}
                         >Sign In</button>
                     </Link>
                     <button className="btn-nav"

@@ -12,6 +12,7 @@ function UserProfile() {
         }
         getCurrentUser();
     }, [])
+
     return (
         <section className="profile-dashboard">
 

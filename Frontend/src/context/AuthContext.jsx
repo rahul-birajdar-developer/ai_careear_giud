@@ -6,7 +6,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     // Stores the logged-in user.
-    const [user, setuser] = useState(null);
+    const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
     // Runs only once when the app starts.
@@ -16,10 +16,10 @@ export const AuthProvider = ({ children }) => {
                 // Calls the backend.it check the which user is logged in and return the user data 
                 const response = await api.get("/users/me")
                 console.log(response.data.data);
-                setuser(response.data.data)
+                setUser(response.data.data)
             } catch (error) {
                 console.log(error);
-                setuser(null)
+                setUser(null)
             } finally {
                 setLoading(false)
             }
@@ -30,7 +30,14 @@ export const AuthProvider = ({ children }) => {
 
     return (
         // This shares the user with every component.
-        <AuthContext.Provider value={{ user, setLoading, setuser }}>
+        <AuthContext.Provider
+            value={{
+                user,
+                loading,
+                setUser,
+                setLoading
+            }}
+        >
             {children}
         </AuthContext.Provider>
     )
