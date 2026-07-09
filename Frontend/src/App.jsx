@@ -1,53 +1,60 @@
-import './App.css'
-import AiCoverLetterWriter from './Component/AiCoverLetterWriter'
-import AiGuide from './Component/AiGuide'
-import AiInterViewCoach from './Component/AiInterviewCoach'
-import AiLearningRoadMap from './Component/AiLearningRoadMap'
-import AiResumeAnalyze from './Component/AiResumeAnalyze'
-import AiTools from './Component/AiTools'
-import AppNavBar from './Component/AppNavbar'
-import CareerPaths from './Component/CareerPaths'
-import Footer from './Component/Footer'
-import HomePage from './Component/HomePage'
-import CareerDetails from './Component/CareerDetails'
-import LoginPage from './Component/LoginPage'
-import SalaryIntelligence from './Component/SalaryIntelligence'
-import SkillGapAnalyzer from './Component/SkillGapAnalyzer'
-import SocialFeedBack from './Component/SocialFeedback'
-import { Route, Routes } from 'react-router-dom'
-import ProtectedRoutes from './context/ProtectedRoutes'
-import ProfilePage from './Component/userProfile'
+import "./App.css";
+import AiCoverLetterWriter from "./Component/AiCoverLetterWriter";
+import AiGuide from "./Component/AiGuide";
+import AiInterViewCoach from "./Component/AiInterviewCoach";
+import AiLearningRoadMap from "./Component/AiLearningRoadMap";
+import AiResumeAnalyze from "./Component/AiResumeAnalyze";
+import AiTools from "./Component/AiTools";
+// import AppNavBar from './Component/AppNavbar'
+import CareerPaths from "./Component/CareerPaths";
+// import Footer from "./Component/Footer";
+import HomePage from "./Component/HomePage";
+import CareerDetails from "./Component/CareerDetails";
+import LoginPage from "./Component/LoginPage";
+import SalaryIntelligence from "./Component/SalaryIntelligence";
+import SkillGapAnalyzer from "./Component/SkillGapAnalyzer";
+import SocialFeedBack from "./Component/SocialFeedback";
+import { Route, Routes } from "react-router-dom";
+import ProtectedRoutes from "./context/ProtectedRoutes";
+import ProfilePage from "./Component/userProfile";
+import PublicLayout from "./context/publicLayout";
+import PrivateLayout from "./context/privateLayout";
 function App() {
   return (
     <>
-      <AppNavBar />
       <Routes>
-        <Route path='/signup' element={<LoginPage />} />
-        <Route path='/' element={<HomePage />} />
-        <Route path='/home' element={<HomePage />} />
-        <Route path='/tools' element={<ProtectedRoutes><AiTools /></ProtectedRoutes>} />
-        <Route path='/guide' element={<ProtectedRoutes><AiGuide /></ProtectedRoutes>} />
-        <Route path='/careerpaths' element={<ProtectedRoutes><CareerPaths /></ProtectedRoutes>} />
-        <Route path='/resumeanalyze' element={<ProtectedRoutes><AiResumeAnalyze /></ProtectedRoutes>} />
-        <Route path='/skillgapanalyze' element={<ProtectedRoutes><SkillGapAnalyzer /></ProtectedRoutes>} />
-        <Route path='/roadmap' element={<ProtectedRoutes><AiLearningRoadMap /></ProtectedRoutes>} />
+        {/*Public Layouts */}
+        <Route element={<PublicLayout />}>
+          <Route path="/signup" element={<LoginPage />} />
+
+        </Route>
+
+        {/*Private Layouts */}
         <Route
-          path="/career/:careerName"
-          element={<ProtectedRoutes><CareerDetails /></ProtectedRoutes>}
-        />
-        <Route
-          path="/profile"
-          element={<ProtectedRoutes><ProfilePage /></ProtectedRoutes>}
-        />
-        <Route path='/salary' element={<ProtectedRoutes><SalaryIntelligence /></ProtectedRoutes>} />
-        <Route path='/interview' element={<ProtectedRoutes><AiInterViewCoach /></ProtectedRoutes>} />
-        <Route path='/coverletter' element={<ProtectedRoutes><AiCoverLetterWriter /></ProtectedRoutes>} />
-        <Route path='/feedback' element={<ProtectedRoutes><SocialFeedBack /></ProtectedRoutes>} />
+          element={
+            <ProtectedRoutes>
+              <PrivateLayout />
+            </ProtectedRoutes>
+          }
+        >
+          <Route path="/" element={<HomePage />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/tools" element={<AiTools />} />
+          <Route path="/guide" element={<AiGuide />} />
+          <Route path="/careerpaths" element={<CareerPaths />} />
+          <Route path="/resumeanalyze" element={<AiResumeAnalyze />} />
+          <Route path="/skillgapanalyze" element={<SkillGapAnalyzer />} />
+          <Route path="/roadmap" element={<AiLearningRoadMap />} />
+          <Route path="/career/:careerName" element={<CareerDetails />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/salary" element={<SalaryIntelligence />} />
+          <Route path="/interview" element={<AiInterViewCoach />} />
+          <Route path="/coverletter" element={<AiCoverLetterWriter />} />
+          <Route path="/feedback" element={<SocialFeedBack />} />
+        </Route>
       </Routes>
-      <Footer />
     </>
-  )
+  );
 }
 
-
-export default App
+export default App;
