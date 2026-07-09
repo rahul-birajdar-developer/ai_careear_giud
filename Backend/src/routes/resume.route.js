@@ -5,4 +5,4 @@ import { getUserResume } from "../controllers/resume.controllers.js";
 
 const roter = Router();
 
-roter.route("/resume").post(verifyJwt, upload.fields([{ name: "resumeFile", maxCount: 1 }]), getUserResume)
+roter.route("/resume/upload").post(verifyJwt, upload.fields([{ name: "resumeFile", maxCount: 1 }]), getUserResume)

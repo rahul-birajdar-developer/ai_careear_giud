@@ -1,21 +1,27 @@
 import { useState, useRef } from 'react';
-import { askGemini } from '../Services/gemini';
 import ReactMarkdown from "react-markdown";
 import mammoth from "mammoth";
 import * as pdfjsLib from "pdfjs-dist";
+import api from '../api/axios';
 
 // Set the worker path for pdfjs
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.js', import.meta.url).toString();
 
 function AiResumeAnalyze() {
+    // Stores the extracted resume text.
     const [resumeText, setResumeText] = useState("");
+    // Stores Gemini's response.
     const [analysis, setAnalysis] = useState("");
+    // Controls loading state.
     const [loading, setLoading] = useState(false);
+    // Stores the uploaded file.
     const [file, setFile] = useState(null);
 
     const fileInputRef = useRef(null);
 
+    // Runs when user selects a file.
     const handleFileChange = async (e) => {
+        // gets the uploaded file.
         const selectedFile = e.target.files[0];
 
         if (!selectedFile) return;
@@ -38,6 +44,7 @@ function AiResumeAnalyze() {
         }
     };
 
+    // Runs when user drags
     const handleDrop = async (e) => {
         e.preventDefault();
 
@@ -68,37 +75,45 @@ function AiResumeAnalyze() {
     const analyzeResume = async () => {
         if (!resumeText.trim()) return;
         if (!resumeText.trim()) {
-            alert("Resume text is empty");
+            alert("Resume is empty");
             return;
         }
 
         setLoading(true);
 
-        const prompt = `
-You are an ATS Resume Analyzer.
+        //         const prompt = `
+        // You are an ATS Resume Analyzer.
 
-Analyze the resume.
+        // Analyze the resume.
 
-Return ONLY valid JSON.
+        // Return ONLY valid JSON.
 
-{
-  "score": ,
-  "strengths": [],
-  "weaknesses": [],
-  "skills": [],
-  "suggestions": [],
-  "careerFit": "",
-  "summary": ""
-}
+        // {
+        //   "score": ,
+        //   "strengths": [],
+        //   "weaknesses": [],
+        //   "skills": [],
+        //   "suggestions": [],
+        //   "careerFit": "",
+        //   "summary": ""
+        // }
 
-Resume:
-${resumeText}
-`;
+        // Resume:
+        // ${resumeText}
+        // `;
 
         try {
-            const response = await askGemini(prompt);
-            console.log("AI Analysis Response:", response);
-            setAnalysis(response);
+            const fromData = new fromData();
+            fromData.append("resumeFile", file);
+            const response = await api.post(
+                "/resume/upload",
+                fromData
+            )
+
+            setAnalysis(response.data.data)
+            // const response = await askGemini(prompt);
+            // console.log("AI Analysis Response:", response);
+            // setAnalysis(response);
         }
         catch (error) {
             console.error(error);
