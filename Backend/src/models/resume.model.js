@@ -8,7 +8,7 @@ const resumeSchema = new Schema({
     resumeUrl: {
         type: String,
     },
-    fileName: {
+    resumeFile: {
         type: String,
     },
     resumeScore: {
