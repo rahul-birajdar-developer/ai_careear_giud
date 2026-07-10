@@ -1,5 +1,4 @@
 import { useState, useRef } from 'react';
-import ReactMarkdown from "react-markdown";
 import * as pdfjsLib from "pdfjs-dist";
 import api from '../api/axios';
 
@@ -57,7 +56,8 @@ function AiResumeAnalyze() {
                 formData
             );
 
-            console.log(response.data);
+            console.log(response.data.data);
+            console.log(JSON.stringify(analysis, null, 2));
 
             setAnalysis(response.data.data);
 
@@ -76,8 +76,6 @@ function AiResumeAnalyze() {
         <>
             <section id="resume-analyzer">
                 <div className="section-title">AI Resume Analyzer</div>
-                <p className="section-sub">Paste your resume or upload a file to get an instant AI-powered review with an ATS score
-                    and actionable improvements.</p>
 
                 <div className="analyzer-layout">
                     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -112,9 +110,85 @@ function AiResumeAnalyze() {
                         {loading ? (
                             <p>Analyzing Resume...</p>
                         ) : analysis ? (
-                            <ReactMarkdown>
-                                {analysis}
-                            </ReactMarkdown>
+                            <div className="analysis-result">
+
+                                {/* Score Card */}
+                                <div className="score-card">
+                                    <div className="score-circle">
+                                        <span>{analysis.resumeData.score}</span>
+                                    </div>
+
+                                    <div className="score-info">
+                                        <h2>ATS Score</h2>
+                                        <p>
+                                            {analysis.resumeData.score >= 80
+                                                ? "Excellent Resume"
+                                                : analysis.resumeData.score >= 60
+                                                    ? "Good Resume"
+                                                    : "Needs Improvement"}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Summary */}
+                                <div className="analysis-card">
+                                    <h3>📝 Summary</h3>
+                                    <p>{analysis.resumeData.summary}</p>
+                                </div>
+
+                                {/* Career Fit */}
+                                <div className="analysis-card">
+                                    <h3>🎯 Career Fit</h3>
+                                    <p>{analysis.resumeData.careerFit}</p>
+                                </div>
+
+                                {/* Strengths */}
+                                <div className="analysis-card">
+                                    <h3>✅ Strengths</h3>
+
+                                    <ul>
+                                        {analysis.resumeData.strengths?.map((item, index) => (
+                                            <li key={index}>{item}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                {/* Skills */}
+                                <div className="analysis-card">
+                                    <h3>💻 Skills</h3>
+
+                                    <div className="skills-grid">
+                                        {analysis.resumeData.skills?.map((skill, index) => (
+                                            <span className="skill-chip" key={index}>
+                                                {skill}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Weaknesses */}
+                                <div className="analysis-card danger">
+                                    <h3>⚠️ Weaknesses</h3>
+
+                                    <ul>
+                                        {analysis.resumeData.weaknesses?.map((item, index) => (
+                                            <li key={index}>{item}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                {/* Suggestions */}
+                                <div className="analysis-card success">
+                                    <h3>💡 Suggestions</h3>
+
+                                    <ul>
+                                        {analysis.resumeData.suggestions?.map((item, index) => (
+                                            <li key={index}>{item}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                            </div>
                         ) : (
                             <div className="result-placeholder">
                                 <div className="result-placeholder-icon">📊</div>

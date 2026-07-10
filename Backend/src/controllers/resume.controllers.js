@@ -24,7 +24,7 @@ const getUserResume = asyncHandler(async (req, res) => {
 
     // console.log("Step 3")
     // console.log(extractText);
-    const analyze = await askGemini(extractText);
+    const analyzeText = await askGemini(extractText);
     // console.log("Step 4")
     // console.log(analyze);
 
@@ -38,6 +38,16 @@ const getUserResume = asyncHandler(async (req, res) => {
     if (!resumeUrl) {
         throw new ApiErrorHandling(500, "Failed to upload resume");
     }
+    const cleanText = analyzeText
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
+
+    // Convert JSON string to object
+    const analyze = JSON.parse(cleanText);
+
+    // console.log(typeof analyze); // object
+    // console.log(analyze);
 
     const resumeData = await ResumeModel.create({
         id: req.user._id,

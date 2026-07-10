@@ -130,7 +130,7 @@ nav {
     transition: color 0.2s;
 }
 
-.home{
+.home {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1191,6 +1191,95 @@ section {
     background: var(--rose-dim);
     color: var(--rose);
     border: 1px solid rgba(251, 113, 133, 0.2);
+}
+
+.analysis-result {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.score-card {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    padding: 25px;
+    border-radius: 18px;
+    background: #131f34;
+    border: 1px solid rgba(255, 255, 255, .08);
+}
+
+.score-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00d4ff, #2563eb);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 34px;
+    font-weight: 700;
+}
+
+.score-info h2 {
+    color: white;
+    margin-bottom: 8px;
+}
+
+.score-info p {
+    color: #bfc9d9;
+}
+
+.analysis-card {
+    background: #131f34;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, .08);
+}
+
+.analysis-card h3 {
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+.analysis-card ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.analysis-card li {
+    margin-bottom: 10px;
+    color: #d5dce7;
+    line-height: 1.7;
+}
+
+.analysis-card p {
+    color: #d5dce7;
+    line-height: 1.8;
+}
+
+.skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.skill-chip {
+    background: #1d4ed8;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.danger {
+    border-left: 5px solid #ef4444;
+}
+
+.success {
+    border-left: 5px solid #22c55e;
 }
 
 /* ═══════════════════════════════════════

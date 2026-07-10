@@ -9,20 +9,31 @@ export const askGemini = async (resumeText) => {
     const prompt = `
 You are an ATS Resume Analyzer.
 
-Analyze this resume.
+Analyze the resume and return ONLY valid JSON.
 
-Return ONLY JSON.
+Rules:
+- Use simple English.
+- Keep each point short (10–15 words maximum).
+- Do not use difficult vocabulary.
+- Do not use bold text or markdown.
+- Return a maximum of:
+  - 5 strengths
+  - 8 skills
+  - 5 weaknesses
+  - 5 suggestions
+- Keep the summary under 40 words.
+
+Return only this JSON:
 
 {
   "score": 0,
   "strengths": [],
-  "weaknesses": [],
   "skills": [],
+  "weaknesses": [],
   "suggestions": [],
   "careerFit": "",
   "summary": ""
 }
-
 Resume:
 
 ${resumeText}

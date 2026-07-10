@@ -1,4 +1,4 @@
-import mongooes, { Schema} from "mongoose";
+import mongooes, { Schema } from "mongoose";
 
 const resumeSchema = new Schema({
     user: {
@@ -13,19 +13,25 @@ const resumeSchema = new Schema({
     resumeFile: {
         type: String,
     },
-    resumeScore: {
+    score: {
         type: Number,
     },
     strengths: {
         type: [String],
     },
-    Skill: {
+    skills: {
         type: [String]
     },
-    weekness: {
+    weaknesses: {
         type: [String],
     },
     suggestions: {
+        type: [String]
+    },
+    summary: {
+        type: [String]
+    },
+    careerFit: {
         type: [String]
     }
 }, { timestamps: true })
