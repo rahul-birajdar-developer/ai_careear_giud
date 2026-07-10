@@ -15,7 +15,7 @@ import SalaryIntelligence from "./Component/SalaryIntelligence";
 import SkillGapAnalyzer from "./Component/SkillGapAnalyzer";
 import SocialFeedBack from "./Component/SocialFeedback";
 import { Route, Routes } from "react-router-dom";
-import ProtectedRoutes from "./context/ProtectedRoutes.jsx";
+import ProtectedRoutes from "./context/protectedRoutes";
 import ProfilePage from "./Component/UserProfile.jsx";
 import PublicLayout from "./context/publicLayout";
 import PrivateLayout from "./context/privateLayout";
