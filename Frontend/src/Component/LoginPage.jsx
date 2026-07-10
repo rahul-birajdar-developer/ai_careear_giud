@@ -2,8 +2,10 @@ import { useState } from "react";
 import "../login.css";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios.js";
+import { Auth } from "../context/AuthContext.jsx";
 
 function LoginPage() {
+    const { setUser } = Auth();
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(true);
     // const [name, setName] = useState("");
@@ -80,6 +82,7 @@ function LoginPage() {
                 "token",
                 response.data.accessToken
             );
+            setUser(response.data.data); // or response.data.user depending on your API
 
             alert("Login successful!");
 

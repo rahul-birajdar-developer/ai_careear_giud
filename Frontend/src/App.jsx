@@ -19,16 +19,22 @@ import ProtectedRoutes from "./context/ProtectedRoutes";
 import ProfilePage from "./Component/userProfile";
 import PublicLayout from "./context/publicLayout";
 import PrivateLayout from "./context/privateLayout";
+import AuthoLayout from "./context/AuthLayout";
 function App() {
   return (
     <>
       <Routes>
         {/*Public Layouts */}
         <Route element={<PublicLayout />}>
-          <Route path="/signup" element={<LoginPage />} />
-
+          <Route path="/" element={<HomePage />} />
+          <Route path="/guide" element={<AiGuide />} />
+          <Route path="/tools" element={<AiTools />} />
         </Route>
 
+        {/* Auth pages without Navbar/Footer */}
+        <Route element={<AuthoLayout />}>
+          <Route path="/signup" element={<LoginPage />} />
+        </Route>
         {/*Private Layouts */}
         <Route
           element={
@@ -37,10 +43,8 @@ function App() {
             </ProtectedRoutes>
           }
         >
-          <Route path="/" element={<HomePage />} />
+
           <Route path="/home" element={<HomePage />} />
-          <Route path="/tools" element={<AiTools />} />
-          <Route path="/guide" element={<AiGuide />} />
           <Route path="/careerpaths" element={<CareerPaths />} />
           <Route path="/resumeanalyze" element={<AiResumeAnalyze />} />
           <Route path="/skillgapanalyze" element={<SkillGapAnalyzer />} />
