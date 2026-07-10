@@ -56,8 +56,8 @@ function AiResumeAnalyze() {
                 formData
             );
 
-            console.log(response.data.data);
-            console.log(JSON.stringify(analysis, null, 2));
+            // console.log(response.data.data);
+            // console.log(JSON.stringify(analysis, null, 2));
 
             setAnalysis(response.data.data);
 
@@ -115,7 +115,7 @@ function AiResumeAnalyze() {
                                 {/* Score Card */}
                                 <div className="score-card">
                                     <div className="score-circle">
-                                        <span>{analysis.resumeData.score}</span>
+                                        <span style={{ color: "white" }}>{analysis.resumeData.score}</span>
                                     </div>
 
                                     <div className="score-info">
