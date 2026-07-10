@@ -1,20 +1,37 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-const genAI = new GoogleGenerativeAI(
-    import.meta.env.VITE_GEMINI_API_KEY
-);
+import { GoogleGenAI } from "@google/genai";
 
-const model = genAI.getGenerativeModel({
-    model: "gemini-2.5-flash",
+const ai = new GoogleGenAI({
+    apiKey: process.env.GEMINI_API_KEY,
 });
 
-export async function askGemini(prompt) {
-    try {
-        const result = await model.generateContent(prompt);
-        const response = result.response;
-        const text = response.text();
-        return text;
-    } catch (error) {
-        console.error(error);
-        return "Error occurred";
-    }
+export const askGemini = async (resumeText) => {
+
+    const prompt = `
+You are an ATS Resume Analyzer.
+
+Analyze this resume.
+
+Return ONLY JSON.
+
+{
+  "score": 0,
+  "strengths": [],
+  "weaknesses": [],
+  "skills": [],
+  "suggestions": [],
+  "careerFit": "",
+  "summary": ""
 }
+
+Resume:
+
+${resumeText}
+`;
+
+    const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: prompt,
+    });
+
+    return response.text;
+};

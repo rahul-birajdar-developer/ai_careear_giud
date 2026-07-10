@@ -1,12 +1,14 @@
-import mongooes, { Schema, Types } from "mongoose";
+import mongooes, { Schema} from "mongoose";
 
 const resumeSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
-        ref: "users"
+        ref: "users",
+        require: true
     },
     resumeUrl: {
         type: String,
+        require: true
     },
     resumeFile: {
         type: String,
@@ -16,6 +18,9 @@ const resumeSchema = new Schema({
     },
     strengths: {
         type: [String],
+    },
+    Skill: {
+        type: [String]
     },
     weekness: {
         type: [String],

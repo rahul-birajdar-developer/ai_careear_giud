@@ -78,30 +78,7 @@ function AiResumeAnalyze() {
             alert("Resume is empty");
             return;
         }
-
         setLoading(true);
-
-        //         const prompt = `
-        // You are an ATS Resume Analyzer.
-
-        // Analyze the resume.
-
-        // Return ONLY valid JSON.
-
-        // {
-        //   "score": ,
-        //   "strengths": [],
-        //   "weaknesses": [],
-        //   "skills": [],
-        //   "suggestions": [],
-        //   "careerFit": "",
-        //   "summary": ""
-        // }
-
-        // Resume:
-        // ${resumeText}
-        // `;
-
         try {
             const fromData = new fromData();
             fromData.append("resumeFile", file);
@@ -109,11 +86,7 @@ function AiResumeAnalyze() {
                 "/resume/upload",
                 fromData
             )
-
             setAnalysis(response.data.data)
-            // const response = await askGemini(prompt);
-            // console.log("AI Analysis Response:", response);
-            // setAnalysis(response);
         }
         catch (error) {
             console.error(error);
