@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react';
 import ReactMarkdown from "react-markdown";
-import mammoth from "mammoth";
 import * as pdfjsLib from "pdfjs-dist";
 import api from '../api/axios';
 
@@ -20,52 +19,18 @@ function AiResumeAnalyze() {
     const fileInputRef = useRef(null);
 
     // Runs when user selects a file.
-    const handleFileChange = async (e) => {
-        // gets the uploaded file.
+    const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
-
         if (!selectedFile) return;
-
         setFile(selectedFile);
-
-        if (selectedFile.type === "text/plain") {
-            await readTxtFile(selectedFile);
-        }
-        else if (
-            selectedFile.type ===
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        ) {
-            await readDocx(selectedFile);
-        }
-        else if (
-            selectedFile.type === "application/pdf"
-        ) {
-            await readPdf(selectedFile);
-        }
     };
 
     // Runs when user drags
     const handleDrop = async (e) => {
         e.preventDefault();
-
         const droppedFile = e.dataTransfer.files[0];
-
         if (!droppedFile) return;
-
         setFile(droppedFile);
-
-        if (droppedFile.type === "text/plain") {
-            await readTxtFile(droppedFile);
-        }
-        else if (
-            droppedFile.type ===
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        ) {
-            await readDocx(droppedFile);
-        }
-        else if (droppedFile.type === "application/pdf") {
-            await readPdf(droppedFile);
-        }
     };
 
     const handleDragOver = (e) => {
@@ -73,60 +38,40 @@ function AiResumeAnalyze() {
     };
 
     const analyzeResume = async () => {
-        if (!resumeText.trim()) return;
-        if (!resumeText.trim()) {
-            alert("Resume is empty");
+
+        if (!file) {
+            alert("Please upload a resume.");
             return;
         }
+
         setLoading(true);
+
         try {
-            const fromData = new fromData();
-            fromData.append("resumeFile", file);
+
+            const formData = new FormData();
+
+            formData.append("resumeFile", file);
+
             const response = await api.post(
                 "/resume/upload",
-                fromData
-            )
-            setAnalysis(response.data.data)
-        }
-        catch (error) {
-            console.error(error);
-            setAnalysis("Failed to analyze resume.");
-        }
-        finally {
+                formData
+            );
+
+            console.log(response.data);
+
+            setAnalysis(response.data.data);
+
+        } catch (error) {
+
+            console.log(error);
+
+        } finally {
+
             setLoading(false);
-        }
-    };
 
-    const readTxtFile = async (file) => {
-        const text = await file.text();
-        setResumeText(text);
-    };
-
-    const readDocx = async (file) => {
-        const arrayBuffer = await file.arrayBuffer();
-
-        const result = await mammoth.extractRawText({
-            arrayBuffer
-        });
-
-        setResumeText(result.value);
-    };
-
-    const readPdf = async (file) => {
-        const arrayBuffer = await file.arrayBuffer();
-
-        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-        let text = '';
-
-        for (let i = 1; i <= pdf.numPages; i++) {
-            const page = await pdf.getPage(i);
-            const content = await page.getTextContent();
-            text += content.items.map((s) => s.str).join(' ');
         }
 
-        setResumeText(text);
     };
-
     return (
         <>
             <section id="resume-analyzer">
