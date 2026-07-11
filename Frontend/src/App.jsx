@@ -38,9 +38,9 @@ function App() {
         {/*Private Layouts */}
         <Route
           element={
-            <ProtectedRoutes>
-              <PrivateLayout />
-            </ProtectedRoutes>
+
+            <PrivateLayout />
+
           }
         >
 
