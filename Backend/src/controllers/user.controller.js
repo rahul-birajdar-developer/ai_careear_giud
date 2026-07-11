@@ -110,6 +110,7 @@ const userRegister = asyncHandler(async (req, res) => {
 
 const userLogin = asyncHandler(async (req, res) => {
     console.log("LOGIN API HIT");
+    console.log(req.body);
     // get user details from frontend
     // validation - not empty
     // check if user exists: username, email
@@ -161,7 +162,7 @@ const userLogin = asyncHandler(async (req, res) => {
     const cookieOptions = {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     };
 
@@ -195,7 +196,7 @@ const userLogOut = asyncHandler(async (req, res) => {
     const cookieOptions = {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict"
+        sameSite: "none"
     };
 
     return res
