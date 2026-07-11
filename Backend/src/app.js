@@ -8,7 +8,7 @@ import resumeRouter from "./routes/resume.route.js"
 const app = express();
 
 app.use(cors({
-    origin: "http://localhost:5173", // React/Vite
+    origin: ["http://localhost:5173", "https://ai-careear-giud-1.onrender.com"], // React/Vite
     credentials: true,
 }));
 

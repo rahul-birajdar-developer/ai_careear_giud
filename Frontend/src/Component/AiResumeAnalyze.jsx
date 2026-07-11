@@ -7,13 +7,15 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.mi
 
 function AiResumeAnalyze() {
     // Stores the extracted resume text.
-    const [resumeText, setResumeText] = useState("");
+    // const [resumeText, setResumeText] = useState("");
     // Stores Gemini's response.
     const [analysis, setAnalysis] = useState("");
     // Controls loading state.
     const [loading, setLoading] = useState(false);
     // Stores the uploaded file.
     const [file, setFile] = useState(null);
+    // job title
+    const [jobTitle, setJobTitle] = useState("");
 
     const fileInputRef = useRef(null);
 
@@ -43,6 +45,11 @@ function AiResumeAnalyze() {
             return;
         }
 
+        if (!jobTitle.trim()) {
+            alert("Please enter a target job role.");
+            return;
+        }
+
         setLoading(true);
 
         try {
@@ -50,6 +57,7 @@ function AiResumeAnalyze() {
             const formData = new FormData();
 
             formData.append("resumeFile", file);
+            formData.append("jobTitle", jobTitle);
 
             const response = await api.post(
                 "/resume/upload",
@@ -63,6 +71,8 @@ function AiResumeAnalyze() {
 
         } catch (error) {
 
+            console.log(error.response?.status);
+            console.log(error.response?.data);
             console.log(error);
 
         } finally {
@@ -76,7 +86,6 @@ function AiResumeAnalyze() {
         <>
             <section id="resume-analyzer">
                 <div className="section-title">AI Resume Analyzer</div>
-
                 <div className="analyzer-layout">
                     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                         <div className="analyzer-drop" onDrop={handleDrop}
@@ -90,21 +99,34 @@ function AiResumeAnalyze() {
                             <div className="drop-title">Drop your resume here</div>
                             <div className="drop-sub">Supports PDF, DOCX, TXT files</div>
                             <button className="drop-browse" type="button" onDrop={analyzeResume} onClick={() => {
-                                console.log("Button clicked");
-                                console.log(fileInputRef.current);
+                                // console.log("Button clicked");
+                                // console.log(fileInputRef.current);
                                 fileInputRef.current?.click();
                             }}>Browse File</button>
                             <input type="file" id="resumeFile" onChange={handleFileChange} accept=".pdf,.docx,.txt" style={{ display: "none" }} ref={fileInputRef} />
                         </div>
-                        <div className="analyzer-paste">
+                        {/* <div className="analyzer-paste">
                             <label>Or paste your resume text:</label>
                             <textarea id="resumeText"
                                 value={resumeText}
                                 onChange={(e) => setResumeText(e.target.value)}
                                 placeholder="Paste your full resume content here...&#10;&#10;Include: Work experience, education, skills, projects..."></textarea>
                             <button className="analyze-btn" id="analyzeBtn" onClick={analyzeResume}>{loading ? "Analyzing..." : "✨ Analyze with AI"}</button>
+                        </div> */}
+                        <div className="job-role-container">
+                            <label>Target Job Role</label>
+
+                            <input
+                                type="text"
+                                value={jobTitle}
+                                onChange={(e) => setJobTitle(e.target.value)}
+                                placeholder="Example: Frontend Developer, Data Analyst, Java Developer"
+                                className="job-role-input"
+                            />
                         </div>
+                        <button className="analyze-btn" id="analyzeBtn" onClick={analyzeResume}>{loading ? "Analyzing..." : "✨ Analyze with AI"}</button>
                     </div>
+
 
                     <div className="analyzer-results">
                         {loading ? (
@@ -161,6 +183,18 @@ function AiResumeAnalyze() {
                                         {analysis.resumeData.skills?.map((skill, index) => (
                                             <span className="skill-chip" key={index}>
                                                 {skill}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="analysis-card warning">
+                                    <h3>🚀 Missing Skills</h3>
+
+                                    <div className="skills-grid">
+                                        {analysis.resumeData.missingSkills?.map((item, index) => (
+                                            <span key={index} className="missing-chip">
+                                                {item}
                                             </span>
                                         ))}
                                     </div>

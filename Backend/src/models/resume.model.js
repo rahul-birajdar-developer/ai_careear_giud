@@ -19,7 +19,14 @@ const resumeSchema = new Schema({
     strengths: {
         type: [String],
     },
+    jobTitle: {
+        type: String,
+        require: true
+    },
     skills: {
+        type: [String]
+    },
+    missingSkills: {
         type: [String]
     },
     weaknesses: {

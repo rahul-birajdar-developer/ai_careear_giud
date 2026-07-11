@@ -7,10 +7,6 @@ const router = Router();
 
 router.post(
     "/upload",
-    (req, res, next) => {
-        console.log("✅ Route hit");
-        next();
-    },
     verifyJwt,
     upload.fields([{ name: "resumeFile", maxCount: 1 }]),
     getUserResume
