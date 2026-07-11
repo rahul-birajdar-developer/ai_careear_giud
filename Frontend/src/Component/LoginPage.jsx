@@ -82,9 +82,9 @@ function LoginPage() {
             setUser(response.data.data); // or response.data.user depending on your API
 
             alert("Login successful!");
-
+            console.log("Before navigate");
             navigate("/dashboard");
-
+            console.log("After navigate");
         } catch (error) {
             console.log(error.response?.data);
 
