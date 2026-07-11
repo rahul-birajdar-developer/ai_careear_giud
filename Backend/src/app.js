@@ -8,7 +8,10 @@ import resumeRouter from "./routes/resume.route.js"
 const app = express();
 
 app.use(cors({
-    origin: ["http://localhost:5173", "https://ai-careear-giud-1.onrender.com"], // React/Vite
+    origin: [
+        "http://localhost:5173", 
+        "https://ai-careear-giud-jm1o-97hlp6f99-rahul143775s-projects.vercel.app/"
+    ], // React/Vite
     credentials: true,
 }));
 
