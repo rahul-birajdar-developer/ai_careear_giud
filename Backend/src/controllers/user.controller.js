@@ -109,6 +109,7 @@ const userRegister = asyncHandler(async (req, res) => {
 });
 
 const userLogin = asyncHandler(async (req, res) => {
+    console.log("LOGIN API HIT");
     // get user details from frontend
     // validation - not empty
     // check if user exists: username, email
@@ -165,14 +166,17 @@ const userLogin = asyncHandler(async (req, res) => {
     };
 
     // Return res
-    return res.status(200)
+    return res
+        .status(200)
         .cookie("refreshToken", refreshToken, cookieOptions)
         .cookie("accessToken", accessToken, cookieOptions)
         .json({
-            status: "success",
+            success: true,
             message: "User logged in successfully",
-            data: loggedInUser
-        })
+            accessToken,
+            refreshToken,
+            user: loggedInUser,
+        });
 });
 
 const userLogOut = asyncHandler(async (req, res) => {
