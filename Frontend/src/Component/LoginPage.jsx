@@ -8,10 +8,6 @@ function LoginPage() {
     const { setUser } = Auth();
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(true);
-    // const [name, setName] = useState("");
-    // const [email, setEmail] = useState("");
-    // const [password, setPassword] = useState("");
-    // const [profileImage, setProfileImage] = useState("")
     const [conformPassowrd, setConformPassword] = useState("");
     const [form, setForm] = useState({
         name: "",
