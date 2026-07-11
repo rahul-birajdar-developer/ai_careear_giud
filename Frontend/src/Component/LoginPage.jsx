@@ -56,7 +56,7 @@ function LoginPage() {
                 "/users/register",
                 data
             );
-            console.log(response.data);
+            // console.log(response.data);
             setIsLogin(true)
         } catch (error) {
             console.log(error);
@@ -73,6 +73,7 @@ function LoginPage() {
                 email: form.email,
                 password: form.password,
             });
+            console.log(response.data);
 
             localStorage.setItem(
                 "token",
