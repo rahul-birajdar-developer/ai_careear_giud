@@ -7,7 +7,7 @@ function SkillGapAnalyzer() {
     const [experience, setExperience] = useState("");
     const [skillInput, setSkillInput] = useState("");
     const [skills, setSkills] = useState([]);
-    const [result, setResult] = useState("");
+    const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const handleSkillKeyDown = (e) => {
@@ -22,17 +22,17 @@ function SkillGapAnalyzer() {
         }
     };
 
-    const typeText = async (text) => {
-        setResult("");
+    // const typeText = async (text) => {
+    //     setResult("");
 
-        for (let i = 0; i < text.length; i++) {
-            setResult(prev => prev + text[i]);
+    //     for (let i = 0; i < text.length; i++) {
+    //         setResult(prev => prev + text[i]);
 
-            await new Promise(resolve =>
-                setTimeout(resolve, 15)
-            );
-        }
-    };
+    //         await new Promise(resolve =>
+    //             setTimeout(resolve, 15)
+    //         );
+    //     }
+    // };
 
     const removeSkill = (skill) => {
         setSkills(skills.filter((s) => s !== skill));
@@ -47,11 +47,11 @@ function SkillGapAnalyzer() {
                 targetRole, skills, experience
             });
 
-            const shortResponse =
-                response.split(" ").slice(0, 120).join(" ");
-            console.log(response)
+            // const shortResponse =
+            //     response.split(" ").slice(0, 120).join(" ");
+            // console.log(response)
 
-            await typeText(shortResponse);
+            // await typeText(shortResponse);
 
             setResult(response.data.data)
         } catch (error) {
@@ -138,44 +138,37 @@ function SkillGapAnalyzer() {
                             <div
                                 style={{
                                     whiteSpace: "pre-wrap",
-                                    lineHeight: "1.8"
+                                    lineHeight: "1.8",
                                 }}
                             >
                                 <h2>{result.matchScore}% Match</h2>
 
                                 <h3>Strengths</h3>
-
                                 <ul>
-                                    {result.strengths.map((item) => (
-                                        <li>{item}</li>
+                                    {result.strengths?.map((item, index) => (
+                                        <li key={index}>{item}</li>
                                     ))}
                                 </ul>
 
                                 <h3>Missing Skills</h3>
-
                                 <ul>
-                                    {result.missingSkills.map((item) => (
-                                        <li>{item}</li>
+                                    {result.missingSkills?.map((item, index) => (
+                                        <li key={index}>{item}</li>
                                     ))}
                                 </ul>
 
                                 <h3>Learning Path</h3>
-
                                 <ul>
-                                    {result.learningPath.map((item) => (
-                                        <li>{item}</li>
+                                    {result.learningPath?.map((item, index) => (
+                                        <li key={index}>{item}</li>
                                     ))}
                                 </ul>
                             </div>
                         ) : (
                             <div className="result-placeholder">
                                 <div className="result-placeholder-icon">🎯</div>
-                                <strong>
-                                    Skill gap analysis will appear here
-                                </strong>
-                                <p>
-                                    Add your skills and select a target role
-                                </p>
+                                <strong>Skill gap analysis will appear here</strong>
+                                <p>Add your skills and select a target role</p>
                             </div>
                         )}
                     </div>
