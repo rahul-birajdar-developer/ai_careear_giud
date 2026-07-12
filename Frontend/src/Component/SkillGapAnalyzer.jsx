@@ -55,12 +55,12 @@ function SkillGapAnalyzer() {
 
             setResult(response.data.data)
         } catch (error) {
+            console.log(error.response?.status);
+            console.log(error.response?.data);
             console.error(error);
-            setResult("Failed to analyze skills.");
         }
+    }
 
-        setLoading(false);
-    };
 
     return (
         <>
