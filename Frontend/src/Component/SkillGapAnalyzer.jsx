@@ -42,6 +42,11 @@ function SkillGapAnalyzer() {
         setLoading(true);
 
         try {
+            console.log({
+                targetRole,
+                skills,
+                experience,
+            });
 
             const response = await api.post("/skill-gap/analyze", {
                 targetRole, skills, experience

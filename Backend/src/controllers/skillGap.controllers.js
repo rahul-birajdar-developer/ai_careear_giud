@@ -6,6 +6,7 @@ import { SkillGap } from "../models/skillGap.models.js";
 const analyzeSkillGap = asyncHandler(async (req, res) => {
 
     const { targetRole, skills, experience } = req.body;
+    console.log(req.body)
 
     if (!targetRole || !skills.length) {
         return res.status(400).json({
