@@ -1531,7 +1531,6 @@ section {
 }
 
 .skill-results {
-    background: #ffffff;
     border-radius: 18px;
     padding: 28px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
@@ -1550,7 +1549,7 @@ section {
 .skill-results h3 {
     margin-top: 25px;
     margin-bottom: 15px;
-    color: #1e293b;
+    color: #fff;
     font-size: 1.2rem;
     border-left: 5px solid #2563eb;
     padding-left: 12px;
