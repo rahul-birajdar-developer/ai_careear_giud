@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 
 function AiTools() {
+
+    const comingSoon = () => {
+        alert("This Feature will coming soon")
+    }
     return (
         <>
             <section id="tools">
@@ -39,35 +43,38 @@ function AiTools() {
                             <div className="tool-cta">Find Skill Gaps →</div>
                         </div>
                     </Link>
-                    <Link to="/interview">
-                        <div className="tool-card reveal"
-                        >
-                            <div className="tool-icon" style={{ background: "rgba(251,113,133,0.1)" }} >🎤</div>
-                            <h3>Interview Coach</h3>
-                            <p>Practice with AI-generated questions tailored to your role, get instant feedback on your answers.</p>
-                            <div className="tool-cta">Start Practice →</div>
-                        </div>
-                    </Link>
-                    <Link to="/roasmap">
-                        <div className="tool-card reveal reveal-delay-1"
-                        >
-                            <div className="tool-icon" style={{ background: "rgba(52,211,153,0.1)" }} >🛤️</div>
-                            <h3>Learning Roadmap</h3>
-                            <p>Get a week-by-week personalized roadmap with resources, milestones, and timelines for your target
-                                role.</p>
-                            <div className="tool-cta">Build Roadmap →</div>
-                        </div>
-                    </Link>
-                    <Link to="/coverletter">
-                        <div className="tool-card reveal reveal-delay-2"
-                        >
-                            <div className="tool-icon" style={{ background: "rgba(34,211,238,0.1)" }}>✉️</div>
-                            <h3>Cover Letter Writer</h3>
-                            <p>Generate compelling, personalized cover letters that match job descriptions and highlight your
-                                strengths.</p>
-                            <div className="tool-cta">Write Letter →</div>
-                        </div>
-                    </Link>
+                    {/* <Link to="/interview"> */}
+                    <div className="tool-card reveal"
+                    onClick={comingSoon}
+                    >
+                        <div className="tool-icon" style={{ background: "rgba(251,113,133,0.1)" }} >🎤</div>
+                        <h3>Interview Coach</h3>
+                        <p>Practice with AI-generated questions tailored to your role, get instant feedback on your answers.</p>
+                        <div className="tool-cta">Start Practice →</div>
+                    </div>
+                    {/* </Link> */}
+                    {/* <Link to="/roasmap"> */}
+                    <div className="tool-card reveal reveal-delay-1"
+                    onClick={comingSoon}
+                    >
+                        <div className="tool-icon" style={{ background: "rgba(52,211,153,0.1)" }} >🛤️</div>
+                        <h3>Learning Roadmap</h3>
+                        <p>Get a week-by-week personalized roadmap with resources, milestones, and timelines for your target
+                            role.</p>
+                        <div className="tool-cta">Build Roadmap →</div>
+                    </div>
+                    {/* </Link> */}
+                    {/* <Link to="/coverletter"> */}
+                    <div className="tool-card reveal reveal-delay-2"
+                    onClick={comingSoon}
+                    >
+                        <div className="tool-icon" style={{ background: "rgba(34,211,238,0.1)" }}>✉️</div>
+                        <h3>Cover Letter Writer</h3>
+                        <p>Generate compelling, personalized cover letters that match job descriptions and highlight your
+                            strengths.</p>
+                        <div className="tool-cta">Write Letter →</div>
+                    </div>
+                    {/* </Link> */}
                 </div>
             </section>
         </>
