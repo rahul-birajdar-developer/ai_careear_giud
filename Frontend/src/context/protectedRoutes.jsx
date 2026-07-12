@@ -4,6 +4,11 @@ import { Auth } from "./AuthContext";
 const ProtectedRoutes = ({ children }) => {
     const { user, loading } = Auth();
 
+    // 👇 Add these logs here
+    console.log("Loading:", loading);
+    console.log("User:", user);
+    console.log("Current URL:", window.location.pathname);
+
     if (loading) {
         return <h2>Loading...</h2>;
     }
