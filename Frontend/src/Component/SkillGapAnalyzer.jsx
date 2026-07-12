@@ -53,7 +53,7 @@ function SkillGapAnalyzer() {
             });
 
             const response = await api.post("/skill-gap/analyze", {
-                targetRole, skills, experience
+                targetRole, skills: skillArray, experience
             });
 
             // const shortResponse =
