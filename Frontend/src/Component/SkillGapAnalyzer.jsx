@@ -10,17 +10,17 @@ function SkillGapAnalyzer() {
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const handleSkillKeyDown = (e) => {
-        if (e.key === "Enter" && skillInput.trim()) {
-            e.preventDefault();
+    // const handleSkillKeyDown = (e) => {
+    //     if (e.key === "Enter" && skillInput.trim()) {
+    //         e.preventDefault();
 
-            if (!skills.includes(skillInput.trim())) {
-                setSkills([...skills, skillInput.trim()]);
-            }
+    //         if (!skills.includes(skillInput.trim())) {
+    //             setSkills([...skills, skillInput.trim()]);
+    //         }
 
-            setSkillInput("");
-        }
-    };
+    //         setSkillInput("");
+    //     }
+    // };
 
     // const typeText = async (text) => {
     //     setResult("");
@@ -39,12 +39,16 @@ function SkillGapAnalyzer() {
     };
 
     const analyzeSkillGap = async () => {
+        const skillArray = skillInput
+            .split(",")
+            .map((skill) => skill.trim())
+            .filter((skill) => skill !== "");
         setLoading(true);
 
         try {
             console.log({
                 targetRole,
-                skills,
+                skills: skillArray,
                 experience,
             });
 
@@ -111,7 +115,6 @@ function SkillGapAnalyzer() {
                                     className="skill-chip-input"
                                     value={skillInput}
                                     onChange={(e) => setSkillInput(e.target.value)}
-                                    onKeyDown={handleSkillKeyDown}
                                     placeholder="Add skill..."
                                 />
                             </div>
