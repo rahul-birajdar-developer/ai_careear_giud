@@ -44,6 +44,6 @@ app.use(cookieParser())
 //declerartion of routes
 app.use("/api/users", userRoute)
 app.use("/api/resume", resumeRouter);
-app.use("/skill-gap", skillGap)
+app.use("/api/skill-gap", skillGap)
 
 export default app;
