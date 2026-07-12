@@ -63,6 +63,7 @@ function SkillGapAnalyzer() {
             // await typeText(shortResponse);
 
             setResult(response.data.data)
+            setLoading(false)
         } catch (error) {
             console.log(error.response?.status);
             console.log(error.response?.data);
