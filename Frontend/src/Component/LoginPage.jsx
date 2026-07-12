@@ -73,7 +73,7 @@ function LoginPage() {
                 email: form.email,
                 password: form.password,
             });
-            console.log(response.data);
+            // console.log(response.data);
 
             localStorage.setItem(
                 "token",
