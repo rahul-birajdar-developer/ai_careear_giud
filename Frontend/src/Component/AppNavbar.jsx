@@ -102,7 +102,7 @@ function AppNavBar() {
                         );
                     })}
                 </div>
-                <Link to="/signup"><button className="btn-nav">{login ? "Sign Up" : "Logout"}</button></Link>
+                <Link to="/signup"><button className="btn-nav">{login ? "Logout" : "Sign Up"}</button></Link>
             </nav>
         </>
     )
