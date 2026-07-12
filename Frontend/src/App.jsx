@@ -43,7 +43,6 @@ function App() {
             </ProtectedRoutes>
           }
         >
-
           <Route path="/home" element={<HomePage />} />
           <Route path="/careerpaths" element={<CareerPaths />} />
           <Route path="/resumeanalyze" element={<AiResumeAnalyze />} />
