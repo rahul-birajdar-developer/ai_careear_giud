@@ -11,7 +11,7 @@ function CareerPaths() {
                 <div style={{ padding: "30px", maxWidth: "1000px", margin: "0 auto" }}>
                     <div className="chat-input-row">
                         <div className="chat-input-wrap" >
-                            <input className="chat-input"  id="chatInput" placeholder="e.g. Frontend Developer"></input>
+                            <input className="chat-input" id="chatInput" placeholder="e.g. Frontend Developer"></input>
                         </div>
                         <button className="send-btn" style={{ backgroundColor: "#007bff", color: "#fff", padding: "10px 80px" }} id="sendBtn" >Search</button>
                     </div>
@@ -135,7 +135,7 @@ function CareerPaths() {
                                 <div className="demand-fill" style={{ width: "85%" }}></div>
                             </div><span>85%</span>
                         </div>
-                        <button className="path-explore" onClick={() => navigate("/career/Full-Stack-Developer")}>Explore This Path →</button>
+                        <button className="path-explore" onClick={() => alert("This Feature coming soon")}>Explore This Path →</button>
                     </div>
                 </div>
             </section>
