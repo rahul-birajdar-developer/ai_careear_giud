@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
             try {
                 // Calls the backend.it check the which user is logged in and return the user data 
                 const response = await api.get("/users/me")
-                console.log(response.data.data);
+                //console.log(response.data.data);
                 setUser(response.data.data)
             } catch (error) {
                 console.log(error);
