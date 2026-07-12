@@ -74,7 +74,7 @@ function LoginPage() {
                 password: form.password,
             });
             // console.log(response.data);
-
+            localStorage.setItem("login",true)
             localStorage.setItem(
                 "token",
                 response.data.accessToken

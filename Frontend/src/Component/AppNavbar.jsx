@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 function AppNavBar() {
 
     const [activeNav, setActiveNav] = useState("Dashboard");
+    const [login, setLogin] = useState(false)
 
     const Icon = ({ children, w = 16, h = 16, stroke = "currentColor", sw = 2, fill = "none", ...rest }) => (
         <svg viewBox="0 0 24 24" width={w} height={h} fill={fill} stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }} {...rest}>
@@ -51,6 +52,12 @@ function AppNavBar() {
         Sun: () => <Icon><circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" /><line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" /></Icon>,
     };
 
+    useEffect(() => {
+        const loginUser = localStorage.getItem("login")
+        setLogin(loginUser)
+
+    }, [])
+
     return (
         <>
             <nav style={{
@@ -95,7 +102,7 @@ function AppNavBar() {
                         );
                     })}
                 </div>
-                <Link to="/signup"><button className="btn-nav">Sign Up</button></Link>
+                <Link to="/signup"><button className="btn-nav">{login ? "Sign Up" : "Logout"}</button></Link>
             </nav>
         </>
     )
