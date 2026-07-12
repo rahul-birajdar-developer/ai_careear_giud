@@ -6,6 +6,7 @@ const ProtectedRoutes = ({ children }) => {
     console.log("Protected Auth:", Auth());
     // 👇 Add these logs here
     console.log("Loading:", loading);
+    console.log("Loading:", loading);
     console.log("User:", user);
     console.log("Current URL:", window.location.pathname);
 
