@@ -1,9 +1,9 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-//import routes
 import userRoute from "./routes/user.route.js"
 import resumeRouter from "./routes/resume.route.js"
+import skillGap from "./routes/skillGap.route.js"
 
 const app = express();
 
@@ -43,7 +43,7 @@ app.use(cookieParser())
 
 //declerartion of routes
 app.use("/api/users", userRoute)
-// app.use("/api/provider", userRoute)
 app.use("/api/resume", resumeRouter);
+app.use("/skill-gap", skillGap)
 
 export default app;

@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { askGemini } from "../Services/gemini";
-import ReactMarkdown from "react-markdown";
+import api from "../api/axios";
 
 function SkillGapAnalyzer() {
 
@@ -43,34 +42,18 @@ function SkillGapAnalyzer() {
         setLoading(true);
 
         try {
-            const prompt = `
-You are an expert career advisor.
 
-Target Role:
-${targetRole}
-
-Current Skills:
-${skills.join(", ")}
-
-Experience:
-${experience}
-
-Analyze the skill gap.
-Return:
-- Strengths
-- Missing Skills
-- Next Steps
-
-Maximum 100 words.
-Use short bullet points.
-`;
-
-            const response = await askGemini(prompt);
+            const response = await api.post("/skill-gap/analyze", {
+                targetRole, skills, experience
+            });
 
             const shortResponse =
                 response.split(" ").slice(0, 120).join(" ");
+            console.log(response)
 
             await typeText(shortResponse);
+
+            setResult(response.data.data)
         } catch (error) {
             console.error(error);
             setResult("Failed to analyze skills.");
@@ -158,9 +141,31 @@ Use short bullet points.
                                     lineHeight: "1.8"
                                 }}
                             >
-                                <ReactMarkdown>
-                                    {result}
-                                </ReactMarkdown>
+                                <h2>{result.matchScore}% Match</h2>
+
+                                <h3>Strengths</h3>
+
+                                <ul>
+                                    {result.strengths.map((item) => (
+                                        <li>{item}</li>
+                                    ))}
+                                </ul>
+
+                                <h3>Missing Skills</h3>
+
+                                <ul>
+                                    {result.missingSkills.map((item) => (
+                                        <li>{item}</li>
+                                    ))}
+                                </ul>
+
+                                <h3>Learning Path</h3>
+
+                                <ul>
+                                    {result.learningPath.map((item) => (
+                                        <li>{item}</li>
+                                    ))}
+                                </ul>
                             </div>
                         ) : (
                             <div className="result-placeholder">
