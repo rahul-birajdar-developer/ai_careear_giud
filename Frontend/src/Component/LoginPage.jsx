@@ -85,7 +85,7 @@ function LoginPage() {
 
             alert("Login successful!");
             console.log("Before navigate");
-            navigate("/dashboard");
+            navigate("/dashboard", { replace: true });
             console.log("After navigate");
         } catch (error) {
             console.log(error.response?.data);
@@ -182,7 +182,7 @@ function LoginPage() {
                             </div>
                         )}
                         <button
-                            type="submit"
+                            type="button"
                             className="auth-btn"
                             onClick={isLogin ? handleLogin : handleRegister}
                         >
