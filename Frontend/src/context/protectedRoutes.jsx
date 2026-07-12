@@ -3,7 +3,7 @@ import { Auth } from "./AuthContext";
 
 const ProtectedRoutes = ({ children }) => {
     const { user, loading } = Auth();
-
+    console.log("Protected Auth:", Auth());
     // 👇 Add these logs here
     console.log("Loading:", loading);
     console.log("User:", user);
