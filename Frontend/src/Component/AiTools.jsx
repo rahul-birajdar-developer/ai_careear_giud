@@ -8,7 +8,6 @@ function AiTools() {
     return (
         <>
             <section id="tools">
-                <div className="section-tag">AI-Powered Toolkit</div>
                 <div className="section-title">Everything you need to level up</div>
                 <p className="section-sub">A complete suite of AI tools built specifically for ambitious professionals at every
                     stage of their career.</p>
