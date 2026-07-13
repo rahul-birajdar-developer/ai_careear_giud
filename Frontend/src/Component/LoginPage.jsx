@@ -81,12 +81,12 @@ function LoginPage() {
                 response.data.user.accessToken
             )
 
-            console.log("Login Response:", response.data);
+            // console.log("Login Response:", response.data);
             alert("Login Successfully")
 
             setUser(response.data.user); // or response.data.user depending on your API
 
-            console.log("Setting User:", response.data.user);
+            // console.log("Setting User:", response.data.user);
 
             navigate("/dashboard");
         } catch (error) {

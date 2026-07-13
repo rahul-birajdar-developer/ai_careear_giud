@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
 
     // Runs only once when the app starts.
     useEffect(() => {
-        console.log("AuthContext Mounted");
+        //console.log("AuthContext Mounted");
 
         const getCurrentUser = async () => {
             // console.log("Calling /users/me");
