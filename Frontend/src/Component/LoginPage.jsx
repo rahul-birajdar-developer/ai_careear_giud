@@ -80,12 +80,11 @@ function LoginPage() {
             localStorage.setItem(
                 "token",
                 response.data.accessToken
-            );
-            setUser(response.data.data); // or response.data.user depending on your API
-            
+            )
+
             console.log("Login Response:", response.data);
 
-            setUser(response.data.data);
+            setUser(response.data.data); // or response.data.user depending on your API
 
             console.log("Setting User:", response.data.data);
 
