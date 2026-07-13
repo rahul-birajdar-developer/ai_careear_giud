@@ -11,26 +11,31 @@ export const AuthProvider = ({ children }) => {
 
     // Runs only once when the app starts.
     useEffect(() => {
-        const getCurrentUser = async () => {
-            try {
-                // Calls the backend.it check the which user is logged in and return the user data 
-                const response = await api.get("/users/me")
-                // console.log(response.data.data);
-                console.log("Full Response:", response);
-                console.log("response.data:", response.data);
-                console.log("response.data.data:", response.data.data);
+        console.log("AuthContext Mounted");
 
-                setUser(response.data.data)
+        const getCurrentUser = async () => {
+            console.log("Calling /users/me");
+
+            try {
+                const response = await api.get("/users/me");
+
+                console.log("SUCCESS");
+                console.log(response);
+
+                setUser(response.data.data);
             } catch (error) {
+                console.log("FAILED");
                 console.log(error);
-                setUser(null)
+
+                setUser(null);
             } finally {
-                setLoading(false)
+                console.log("FINALLY");
+                setLoading(false);
             }
-        }
+        };
 
         getCurrentUser();
-    }, [])
+    }, []);
 
     return (
         // This shares the user with every component.
