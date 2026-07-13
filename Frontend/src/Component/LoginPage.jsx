@@ -76,17 +76,16 @@ function LoginPage() {
                 password: form.password,
             });
             console.log(response.data);
-            localStorage.setItem("login", true)
             localStorage.setItem(
                 "token",
-                response.data.accessToken
+                response.user.accessToken
             )
 
             console.log("Login Response:", response.data);
 
-            setUser(response.data.data); // or response.data.user depending on your API
+            setUser(response.user.data); // or response.data.user depending on your API
 
-            console.log("Setting User:", response.data.data);
+            console.log("Setting User:", response.user.data);
 
             navigate("/dashboard");
         } catch (error) {
