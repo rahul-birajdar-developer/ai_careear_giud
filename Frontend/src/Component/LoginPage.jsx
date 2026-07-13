@@ -82,11 +82,14 @@ function LoginPage() {
                 response.data.accessToken
             );
             setUser(response.data.data); // or response.data.user depending on your API
+            
+            console.log("Login Response:", response.data);
 
-            alert("Login successful!");
-            console.log("Before navigate");
-            navigate("/dashboard", { replace: true });
-            console.log("After navigate");
+            setUser(response.data.data);
+
+            console.log("Setting User:", response.data.data);
+
+            navigate("/dashboard");
         } catch (error) {
             console.log(error.response?.data);
 
