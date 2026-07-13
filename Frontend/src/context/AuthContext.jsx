@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
 
                 setUser(null);
             } finally {
-                // console.log("FINALLY");
+                console.log("FINALLY");
                 setLoading(false);
             }
         };

@@ -230,7 +230,7 @@ No explanation.
                         >
                             <div
                                 style={{
-                                    fontSize: "0.75rem",
+                                    fontSize: "0.76rem",
                                     fontWeight: "700",
                                     letterSpacing: "1px",
                                     textTransform: "uppercase",
@@ -241,7 +241,7 @@ No explanation.
 
                             <div
                                 style={{
-                                    fontSize: "0.72rem",
+                                    fontSize: "0.73rem",
                                 }}
                             >
                                 {salaryData.role} ·{" "}
