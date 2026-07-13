@@ -82,6 +82,7 @@ function LoginPage() {
             )
 
             console.log("Login Response:", response.data);
+            alert("Login Successfully")
 
             setUser(response.data.user); // or response.data.user depending on your API
 
