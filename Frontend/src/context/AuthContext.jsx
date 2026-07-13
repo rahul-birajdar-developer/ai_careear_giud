@@ -16,6 +16,10 @@ export const AuthProvider = ({ children }) => {
                 // Calls the backend.it check the which user is logged in and return the user data 
                 const response = await api.get("/users/me")
                 // console.log(response.data.data);
+                console.log("Full Response:", response);
+                console.log("response.data:", response.data);
+                console.log("response.data.data:", response.data.data);
+
                 setUser(response.data.data)
             } catch (error) {
                 console.log(error);
@@ -27,12 +31,6 @@ export const AuthProvider = ({ children }) => {
 
         getCurrentUser();
     }, [])
-
-    console.log("Rendering Provider");
-    console.log({
-        user,
-        loading
-    });
 
     return (
         // This shares the user with every component.
