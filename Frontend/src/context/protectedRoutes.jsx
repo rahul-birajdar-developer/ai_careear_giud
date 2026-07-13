@@ -5,13 +5,13 @@ const ProtectedRoutes = ({ children }) => {
     const { user, loading } = Auth();
     const auth = Auth();
 
-    console.log("Auth object:", auth);
+    // console.log("Auth object:", auth);
 
     if (!auth) {
         return <h2>Auth Context Missing</h2>;
     }
 
-    console.log(user, loading);
+    // console.log(user, loading);
 
     if (loading) {
         return <h2>Loading...</h2>;

@@ -78,14 +78,14 @@ function LoginPage() {
             console.log(response.data);
             localStorage.setItem(
                 "token",
-                response.user.accessToken
+                response.data.user.accessToken
             )
 
             console.log("Login Response:", response.data);
 
-            setUser(response.user.data); // or response.data.user depending on your API
+            setUser(response.data.user); // or response.data.user depending on your API
 
-            console.log("Setting User:", response.user.data);
+            console.log("Setting User:", response.data.user);
 
             navigate("/dashboard");
         } catch (error) {

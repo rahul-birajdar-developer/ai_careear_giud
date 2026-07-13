@@ -14,13 +14,13 @@ export const AuthProvider = ({ children }) => {
         console.log("AuthContext Mounted");
 
         const getCurrentUser = async () => {
-            console.log("Calling /users/me");
+            // console.log("Calling /users/me");
 
             try {
                 const response = await api.get("/users/me");
 
-                console.log("SUCCESS");
-                console.log(response);
+                // console.log("SUCCESS");
+                // console.log(response);
 
                 setUser(response.data.data);
             } catch (error) {
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
 
                 setUser(null);
             } finally {
-                console.log("FINALLY");
+                // console.log("FINALLY");
                 setLoading(false);
             }
         };
