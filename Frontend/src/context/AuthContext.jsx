@@ -28,6 +28,12 @@ export const AuthProvider = ({ children }) => {
         getCurrentUser();
     }, [])
 
+    console.log("Rendering Provider");
+    console.log({
+        user,
+        loading
+    });
+
     return (
         // This shares the user with every component.
         <AuthContext.Provider
