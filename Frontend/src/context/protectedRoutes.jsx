@@ -3,12 +3,15 @@ import { Auth } from "./AuthContext";
 
 const ProtectedRoutes = ({ children }) => {
     const { user, loading } = Auth();
-    console.log("Protected Auth:", Auth());
-    // 👇 Add these logs here
-    console.log("Loading:", loading);
-    console.log("Loading:", loading);
-    console.log("User:", user);
-    console.log("Current URL:", window.location.pathname);
+    const auth = Auth();
+
+    console.log("Auth object:", auth);
+
+    if (!auth) {
+        return <h2>Auth Context Missing</h2>;
+    }
+
+    console.log(user, loading);
 
     if (loading) {
         return <h2>Loading...</h2>;
