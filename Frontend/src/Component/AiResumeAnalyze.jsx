@@ -137,7 +137,7 @@ function AiResumeAnalyze() {
                                 {/* Score Card */}
                                 <div className="score-card">
                                     <div className="score-circle">
-                                        <span style={{ color: "white" }}>{analysis.resumeData.score}</span>
+                                        <span className="score-num">{analysis.resumeData.score}</span>
                                     </div>
 
                                     <div className="score-info">
