@@ -156,7 +156,6 @@ button {
     padding: 0 24px;
     height: 56px;
     border-bottom: 1px solid var(--border);
-    background: var(--surface);
     flex-shrink: 0;
 }
 
