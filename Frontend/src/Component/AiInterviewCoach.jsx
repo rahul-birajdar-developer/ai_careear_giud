@@ -754,7 +754,7 @@ export default function App() {
                             </div>
 
                             {/* CENTER — chat */}
-                            <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+                            <div className={styles.chatSection}>
 
                                 {/* chat messages */}
                                 <div ref={chatRef} className={styles.chatContainer}>
@@ -823,7 +823,6 @@ export default function App() {
                                 </div>
 
                                 {/* ================= Answer Input ================= */}
-
                                 <div className={styles.answerSection}>
 
                                     <textarea
@@ -889,58 +888,154 @@ export default function App() {
                         <div style={{ width: "100%", overflowY: "auto", padding: 40, display: "flex", flexDirection: "column", alignItems: "center" }}>
                             <div style={{ maxWidth: 640, width: "100%" }} className="fadeUp">
 
-                                {/* header */}
-                                <div style={{ textAlign: "center", marginBottom: 32 }}>
-                                    <div style={{ fontSize: 52, marginBottom: 12 }}>🏆</div>
-                                    <h2 style={{ fontSize: 28, fontWeight: 800, marginBottom: 6 }}>Interview Complete!</h2>
-                                    <p style={{ fontSize: 15, color: C.sub }}>Here's your detailed performance report</p>
+                                {/* ================= Report Header ================= */}
+
+                                <div className={styles.reportHeader}>
+
+                                    <div className={styles.trophyIcon}>
+                                        🏆
+                                    </div>
+
+                                    <h2 className={styles.reportTitle}>
+                                        Interview Complete!
+                                    </h2>
+
+                                    <p className={styles.reportSubtitle}>
+                                        Here's your detailed performance report
+                                    </p>
+
                                 </div>
 
-                                {/* overall score */}
-                                <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 20, padding: 28, marginBottom: 20, textAlign: "center", position: "relative", overflow: "hidden" }}>
-                                    <div style={{ position: "absolute", top: -40, right: -40, width: 160, height: 160, borderRadius: "50%", background: `radial-gradient(${C.cyan}22,transparent)` }} />
-                                    <p style={{ fontSize: 11, color: C.muted, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 8 }}>Overall Score</p>
-                                    <div style={{ fontSize: 72, fontWeight: 900, background: `linear-gradient(135deg,${C.cyan},${C.purple})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1, marginBottom: 8, animation: "countUp 0.6s ease" }}>
+                                {/* ================= Overall Score ================= */}
+
+                                <div className={styles.overallScoreCard}>
+
+                                    <div className={styles.scoreGlow}></div>
+
+                                    <p className={styles.scoreLabel}>
+                                        Overall Score
+                                    </p>
+
+                                    <div className={styles.scoreValue}>
                                         {report.overall}%
                                     </div>
-                                    <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(16,185,129,0.1)", border: `1px solid rgba(16,185,129,0.25)`, borderRadius: 20, padding: "5px 14px" }}>
-                                        <span style={{ fontSize: 14 }}>🏆</span>
-                                        <span style={{ fontSize: 13, color: C.green, fontWeight: 700 }}>Hiring Readiness: {report.readiness}</span>
+
+                                    <div className={styles.readinessBadge}>
+
+                                        <span className={styles.readinessIcon}>
+                                            🏆
+                                        </span>
+
+                                        <span className={styles.readinessText}>
+                                            Hiring Readiness: {report.readiness}
+                                        </span>
+
                                     </div>
+
                                 </div>
 
-                                {/* score breakdown */}
-                                <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: 22, marginBottom: 20 }}>
-                                    <p style={{ fontSize: 12, fontWeight: 700, color: C.sub, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 18 }}>Score Breakdown</p>
+                                {/* ================= Score Breakdown ================= */}
+
+                                <div className={styles.scoreBreakdownCard}>
+
+                                    <p className={styles.breakdownTitle}>
+                                        Score Breakdown
+                                    </p>
+
                                     {SCORE_KEYS.concat(["Problem Solving"]).map((k, i) => {
-                                        const val = report.scores[k] || Math.round(75 + Math.random() * 18);
+
+                                        const val =
+                                            report.scores[k] ||
+                                            Math.round(75 + Math.random() * 18);
+
                                         return (
-                                            <div key={k} style={{ marginBottom: 16 }}>
-                                                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                                                    <span style={{ fontSize: 14, fontWeight: 500 }}>{k}</span>
-                                                    <span style={{ fontSize: 14, fontWeight: 800, color: SCORE_COLORS[i % SCORE_COLORS.length] }}>{val}%</span>
+
+                                            <div
+                                                key={k}
+                                                className={styles.breakdownItem}
+                                            >
+
+                                                <div className={styles.breakdownHeader}>
+
+                                                    <span className={styles.breakdownLabel}>
+                                                        {k}
+                                                    </span>
+
+                                                    <span
+                                                        className={styles.breakdownValue}
+                                                        style={{
+                                                            color:
+                                                                SCORE_COLORS[
+                                                                i % SCORE_COLORS.length
+                                                                ],
+                                                        }}
+                                                    >
+                                                        {val}%
+                                                    </span>
+
                                                 </div>
-                                                <div style={{ width: "100%", height: 8, background: "rgba(255,255,255,0.06)", borderRadius: 4, overflow: "hidden" }}>
-                                                    <div style={{ "--w": `${val}%`, width: `${val}%`, height: "100%", background: SCORE_COLORS[i % SCORE_COLORS.length], borderRadius: 4, animation: "barGrow 1s ease forwards" }} />
+
+                                                <div className={styles.breakdownBar}>
+
+                                                    <div
+                                                        className={styles.breakdownFill}
+                                                        style={{
+                                                            width: `${val}%`,
+                                                            background:
+                                                                SCORE_COLORS[
+                                                                i % SCORE_COLORS.length
+                                                                ],
+                                                        }}
+                                                    />
+
                                                 </div>
+
                                             </div>
+
                                         );
+
                                     })}
+
                                 </div>
 
-                                {/* feedback summary */}
+                                {/* ================= Final Feedback ================= */}
+
                                 {feedback.length > 0 && (
-                                    <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: 22, marginBottom: 24 }}>
-                                        <p style={{ fontSize: 12, fontWeight: 700, color: C.sub, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 14 }}>Final Feedback</p>
-                                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+
+                                    <div className={styles.finalFeedbackSection}>
+
+                                        <p className={styles.finalFeedbackHeading}>
+                                            Final Feedback
+                                        </p>
+
+                                        <div className={styles.feedbackGrid}>
+
                                             {feedback.map((f, i) => (
-                                                <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", background: f.startsWith("✔") ? "rgba(16,185,129,0.07)" : "rgba(245,158,11,0.07)", border: `1px solid ${f.startsWith("✔") ? "rgba(16,185,129,0.2)" : "rgba(245,158,11,0.2)"}`, borderRadius: 10, padding: "10px 12px" }}>
-                                                    <span style={{ fontSize: 14, flexShrink: 0 }}>{f.startsWith("✔") ? "✅" : "⚠️"}</span>
-                                                    <span style={{ fontSize: 12, color: C.sub, lineHeight: 1.5 }}>{f.replace(/^[✔⚠]\s*/, "")}</span>
+
+                                                <div
+                                                    key={i}
+                                                    className={`${styles.feedbackCard} ${f.startsWith("✔")
+                                                            ? styles.feedbackSuccess
+                                                            : styles.feedbackWarning
+                                                        }`}
+                                                >
+
+                                                    <span className={styles.feedbackIcon}>
+                                                        {f.startsWith("✔") ? "✅" : "⚠️"}
+                                                    </span>
+
+                                                    <span className={styles.feedbackText}>
+                                                        {f.replace(/^[✔⚠]\s*/, "")}
+                                                    </span>
+
                                                 </div>
+
                                             ))}
+
                                         </div>
+
                                     </div>
+
                                 )}
 
                                 {/* actions */}

@@ -841,6 +841,15 @@ button {
     color: var(--sub);
 }
 
+/* ================= Chat Section ================= */
+
+.chatSection {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
 /* ================= Chat ================= */
 
 .chatContainer {
@@ -1152,4 +1161,304 @@ button {
 
     font-size: 11px;
 
+}
+
+
+/* ================= Report Header ================= */
+.reportHeader {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.trophyIcon {
+    font-size: 52px;
+    margin-bottom: 12px;
+}
+
+.reportTitle {
+    margin-bottom: 6px;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+}
+
+.reportSubtitle {
+    font-size: 15px;
+    color: var(--sub);
+}
+
+/* ================= Overall Score ================= */
+
+.overallScoreCard {
+    position: relative;
+    overflow: hidden;
+
+    margin-bottom: 20px;
+    padding: 28px;
+
+    text-align: center;
+
+    border-radius: 20px;
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+}
+
+/* Background Glow */
+
+.scoreGlow {
+    position: absolute;
+
+    top: -40px;
+    right: -40px;
+
+    width: 160px;
+    height: 160px;
+
+    border-radius: 50%;
+
+    background: radial-gradient(rgba(34, 211, 238, .15),
+            transparent);
+}
+
+/* Heading */
+
+.scoreLabel {
+
+    margin-bottom: 8px;
+
+    font-size: 11px;
+
+    color: var(--muted);
+
+    text-transform: uppercase;
+
+    letter-spacing: .12em;
+
+}
+
+/* Score */
+
+.scoreValue {
+
+    margin-bottom: 8px;
+
+    font-size: 72px;
+
+    font-weight: 900;
+
+    line-height: 1;
+
+    animation: countUp .6s ease;
+
+    background: linear-gradient(135deg,
+            var(--cyan),
+            var(--purple));
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+}
+
+/* Hiring Badge */
+
+.readinessBadge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 5px 14px;
+
+    border-radius: 20px;
+
+    background: rgba(16, 185, 129, .1);
+
+    border: 1px solid rgba(16, 185, 129, .25);
+
+}
+
+.readinessIcon {
+
+    font-size: 14px;
+
+}
+
+.readinessText {
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    color: var(--green);
+
+}
+
+/* ================= Score Breakdown ================= */
+
+.scoreBreakdownCard {
+
+    margin-bottom: 20px;
+
+    padding: 22px;
+
+    border-radius: 16px;
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+}
+
+/* Title */
+
+.breakdownTitle {
+
+    margin-bottom: 18px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    color: var(--sub);
+
+    text-transform: uppercase;
+
+    letter-spacing: .1em;
+
+}
+
+/* Item */
+
+.breakdownItem {
+
+    margin-bottom: 16px;
+
+}
+
+/* Header */
+
+.breakdownHeader {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 6px;
+
+}
+
+.breakdownLabel {
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    color: var(--text);
+
+}
+
+.breakdownValue {
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+}
+
+/* Progress */
+
+.breakdownBar {
+
+    width: 100%;
+
+    height: 8px;
+
+    overflow: hidden;
+
+    border-radius: 4px;
+
+    background: rgba(255, 255, 255, .06);
+
+}
+
+.breakdownFill {
+
+    height: 100%;
+
+    border-radius: 4px;
+
+    animation: barGrow 1s ease forwards;
+
+}
+
+/* ==========================================
+   Final Feedback
+========================================== */
+
+.finalFeedbackSection {
+    margin-bottom: 24px;
+    padding: 22px;
+    border-radius: 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+}
+
+.finalFeedbackHeading {
+    margin-bottom: 14px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--sub);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+}
+
+/* Grid */
+
+.feedbackGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+/* Card */
+
+.feedbackCard {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 10px;
+}
+
+/* Success */
+
+.feedbackSuccess {
+    background: rgba(16, 185, 129, .07);
+    border: 1px solid rgba(16, 185, 129, .2);
+}
+
+/* Warning */
+
+.feedbackWarning {
+    background: rgba(245, 158, 11, .07);
+    border: 1px solid rgba(245, 158, 11, .2);
+}
+
+/* Icon */
+
+.feedbackIcon {
+    flex-shrink: 0;
+    font-size: 14px;
+}
+
+/* Text */
+
+.feedbackText {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--sub);
 }
