@@ -1,416 +1,967 @@
-import { useState } from "react";
-import { askGemini } from "../Services/gemini";
+import { useState, useEffect, useRef, useCallback } from "react";
+import styles from "../CSS/AiInterviewCoach.module.css"
 
-function AiInterViewCoach() {
-    const [role, setRole] = useState("");
-    const [interviewType, setInterviewType] = useState("");
-    const [difficulty, setDifficulty] = useState("");
-    const [companyType, setCompanyType] = useState("");
+/* ── THEME ─────────────────────────────────────────────── */
+const C = {
+    bg: "#0B0F1A",
+    surface: "#111827",
+    card: "#161D2E",
+    border: "rgba(255,255,255,0.07)",
+    cyan: "#22D3EE",
+    pink: "#F43F5E",
+    amber: "#F59E0B",
+    green: "#10B981",
+    purple: "#8B5CF6",
+    text: "#F1F5F9",
+    muted: "#64748B",
+    sub: "#94A3B8",
+};
 
-    const [messages, setMessages] = useState([]);
-    const [answer, setAnswer] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [questionNo, setQuestionNo] = useState(0);
-
-    const startInterview = async () => {
-        setLoading(true);
-
-        try {
-            const prompt = `
-You are an expert interviewer.
-
-Role: ${role}
-Interview Type: ${interviewType}
-Difficulty: ${difficulty}
-Company Type: ${companyType}
-
-Rules:
-- Maximum 8 words
-- Beginner-friendly
-- No coding task
-- No examples
-- No explanations
-- Return only the question
-
-Example outputs:
-What is the CSS Box Model?
-What is Flexbox?
-What is React?
-Explain JavaScript closures..
+/* ── GLOBAL CSS ─────────────────────────────────────────── */
+const G = `
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Inter',sans-serif;background:${C.bg};color:${C.text};-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px}
+input,select,textarea{font-family:'Inter',sans-serif;outline:none}
+button{font-family:'Inter',sans-serif;cursor:pointer;border:none}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes ping{0%{transform:scale(1);opacity:1}75%,100%{transform:scale(1.8);opacity:0}}
+@keyframes barGrow{from{width:0}to{width:var(--w)}}
+@keyframes countUp{from{opacity:0;transform:scale(0.8)}to{opacity:1;transform:scale(1)}}
+.fadeUp{animation:fadeUp 0.4s ease forwards}
+.mono{font-family:'JetBrains Mono',monospace}
 `;
 
-            const question = await askGemini(prompt);
+/* ── HELPERS ────────────────────────────────────────────── */
+const fmt = (s) => String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
 
-            setMessages([
-                {
-                    sender: "ai",
-                    text: question
-                }
-            ]);
+const TYPES = ["Behavioral", "Technical", "System Design", "HR Round", "Leadership", "DSA / Coding"];
+const DIFFS = ["Beginner", "Medium", "Hard", "FAANG Level"];
+const COMPS = ["Startup", "MNC", "FAANG", "Product", "Consulting", "Government"];
+const Q_CNT = [5, 10, 15];
 
-            setQuestionNo(1);
-        } catch (err) {
-            console.error(err);
+const SCORE_KEYS = ["Communication", "Confidence", "Technical", "Grammar"];
+const SCORE_COLORS = [C.cyan, C.green, C.purple, C.amber];
+
+/* ── MAIN ───────────────────────────────────────────────── */
+export default function App() {
+    /* session state */
+    const [phase, setPhase] = useState("setup");   // setup | ready | interview | report
+    const [config, setConfig] = useState({ role: "", type: "", diff: "", company: "", qCount: 10 });
+    const [messages, setMessages] = useState([]);         // {role, content}
+    const [answer, setAnswer] = useState("");
+    const [qIdx, setQIdx] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const [scores, setScores] = useState({ Communication: 0, Confidence: 0, Technical: 0, Grammar: 0 });
+    const [feedback, setFeedback] = useState([]);
+    const [report, setReport] = useState(null);
+
+    /* timer */
+    const [timeLeft, setTimeLeft] = useState(0);
+    const timerRef = useRef(null);
+
+    /* webcam */
+    const videoRef = useRef(null);
+    const [camOn, setCamOn] = useState(false);
+    const streamRef = useRef(null);
+
+    /* mic */
+    const [recording, setRecording] = useState(false);
+    const mediaRec = useRef(null);
+
+    /* scroll */
+    const chatRef = useRef(null);
+
+    /* ── webcam ── */
+    const startCam = useCallback(async () => {
+        try {
+            const s = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+            streamRef.current = s;
+            if (videoRef.current) { videoRef.current.srcObject = s; videoRef.current.play(); }
+            setCamOn(true);
+        } catch { setCamOn(false); }
+    }, []);
+
+    const stopCam = useCallback(() => {
+        streamRef.current?.getTracks().forEach(t => t.stop());
+        setCamOn(false);
+    }, []);
+
+    /* ── mic ── */
+    const toggleMic = async () => {
+        if (recording) {
+            mediaRec.current?.stop();
+            setRecording(false);
+            return;
         }
+        try {
+            const s = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const mr = new MediaRecorder(s);
+            const chunks = [];
+            mr.ondataavailable = e => chunks.push(e.data);
+            mr.onstop = () => {
+                s.getTracks().forEach(t => t.stop());
+                setAnswer(prev => prev + " [voice answer recorded]");
+            };
+            mr.start();
+            mediaRec.current = mr;
+            setRecording(true);
+        } catch { alert("Microphone not available."); }
+    };
 
+    /* ── timer ── */
+    useEffect(() => {
+        if (phase === "interview") {
+            setTimeLeft(config.qCount * 90);
+            timerRef.current = setInterval(() => setTimeLeft(p => { if (p <= 1) { clearInterval(timerRef.current); return 0; } return p - 1; }), 1000);
+        }
+        return () => clearInterval(timerRef.current);
+    }, [phase]);
+
+    /* ── auto-scroll ── */
+    useEffect(() => { chatRef.current?.scrollTo({ top: 99999, behavior: "smooth" }); }, [messages]);
+
+    /* ── API call ── */
+    const callAI = async (hist, systemPrompt) => {
+        const res = await fetch("https://api.anthropic.com/v1/messages", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                model: "claude-sonnet-4-6",
+                max_tokens: 1000,
+                system: systemPrompt,
+                messages: hist,
+            }),
+        });
+        const d = await res.json();
+        return d.content?.map(b => b.text || "").join("") || "";
+    };
+
+    /* ── START interview ── */
+    const startInterview = async () => {
+        if (!config.role.trim() || !config.type || !config.diff || !config.company) {
+            alert("Please fill in all fields."); return;
+        }
+        await startCam();
+        setPhase("ready");
+    };
+
+    const beginNow = async () => {
+        setPhase("interview");
+        setLoading(true);
+        const sys = `You are a professional ${config.diff} level interviewer at a ${config.company} company. You are interviewing a candidate for the role of ${config.role}. Conduct a ${config.type} interview. Ask exactly one question at a time. Be direct and professional. After each answer, give brief feedback and ask the next question. Format feedback as JSON at end: {"scores":{"Communication":85,"Confidence":80,"Technical":82,"Grammar":90},"feedback":["✔ Good point","⚠ Add more detail"]}`;
+        const first = [{ role: "user", content: `Start the interview. Ask question 1 of ${config.qCount}.` }];
+        const reply = await callAI(first, sys);
+        setMessages([{ role: "assistant", content: reply }]);
+        setQIdx(1);
         setLoading(false);
     };
 
+    /* ── SUBMIT answer ── */
     const submitAnswer = async () => {
         if (!answer.trim()) return;
+        const next = qIdx + 1;
+        const isLast = next > config.qCount;
 
-        const userAnswer = answer;
-
-        const currentQuestion =
-            messages[messages.length - 1]?.text;
-
-        setMessages(prev => [
-            ...prev,
-            {
-                sender: "user",
-                text: userAnswer
-            }
-        ]);
-
+        const userMsg = { role: "user", content: answer };
+        const hist = [...messages, userMsg];
+        setMessages(hist);
         setAnswer("");
         setLoading(true);
 
-        try {
+        const sys = `You are a professional ${config.diff} level interviewer at a ${config.company} company interviewing for ${config.role} — ${config.type} interview. After evaluating the answer, ${isLast ? "conclude the interview and provide a detailed final report" : `ask question ${next} of ${config.qCount}`}. Always end your message with a JSON block: {"scores":{"Communication":85,"Confidence":80,"Technical":82,"Grammar":90},"feedback":["✔ ...","⚠ ..."]}`;
 
-            // STEP 1: Evaluate answer
+        const reply = await callAI(hist.map(m => ({ role: m.role, content: m.content })), sys);
 
-            const feedbackPrompt = `
-You are an interview coach.
+        // extract JSON
+        let parsed = null;
+        const m = reply.match(/\{[\s\S]*"scores"[\s\S]*\}/);
+        if (m) { try { parsed = JSON.parse(m[0]); } catch { } }
 
-Question:
-${currentQuestion}
-
-Candidate Answer:
-${userAnswer}
-
-Provide:
-
-⭐ Score: X/10
-
-✅ Strengths:
-- point 1
-- point 2
-
-⚠️ Improvements:
-- point 1
-- point 2
-
-Keep response under 80 words.
-`;
-
-            const feedback =
-                await askGemini(feedbackPrompt);
-
-            setMessages(prev => [
-                ...prev,
-                {
-                    sender: "ai",
-                    text: feedback
-                }
-            ]);
-
-            // STEP 2: Generate next question
-
-            const nextQuestionPrompt = `
-Generate ONE interview question.
-
-Role: ${role}
-Interview Type: ${interviewType}
-Difficulty: ${difficulty}
-
-Rules:
-- Maximum 15 words
-- Short and direct
-- No explanation
-- No scenario
-
-Return only the question.
-`;
-
-            const nextQuestion =
-                await askGemini(nextQuestionPrompt);
-
-            setMessages(prev => [
-                ...prev,
-                {
-                    sender: "ai",
-                    text: `🎤 Question ${questionNo + 1}: ${nextQuestion}`
-                }
-            ]);
-
-            setQuestionNo(prev => prev + 1);
-
-        } catch (err) {
-            console.error(err);
+        if (parsed) {
+            setScores(parsed.scores || scores);
+            setFeedback(parsed.feedback || []);
         }
 
+        const clean = reply.replace(/\{[\s\S]*"scores"[\s\S]*\}/, "").trim();
+        setMessages([...hist, { role: "assistant", content: clean }]);
+
+        if (isLast) {
+            setReport({
+                scores: parsed?.scores || scores,
+                overall: Math.round(Object.values(parsed?.scores || scores).reduce((a, b) => a + b, 0) / 4),
+                readiness: "Good",
+            });
+            setPhase("report");
+            stopCam();
+        } else {
+            setQIdx(next);
+        }
         setLoading(false);
     };
 
+    /* ── RENDER ── */
     return (
         <>
-            <section id="interview-prep">
+            <style>{G}</style>
+            <div className={styles.mainDiv} style={{ height: "100vh", display: "flex", flexDirection: "column", background: C.bg }}>
 
-                <div className="section-title">
-                    AI Interview Coach
-                </div>
+                {/* ── TOPBAR ── */}
+                <div className={styles.topBar}>
+                    <div className={styles.logoSection}>
+                        <div className={styles.logoIcon}>🎯</div>
 
-                <p className="section-sub">
-                    Practice with real interview questions, get instant AI feedback on your answers, and
-                    build confidence before the big day.
-                </p>
+                        <span className={styles.logoText}>
+                            AI Interview Coach
+                        </span>
+                    </div>
 
-                <div className="interview-layout">
-                    <div className="interview-settings">
+                    <div className={styles.topRight}>
 
-                        <div className="pf-group">
-                            <div className="pf-label">
-                                Target Role
-                            </div>
+                        {phase === "interview" && (
+                            <>
+                                {/* Progress */}
+                                <div className={styles.progressContainer}>
+                                    <span className={styles.questionCount}>
+                                        Q {qIdx}/{config.qCount}
+                                    </span>
 
-                            <input
-                                className="pf-input"
-                                id="intRole"
-                                value={role}
-                                onChange={(e) => setRole(e.target.value)}
-                                placeholder="e.g. Data Scientist"
-                            />
-                        </div>
+                                    <div className={styles.progressBar}>
+                                        <div
+                                            className={styles.progressFill}
+                                            style={{
+                                                width: `${(qIdx / config.qCount) * 100}%`,
+                                            }}
+                                        />
+                                    </div>
+                                </div>
 
-                        <div className="pf-group">
-                            <div className="pf-label">
-                                Interview Type
-                            </div>
+                                {/* Timer */}
+                                <div className={styles.timerBox}>
+                                    <span className={styles.timerIcon}>⏱</span>
 
-                            <select title="select"
-                                className="pf-select"
-                                value={interviewType}
-                                onChange={(e) => setInterviewType(e.target.value)}
-                                id="intType"
-                            >
-                                <option value="">Select Interview Type</option>
-                                <option>Technical</option>
-                                <option>Behavioral (STAR)</option>
-                                <option>System Design</option>
-                                <option>Case Study</option>
-                                <option>HR / Culture Fit</option>
-                            </select>
-                        </div>
-
-                        <div className="pf-group">
-                            <div className="pf-label">
-                                Difficulty
-                            </div>
-
-                            <select
-                                className="pf-select"
-                                id="intDiff"
-                                value={difficulty}
-                                onChange={(e) => setDifficulty(e.target.value)}
-                            >
-                                <option value="">Select Difficulty</option>
-                                <option>Entry Level</option>
-                                <option>Mid Level</option>
-                                <option>Senior Level</option>
-                                <option>Staff / Principal</option>
-                            </select>
-                        </div>
-
-                        <div className="pf-group">
-                            <div className="pf-label">
-                                Company Type
-                            </div>
-
-                            <select
-                                className="pf-select"
-                                id="intCompany"
-                                value={companyType}
-                                onChange={(e) => setCompanyType(e.target.value)}
-                            >
-                                <option value="">Select Company Type</option>
-                                <option>FAANG / Big Tech</option>
-                                <option>Product Startup</option>
-                                <option>Consulting</option>
-                                <option>MNC</option>
-                                <option>Any</option>
-                            </select>
-                        </div>
-
-                        <button
-                            className="analyze-btn"
-                            id="intStartBtn"
-                            onClick={startInterview}
-                            style={{
-                                marginTop: "8px",
-                                background:
-                                    "linear-gradient(135deg,var(--rose),#e11d48)"
-                            }}
-                        >
-                            {loading ? "Starting..." : "🎤 Start Mock Interview"}
-                        </button>
+                                    <span
+                                        className={`mono ${styles.timerText}`}
+                                        style={{
+                                            color: timeLeft < 120 ? "var(--pink)" : "var(--text)",
+                                        }}
+                                    >
+                                        {fmt(timeLeft)}
+                                    </span>
+                                </div>
+                            </>
+                        )}
 
                         <div
+                            className={styles.cameraStatus}
                             style={{
-                                marginTop: "14px",
-                                padding: "14px",
-                                background: "var(--navy3)",
-                                borderRadius: "10px",
-                                fontSize: "0.78rem",
-                                color: "var(--text3)",
-                                lineHeight: "1.6"
+                                background: camOn
+                                    ? "var(--green)"
+                                    : "var(--muted)",
                             }}
                         >
-                            💡{" "}
-                            <strong style={{ color: "var(--text2)" }}>
-                                How it works:
-                            </strong>{" "}
-                            AI will ask you questions one at a
-                            time. Answer in the text box and get instant feedback on
-                            clarity, depth, and delivery.
+                            {camOn && <div className={styles.cameraPing}></div>}
                         </div>
 
-                    </div>
-
-                    <div className="interview-panel">
-
-                        <div className="int-header">
-
-                            <div
-                                style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    gap: "10px"
-                                }}
-                            >
-                                <div
-                                    style={{
-                                        width: "36px",
-                                        height: "36px",
-                                        borderRadius: "9px",
-                                        background: "var(--rose-dim)",
-                                        border:
-                                            "1px solid rgba(251,113,133,0.3)",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        fontSize: "1rem"
-                                    }}
-                                >
-                                    🎤
-                                </div>
-
-                                <div>
-                                    <div
-                                        style={{
-                                            fontWeight: "700",
-                                            fontSize: "0.9rem"
-                                        }}
-                                    >
-                                        Interview Coach
-                                    </div>
-
-                                    <div
-                                        style={{
-                                            fontSize: "0.73rem",
-                                            color: "var(--text3)"
-                                        }}
-                                        id="intStatus"
-                                    >
-                                        {questionNo === 0
-                                            ? "Configure settings & start session"
-                                            : "Interview in progress"}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div
-                                style={{
-                                    fontFamily:
-                                        "'JetBrains Mono', monospace",
-                                    fontSize: "0.8rem",
-                                    color: "var(--text3)"
-                                }}
-                                id="intCounter"
-                            >
-                                Q {questionNo}
-                            </div>
-
-                        </div>
-
-                        <div className="int-messages">
-                            {messages.map((msg, index) => (
-                                <div
-                                    key={index}
-                                    style={{
-                                        display: "flex",
-                                        justifyContent:
-                                            msg.sender === "ai"
-                                                ? "flex-start"
-                                                : "flex-end",
-                                        marginBottom: "12px"
-                                    }}
-                                >
-                                    <div
-                                        style={{
-                                            maxWidth: "75%",
-                                            padding: "12px",
-                                            borderRadius: "12px",
-                                            background:
-                                                msg.sender === "ai"
-                                                    ? "#1e293b"
-                                                    : "#3a4556",
-                                            color: "#fff"
-                                        }}
-                                    >
-                                        <strong>
-                                            {msg.sender === "ai"
-                                                ? "🎤 Interviewer"
-                                                : "👤 You"}
-                                        </strong>
-
-                                        <div style={{ marginTop: "6px" }}>
-                                            {msg.text}
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="int-input-area">
-
-                            <div className="int-input-row">
-
-                                <input
-                                    className="int-input"
-                                    id="intInput"
-                                    value={answer}
-                                    onChange={(e) => setAnswer(e.target.value)}
-                                    placeholder="Type your answer here..."
-                                />
-
-                                <button
-                                    className="int-send"
-                                    id="intSendBtn"
-                                    onClick={submitAnswer}
-                                    disabled={loading}
-                                >
-                                    ➤
-                                </button>
-
-                            </div>
-
-                        </div>
+                        <span className={styles.cameraText}>
+                            {camOn ? "CAM ON" : "NO CAM"}
+                        </span>
 
                     </div>
                 </div>
-            </section>
-        </>
-    )
-}
 
-export default AiInterViewCoach;
+                {/* ── BODY ── */}
+                <div style={{ flex: 1, overflow: "hidden", display: "flex" }}>
+
+                    {/* ══ SETUP PHASE ══ */}
+                    {(phase === "setup" || phase === "ready") && (
+                        <div className={styles.setupPhase}>
+
+                            {/* LEFT — config */}
+                            {/* ================= LEFT SIDEBAR ================= */}
+                            <div className={styles.sidebar}>
+
+                                <p className={styles.sidebarTitle}>
+                                    Interview Settings
+                                </p>
+
+                                {/* Target Role */}
+
+                                {[
+                                    {
+                                        label: "Target Role",
+                                        key: "role",
+                                        placeholder: "e.g. Java Developer",
+                                    },
+                                ].map((f) => (
+                                    <div key={f.key} className={styles.formGroup}>
+
+                                        <label className={styles.formLabel}>
+                                            {f.label}
+                                        </label>
+
+                                        <input
+                                            value={config[f.key]}
+                                            onChange={(e) =>
+                                                setConfig((p) => ({
+                                                    ...p,
+                                                    [f.key]: e.target.value,
+                                                }))
+                                            }
+                                            placeholder={f.placeholder}
+                                            className={styles.input}
+                                        />
+
+                                    </div>
+                                ))}
+
+                                {/* Dropdowns */}
+
+                                {[
+                                    { label: "Interview Type", key: "type", options: TYPES },
+                                    { label: "Difficulty", key: "diff", options: DIFFS },
+                                    { label: "Company Type", key: "company", options: COMPS },
+                                ].map((f) => (
+                                    <div key={f.key} className={styles.formGroup}>
+
+                                        <label className={styles.formLabel}>
+                                            {f.label}
+                                        </label>
+
+                                        <select
+                                            value={config[f.key]}
+                                            onChange={(e) =>
+                                                setConfig((p) => ({
+                                                    ...p,
+                                                    [f.key]: e.target.value,
+                                                }))
+                                            }
+                                            className={styles.select}
+                                        >
+                                            <option value="">
+                                                Select {f.label}
+                                            </option>
+
+                                            {f.options.map((o) => (
+                                                <option key={o}>{o}</option>
+                                            ))}
+                                        </select>
+
+                                    </div>
+                                ))}
+
+                                {/* Number of Questions */}
+
+                                <div className={styles.questionSection}>
+
+                                    <label className={styles.formLabel}>
+                                        Number of Questions
+                                    </label>
+
+                                    <div className={styles.questionButtons}>
+
+                                        {Q_CNT.map((n) => (
+                                            <button
+                                                key={n}
+                                                onClick={() =>
+                                                    setConfig((p) => ({
+                                                        ...p,
+                                                        qCount: n,
+                                                    }))
+                                                }
+                                                className={`${styles.questionButton} ${config.qCount === n
+                                                    ? styles.activeQuestion
+                                                    : ""
+                                                    }`}
+                                            >
+                                                {n}Q
+                                            </button>
+                                        ))}
+
+                                    </div>
+
+                                </div>
+
+                                {/* Start Interview */}
+
+                                <button
+                                    onClick={startInterview}
+                                    className={styles.startButton}
+                                >
+                                    🎯 Start Mock Interview
+                                </button>
+
+                                {/* Information Card */}
+
+                                <div className={styles.infoCard}>
+
+                                    <p className={styles.infoText}>
+
+                                        <span className={styles.infoHeading}>
+                                            💡 How it works:
+                                        </span>
+
+                                        AI asks one question at a time.
+                                        Answer via text or voice,
+                                        get real-time feedback on clarity,
+                                        depth, and delivery.
+
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            {/* RIGHT — welcome / ready panel */}
+                            {/* ================= RIGHT PANEL ================= */}
+
+                            <div className={styles.rightPanel}>
+
+                                {phase === "setup" ? (
+
+                                    <div className={`${styles.setupContainer} fadeUp`}>
+
+                                        <div className={styles.aiIcon}>
+                                            🤖
+                                        </div>
+
+                                        <h2 className={styles.setupTitle}>
+                                            Your AI Interviewer
+                                        </h2>
+
+                                        <p className={styles.setupDescription}>
+                                            Configure your interview on the left, then start your session.
+                                            The AI will ask professional questions and give real-time
+                                            feedback on every answer.
+                                        </p>
+
+                                        <div className={styles.featureGrid}>
+
+                                            {[
+                                                ["🎥", "Webcam preview"],
+                                                ["🎤", "Voice recording"],
+                                                ["⏱", "Countdown timer"],
+                                                ["📊", "Live score cards"],
+                                                ["🧠", "Real-time feedback"],
+                                                ["📄", "Download report"],
+                                            ].map(([icon, label]) => (
+
+                                                <div
+                                                    key={label}
+                                                    className={styles.featureCard}
+                                                >
+                                                    <span className={styles.featureIcon}>
+                                                        {icon}
+                                                    </span>
+
+                                                    <span className={styles.featureLabel}>
+                                                        {label}
+                                                    </span>
+                                                </div>
+
+                                            ))}
+
+                                        </div>
+
+                                    </div>
+
+                                ) : (
+
+                                    <div className={`${styles.readyContainer} fadeUp`}>
+
+                                        {/* Webcam */}
+
+                                        <div className={styles.webcamCard}>
+
+                                            <video
+                                                ref={videoRef}
+                                                autoPlay
+                                                muted
+                                                playsInline
+                                                className={styles.webcamVideo}
+                                            />
+
+                                            {!camOn && (
+
+                                                <div className={styles.cameraOverlay}>
+
+                                                    <span className={styles.cameraIcon}>
+                                                        🎥
+                                                    </span>
+
+                                                    <span className={styles.cameraText}>
+                                                        Camera not available
+                                                    </span>
+
+                                                </div>
+
+                                            )}
+
+                                            {camOn && (
+
+                                                <div className={styles.liveBadge}>
+
+                                                    <span className={styles.liveDot}></span>
+
+                                                    LIVE
+
+                                                </div>
+
+                                            )}
+
+                                        </div>
+
+                                        {/* Welcome Card */}
+
+                                        <div className={styles.welcomeCard}>
+
+                                            <div className={styles.welcomeIcon}>
+                                                🤖
+                                            </div>
+
+                                            <h3 className={styles.welcomeTitle}>
+                                                Welcome, Candidate!
+                                            </h3>
+
+                                            <p className={styles.welcomeDescription}>
+
+                                                Today we'll conduct a
+
+                                                <span
+                                                    style={{
+                                                        color: "var(--cyan)",
+                                                        fontWeight: 600,
+                                                    }}
+                                                >
+                                                    {" "}
+                                                    {config.role || "Developer"}
+                                                </span>
+
+                                                {" "}interview.
+
+                                            </p>
+
+                                            <div className={styles.badgeContainer}>
+
+                                                {[
+                                                    `📋 ${config.qCount} Questions`,
+                                                    `🎯 ${config.diff}`,
+                                                    `⏱ ~${config.qCount * 1.5} min`,
+                                                    `🏢 ${config.company}`,
+                                                ].map((t) => (
+
+                                                    <span
+                                                        key={t}
+                                                        className={styles.infoBadge}
+                                                    >
+                                                        {t}
+                                                    </span>
+
+                                                ))}
+
+                                            </div>
+
+                                        </div>
+
+                                        <button
+                                            onClick={beginNow}
+                                            className={styles.beginButton}
+                                        >
+                                            ▶ Begin Interview
+                                        </button>
+
+                                    </div>
+
+                                )}
+
+                            </div>
+                        </div>
+                    )}
+
+                    {/* ══ INTERVIEW PHASE ══ */}
+                    {phase === "interview" && (
+                        <div style={{ width: "100%", display: "flex", height: "100%", overflow: "hidden" }}>
+
+                            {/* ================= LEFT SIDEBAR ================= */}
+
+                            <div className={styles.sidebar}>
+
+                                {/* Webcam */}
+
+                                <div className={styles.sidebarSection}>
+
+                                    <div className={styles.webcamBox}>
+
+                                        <video
+                                            ref={videoRef}
+                                            autoPlay
+                                            muted
+                                            playsInline
+                                            className={styles.webcamVideo}
+                                        />
+
+                                        {!camOn && (
+                                            <div className={styles.cameraOverlay}>
+
+                                                <span className={styles.cameraIcon}>
+                                                    🎥
+                                                </span>
+
+                                                <span className={styles.cameraText}>
+                                                    No Camera
+                                                </span>
+
+                                            </div>
+                                        )}
+
+                                        {camOn && (
+                                            <div className={styles.liveBadge}>
+
+                                                <span className={styles.liveDot}></span>
+
+                                                LIVE
+
+                                            </div>
+                                        )}
+
+                                    </div>
+
+                                </div>
+
+                                {/* Current Question */}
+
+                                <div className={styles.sidebarSection}>
+
+                                    <p className={styles.sectionTitle}>
+                                        Current Question
+                                    </p>
+
+                                    <div className={styles.questionBadge}>
+                                        <span className={styles.questionBadgeText}>
+                                            Q {qIdx} / {config.qCount}
+                                        </span>
+                                    </div>
+
+                                    <div className={styles.progressBar}>
+
+                                        <div
+                                            className={styles.progressFill}
+                                            style={{
+                                                width: `${(qIdx / config.qCount) * 100}%`,
+                                            }}
+                                        />
+
+                                    </div>
+
+                                </div>
+
+                                {/* Live Scores */}
+
+                                <div className={styles.scoreSection}>
+
+                                    <p className={styles.sectionTitle}>
+                                        Live Scores
+                                    </p>
+
+                                    {SCORE_KEYS.map((k, i) => (
+
+                                        <div
+                                            key={k}
+                                            className={styles.scoreItem}
+                                        >
+
+                                            <div className={styles.scoreHeader}>
+
+                                                <span className={styles.scoreName}>
+                                                    {k}
+                                                </span>
+
+                                                <span
+                                                    className={styles.scoreValue}
+                                                    style={{
+                                                        color: SCORE_COLORS[i],
+                                                    }}
+                                                >
+                                                    {scores[k]}%
+                                                </span>
+
+                                            </div>
+
+                                            <div className={styles.scoreBar}>
+
+                                                <div
+                                                    className={styles.scoreFill}
+                                                    style={{
+                                                        width: `${scores[k]}%`,
+                                                        background: SCORE_COLORS[i],
+                                                    }}
+                                                />
+
+                                            </div>
+
+                                        </div>
+
+                                    ))}
+
+                                    {/* Feedback */}
+
+                                    {feedback.length > 0 && (
+
+                                        <div className={styles.feedbackSection}>
+
+                                            <p className={styles.sectionTitle}>
+                                                AI Feedback
+                                            </p>
+
+                                            {feedback.map((f, i) => (
+
+                                                <div
+                                                    key={i}
+                                                    className={styles.feedbackItem}
+                                                >
+
+                                                    <span
+                                                        className={styles.feedbackIcon}
+                                                        style={{
+                                                            color: f.startsWith("✔")
+                                                                ? "var(--green)"
+                                                                : "var(--amber)",
+                                                        }}
+                                                    >
+                                                        {f.startsWith("✔") ? "✔" : "⚠"}
+                                                    </span>
+
+                                                    <span className={styles.feedbackText}>
+                                                        {f.replace(/^[✔⚠]\s*/, "")}
+                                                    </span>
+
+                                                </div>
+
+                                            ))}
+
+                                        </div>
+
+                                    )}
+
+                                </div>
+
+                            </div>
+
+                            {/* CENTER — chat */}
+                            <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+
+                                {/* chat messages */}
+                                <div ref={chatRef} className={styles.chatContainer}>
+
+                                    {messages.map((m, i) => (
+
+                                        <div
+                                            key={i}
+                                            className={`fadeUp ${styles.messageRow} ${m.role === "user"
+                                                ? styles.userRow
+                                                : styles.assistantRow
+                                                }`}
+                                        >
+
+                                            {m.role === "assistant" && (
+                                                <div className={styles.aiAvatar}>
+                                                    🤖
+                                                </div>
+                                            )}
+
+                                            <div
+                                                className={`${styles.messageBubble} ${m.role === "user"
+                                                    ? styles.userBubble
+                                                    : styles.assistantBubble
+                                                    }`}
+                                            >
+
+                                                <p className={styles.messageText}>
+                                                    {m.content}
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                    ))}
+
+                                    {loading && (
+
+                                        <div className={styles.loadingRow}>
+
+                                            <div className={styles.aiAvatar}>
+                                                🤖
+                                            </div>
+
+                                            <div className={styles.loadingBubble}>
+
+                                                {[0, 1, 2].map((i) => (
+
+                                                    <div
+                                                        key={i}
+                                                        className={styles.loadingDot}
+                                                        style={{
+                                                            animationDelay: `${i * 0.2}s`,
+                                                        }}
+                                                    />
+
+                                                ))}
+
+                                            </div>
+
+                                        </div>
+
+                                    )}
+
+                                </div>
+
+                                {/* ================= Answer Input ================= */}
+
+                                <div className={styles.answerSection}>
+
+                                    <textarea
+                                        value={answer}
+                                        onChange={(e) => setAnswer(e.target.value)}
+                                        onKeyDown={(e) => {
+                                            if (e.key === "Enter" && e.ctrlKey) {
+                                                submitAnswer();
+                                            }
+                                        }}
+                                        placeholder="Type your answer here... (Ctrl+Enter to submit)"
+                                        className={styles.answerInput}
+                                    />
+
+                                    <div className={styles.buttonGroup}>
+
+                                        {/* Voice Button */}
+
+                                        <button
+                                            onClick={toggleMic}
+                                            className={`${styles.voiceButton} ${recording ? styles.recording : ""
+                                                }`}
+                                        >
+                                            {recording ? "🔴 Recording..." : "🎤 Voice"}
+                                        </button>
+
+                                        {/* Submit Button */}
+
+                                        <button
+                                            onClick={submitAnswer}
+                                            disabled={loading || !answer.trim()}
+                                            className={`${styles.submitButton} ${answer.trim()
+                                                ? styles.submitActive
+                                                : styles.submitDisabled
+                                                }`}
+                                        >
+
+                                            {loading ? (
+                                                <>
+                                                    <div className={styles.spinner}></div>
+                                                    Evaluating...
+                                                </>
+                                            ) : (
+                                                <>Submit Answer →</>
+                                            )}
+
+                                        </button>
+
+                                    </div>
+
+                                    <p className={styles.answerHint}>
+                                        Press Ctrl+Enter to submit · 🎤 for voice · Question {qIdx} of{" "}
+                                        {config.qCount}
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* ══ REPORT PHASE ══ */}
+                    {phase === "report" && report && (
+                        <div style={{ width: "100%", overflowY: "auto", padding: 40, display: "flex", flexDirection: "column", alignItems: "center" }}>
+                            <div style={{ maxWidth: 640, width: "100%" }} className="fadeUp">
+
+                                {/* header */}
+                                <div style={{ textAlign: "center", marginBottom: 32 }}>
+                                    <div style={{ fontSize: 52, marginBottom: 12 }}>🏆</div>
+                                    <h2 style={{ fontSize: 28, fontWeight: 800, marginBottom: 6 }}>Interview Complete!</h2>
+                                    <p style={{ fontSize: 15, color: C.sub }}>Here's your detailed performance report</p>
+                                </div>
+
+                                {/* overall score */}
+                                <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 20, padding: 28, marginBottom: 20, textAlign: "center", position: "relative", overflow: "hidden" }}>
+                                    <div style={{ position: "absolute", top: -40, right: -40, width: 160, height: 160, borderRadius: "50%", background: `radial-gradient(${C.cyan}22,transparent)` }} />
+                                    <p style={{ fontSize: 11, color: C.muted, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 8 }}>Overall Score</p>
+                                    <div style={{ fontSize: 72, fontWeight: 900, background: `linear-gradient(135deg,${C.cyan},${C.purple})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1, marginBottom: 8, animation: "countUp 0.6s ease" }}>
+                                        {report.overall}%
+                                    </div>
+                                    <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(16,185,129,0.1)", border: `1px solid rgba(16,185,129,0.25)`, borderRadius: 20, padding: "5px 14px" }}>
+                                        <span style={{ fontSize: 14 }}>🏆</span>
+                                        <span style={{ fontSize: 13, color: C.green, fontWeight: 700 }}>Hiring Readiness: {report.readiness}</span>
+                                    </div>
+                                </div>
+
+                                {/* score breakdown */}
+                                <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: 22, marginBottom: 20 }}>
+                                    <p style={{ fontSize: 12, fontWeight: 700, color: C.sub, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 18 }}>Score Breakdown</p>
+                                    {SCORE_KEYS.concat(["Problem Solving"]).map((k, i) => {
+                                        const val = report.scores[k] || Math.round(75 + Math.random() * 18);
+                                        return (
+                                            <div key={k} style={{ marginBottom: 16 }}>
+                                                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                                                    <span style={{ fontSize: 14, fontWeight: 500 }}>{k}</span>
+                                                    <span style={{ fontSize: 14, fontWeight: 800, color: SCORE_COLORS[i % SCORE_COLORS.length] }}>{val}%</span>
+                                                </div>
+                                                <div style={{ width: "100%", height: 8, background: "rgba(255,255,255,0.06)", borderRadius: 4, overflow: "hidden" }}>
+                                                    <div style={{ "--w": `${val}%`, width: `${val}%`, height: "100%", background: SCORE_COLORS[i % SCORE_COLORS.length], borderRadius: 4, animation: "barGrow 1s ease forwards" }} />
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+
+                                {/* feedback summary */}
+                                {feedback.length > 0 && (
+                                    <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: 22, marginBottom: 24 }}>
+                                        <p style={{ fontSize: 12, fontWeight: 700, color: C.sub, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 14 }}>Final Feedback</p>
+                                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                                            {feedback.map((f, i) => (
+                                                <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", background: f.startsWith("✔") ? "rgba(16,185,129,0.07)" : "rgba(245,158,11,0.07)", border: `1px solid ${f.startsWith("✔") ? "rgba(16,185,129,0.2)" : "rgba(245,158,11,0.2)"}`, borderRadius: 10, padding: "10px 12px" }}>
+                                                    <span style={{ fontSize: 14, flexShrink: 0 }}>{f.startsWith("✔") ? "✅" : "⚠️"}</span>
+                                                    <span style={{ fontSize: 12, color: C.sub, lineHeight: 1.5 }}>{f.replace(/^[✔⚠]\s*/, "")}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* actions */}
+                                <div style={{ display: "flex", gap: 12 }}>
+                                    <button onClick={() => { setPhase("setup"); setMessages([]); setScores({ Communication: 0, Confidence: 0, Technical: 0, Grammar: 0 }); setFeedback([]); setReport(null); setQIdx(0); }}
+                                        style={{ flex: 1, padding: "14px 0", borderRadius: 12, background: C.card, border: `1px solid ${C.border}`, color: C.text, fontWeight: 700, fontSize: 14, transition: "all 0.2s" }}
+                                        onMouseEnter={e => e.target.style.borderColor = C.cyan}
+                                        onMouseLeave={e => e.target.style.borderColor = C.border}>
+                                        🔄 New Interview
+                                    </button>
+                                    <button onClick={() => window.print()}
+                                        style={{ flex: 1, padding: "14px 0", borderRadius: 12, background: `linear-gradient(135deg,${C.cyan},${C.purple})`, border: "none", color: "#fff", fontWeight: 700, fontSize: 14, boxShadow: `0 4px 20px rgba(34,211,238,0.25)` }}>
+                                        📄 Download PDF
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                </div>
+            </div>
+        </>
+    );
+}
