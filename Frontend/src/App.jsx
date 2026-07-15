@@ -1,7 +1,7 @@
 import "./App.css";
 import AiCoverLetterWriter from "./Component/AiCoverLetterWriter";
 import AiGuide from "./Component/AiGuide";
-import AiInterViewCoach from "./Component/AiInterviewCoach";
+import AiInterviewCoach from "./Component/AiInterviewCoach";
 import AiLearningRoadMap from "./Component/AiLearningRoadMap";
 import AiResumeAnalyze from "./Component/AiResumeAnalyze";
 import AiTools from "./Component/AiTools";
@@ -51,7 +51,7 @@ function App() {
           <Route path="/career/:careerName" element={<CareerDetails />} />
           <Route path="/dashboard" element={<ProfilePage />} />
           <Route path="/salary" element={<SalaryIntelligence />} />
-          <Route path="/interview" element={<AiInterViewCoach />} />
+          <Route path="/interview" element={<AiInterviewCoach />} />
           <Route path="/coverletter" element={<AiCoverLetterWriter />} />
           <Route path="/feedback" element={<SocialFeedBack />} />
         </Route>
