@@ -20,6 +20,7 @@ import ProfilePage from "./Component/UserProfile.jsx";
 import PublicLayout from "./context/publicLayout";
 import PrivateLayout from "./context/privateLayout";
 import AuthoLayout from "./context/AuthLayout";
+import ResumeAnalyze from "./Component/resumeAnalyze.jsx";
 function App() {
   return (
     <>
@@ -47,6 +48,7 @@ function App() {
           <Route path="/careerpaths" element={<CareerPaths />} />
           <Route path="/resumeanalyze" element={<AiResumeAnalyze />} />
           <Route path="/skillgapanalyze" element={<SkillGapAnalyzer />} />
+          <Route path="/resume" element={<ResumeAnalyze />} />
           <Route path="/roadmap" element={<AiLearningRoadMap />} />
           <Route path="/career/:careerName" element={<CareerDetails />} />
           <Route path="/dashboard" element={<ProfilePage />} />
