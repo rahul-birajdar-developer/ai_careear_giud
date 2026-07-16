@@ -4,4 +4,4 @@ import { coverLetterGenerator } from "../controllers/coverLetter.controllers.js"
 
 const router = Router();
 
-router.route("/coverLetter").post(verifyJwt, coverLetterGenerator)
+router.route("/analyze").post(verifyJwt, coverLetterGenerator)

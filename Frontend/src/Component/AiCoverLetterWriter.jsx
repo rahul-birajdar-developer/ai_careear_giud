@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { askGemini } from "../Services/gemini";
 import ReactMarkdown from "react-markdown";
+import api from "../api/axios";
 import {
     Loader
 } from "lucide-react";
@@ -46,29 +46,17 @@ function AiCoverLetterWriter() {
     };
 
     const handleGenerate = async () => {
-
-        const prompt = `
-            Create a ${tone} cover letter.
-
-            Candidate Name: ${userName}
-            Job Title: ${jobTitle}
-            Company: ${companyName}
-
-            Skills & Experience:
-            ${exp}
-
-            Job Description:
-            ${des}
-
-            Requirements:
-            - Match the job description.
-            - Highlight relevant achievements.
-            - Use professional formatting.
-            - Length: ${words}
-            - Include opening, body, and closing.
-            `;
+        setLoading(true);
         try {
-            const response = await askGemini(prompt);
+            const response = await api.post("/coverLetter/analyze", {
+                name: userName,
+                jobTitle,
+                companyName,
+                skills: exp,
+                desc: des,
+                tone,
+                length: words,
+            });
             await typeMessage(response);
         }
         catch (error) {
