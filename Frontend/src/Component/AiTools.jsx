@@ -48,7 +48,7 @@ function AiTools() {
                             <div className="tool-cta">Start Practice →</div>
                         </div>
                     </Link>
-                    <Link to="/roasmap">
+                    <Link to="/roadmap">
                         <div className="tool-card reveal reveal-delay-1"
                         >
                             <div className="tool-icon" style={{ background: "rgba(52,211,153,0.1)" }} >🛤️</div>
