@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import userRoute from "./routes/user.route.js"
 import resumeRouter from "./routes/resume.route.js"
 import skillGap from "./routes/skillGap.route.js"
+import coverLetter from "./routes/coverLatter.route.js"
 
 const app = express();
 
@@ -45,5 +46,6 @@ app.use(cookieParser())
 app.use("/api/users", userRoute)
 app.use("/api/resume", resumeRouter);
 app.use("/api/skill-gap", skillGap)
+app.use("/api/coverLetter", coverLetter)
 
 export default app;
