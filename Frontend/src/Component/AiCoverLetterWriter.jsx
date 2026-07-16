@@ -18,6 +18,11 @@ function AiCoverLetterWriter() {
     const [showButton, setShowButton] = useState(true)
 
     const typeMessage = async (text) => {
+        if (typeof text !== "string") {
+            console.error("Expected string, got:", text);
+            return;
+        }
+
         let currentText = "";
 
         setLoading(false)
@@ -57,15 +62,13 @@ function AiCoverLetterWriter() {
                 tone,
                 length: words,
             });
-            console.log(response);
-            console.log(response.data)
-            await typeMessage(response);
+            // console.log(response);
+            // console.log(response.data)
+            await typeMessage(response.data.data.coverLetter);
         }
         catch (error) {
             console.error(error);
-
             setLoading(false);
-
             setMessages([
                 {
                     role: "ai",
