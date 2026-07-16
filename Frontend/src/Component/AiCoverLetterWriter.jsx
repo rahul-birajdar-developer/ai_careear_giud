@@ -57,6 +57,7 @@ function AiCoverLetterWriter() {
                 tone,
                 length: words,
             });
+            console.log(response);
             await typeMessage(response);
         }
         catch (error) {
