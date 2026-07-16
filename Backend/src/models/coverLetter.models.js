@@ -4,40 +4,44 @@ const coverLetterSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: "users",
-        require: true
+        required: true
     },
     name: {
         type: String,
-        require: true,
+        required: true,
     },
     jobTitle: {
         type: String,
-        require: true,
+        required: true,
     },
     companyName: {
         type: String,
-        require: true
+        required: true
     },
     skills: {
-        type: [String],
-        require: true,
+        type: String,
+        required: true,
     },
     desc: {
         type: String,
-        require: true
+        required: true
     },
     tone: {
         type: String,
-        require: true
+        required: true
     },
-    lenght: {
+    length: {
         type: String,
-        require: true
-    }
+        required: true
+    },
+    coverLetter: {
+        type: String,
+        required: true,
+    },
 },
     {
         timestamps: true,
     }
 )
 
-export const coverLetterSchemaModel = mongoose.model("coverLetter", coverLetterSchema)
+export const CoverLetterSchemaModel = mongoose.model("coverLetter", coverLetterSchema)
