@@ -14,6 +14,10 @@ const coverLetterSchema = new Schema({
         type: String,
         require: true,
     },
+    companyName: {
+        type: String,
+        require: true
+    },
     skills: {
         type: [String],
         require: true,

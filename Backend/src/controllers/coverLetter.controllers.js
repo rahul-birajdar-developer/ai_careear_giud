@@ -3,8 +3,8 @@ import ApiErrorHandling from "../utils/ApiErrorHandling.js";
 import { ApiResponse } from "../utils/ApiResponceHandling.js";
 
 
-const coverLetterGenerator = async () => {
-
+const coverLetterGenerator = async (req, res, next) => {
+    const { name, jobTitle, } = req.body()
 }
 
 export { coverLetterGenerator };
