@@ -282,9 +282,9 @@ export default function ResumeAnalyze() {
 
             const response = await api.post("/resume/upload", formData);
 
-            console.log(response.data);
+            console.log(response.data.resumeData);
 
-            setAnalysis(response.dataresumeData
+            setAnalysis(response.data.resumeData
             );
 
             setShowNext(true);
