@@ -276,7 +276,7 @@ export default function ResumeAnalyze() {
         try {
             const formData = new FormData();
 
-            formData.append("resume", file);
+            formData.append("resumeFile", file);
             formData.append("role", role);
             console.log(role, " ", file)
 

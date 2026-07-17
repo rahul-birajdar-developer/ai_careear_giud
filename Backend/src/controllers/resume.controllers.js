@@ -17,9 +17,9 @@ const getUserResume = asyncHandler(async (req, res) => {
         // console.log(req.body);
         const { role } = req.body;
 
-        console.log(role)
+        // console.log(role)
 
-        const file = req.files?.resume?.[0];
+        const file = req.files?.resumeFile?.[0];
         console.log("Step 2")
         console.log(file);
 
