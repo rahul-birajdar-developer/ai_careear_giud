@@ -12,11 +12,11 @@ const getUserResume = asyncHandler(async (req, res) => {
     // console.log(req.body);
     const { role } = req.body;
 
-    // console.log(jobTitle)
+    console.log(role)
 
     const file = req.files?.resume?.[0];
-    // console.log("Step 2")
-    // console.log(file);
+    console.log("Step 2")
+    console.log(file);
 
     const resumePath = file.path;
     const mimeType = file.mimetype;
