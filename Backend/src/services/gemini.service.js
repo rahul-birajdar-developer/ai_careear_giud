@@ -1,12 +1,12 @@
 import { GoogleGenAI } from "@google/genai";
 
 const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY,
+  apiKey: process.env.GEMINI_API_KEY,
 });
 
 export const askGemini = async (resumeText, jobTitle) => {
 
-    const prompt = `
+  const prompt = `
 You are an expert ATS Resume Analyzer and Career Coach.
 
 Analyze the following resume for the target role.
@@ -141,10 +141,11 @@ Requirements:
 10. Every score should be realistic and based only on the resume provided.
 `;
 
-    const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: prompt,
-    });
+  const response = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: prompt,
+  });
+  console.log(response.text);
 
-    return response.text;
+  return response.text;
 };

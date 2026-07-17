@@ -284,7 +284,8 @@ export default function ResumeAnalyze() {
 
             console.log(response.data);
 
-            setAnalysis(response.data.data);
+            setAnalysis(response.dataresumeData
+            );
 
             setShowNext(true);
 
