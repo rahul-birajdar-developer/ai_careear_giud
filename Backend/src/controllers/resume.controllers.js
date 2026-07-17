@@ -10,11 +10,11 @@ const getUserResume = asyncHandler(async (req, res) => {
     // console.log("Step 1")
     // console.log(req.files);
     // console.log(req.body);
-    const { jobTitle } = req.body;
+    const { role } = req.body;
 
     // console.log(jobTitle)
 
-    const file = req.files?.resumeFile?.[0];
+    const file = req.files?.resume?.[0];
     // console.log("Step 2")
     // console.log(file);
 
@@ -27,7 +27,7 @@ const getUserResume = asyncHandler(async (req, res) => {
 
     // console.log("Step 3")
     // console.log(extractText);
-    const analyzeText = await askGemini(extractText, jobTitle);
+    const analyzeText = await askGemini(extractText, role);
     // console.log("Step 4")
     // console.log(analyze);
 

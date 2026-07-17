@@ -278,6 +278,7 @@ export default function ResumeAnalyze() {
 
             formData.append("resume", file);
             formData.append("role", role);
+            console.log(role, " ", file)
 
             const response = await api.post("/resume/upload", formData);
 
