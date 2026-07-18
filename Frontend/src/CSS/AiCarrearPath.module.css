@@ -251,7 +251,7 @@ input {
 
 .pageContainer {
     min-height: 100vh;
-    margin-top: 5%;
+    margin-top: 3%;
 
     background: var(--bg-color);
 }
