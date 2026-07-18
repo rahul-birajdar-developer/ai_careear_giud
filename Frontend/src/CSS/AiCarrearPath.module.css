@@ -1,0 +1,1428 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+/* ======================================================
+   CareerMind AI Theme
+====================================================== */
+
+:root {
+
+    /* Background */
+    --bg-color: #090D1A;
+    --bg-deep: rgba(6, 9, 18, 0.5);
+    --surface-color: #0F1525;
+
+    /* Cards */
+    --card-color: #111827;
+    --card-hover: #141D2E;
+
+    /* Borders */
+    --border-color: rgba(255, 255, 255, 0.07);
+    --border-light: rgba(255, 255, 255, 0.13);
+
+    /* Text */
+    --text-color: #EEF2FF;
+    --text-secondary: #8892AA;
+    --text-muted: #4B5570;
+
+    /* Brand Colors */
+    --cyan: #22D3EE;
+    --cyan-dark: #0891B2;
+
+    --blue: #6366F1;
+    --blue-dark: #4338CA;
+
+    --purple: #8B5CF6;
+    --purple-light: #A78BFA;
+
+    --green: #10B981;
+    --amber: #F59E0B;
+    --teal: #14B8A6;
+    --pink: #EC4899;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, #22D3EE 0%, #6366F1 100%);
+    --gradient-purple: linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%);
+    --gradient-success: linear-gradient(135deg, #10B981 0%, #14B8A6 100%);
+
+    /* Border Radius */
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 18px;
+    --radius-xl: 24px;
+
+    /* Shadows */
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.18);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.30);
+    --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.45);
+
+    /* Layout */
+    --container-width: 1600px;
+    --section-padding: 80px;
+    --transition: 0.3s ease;
+}
+
+/* ======================================================
+   Reset
+====================================================== */
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ======================================================
+   Base
+====================================================== */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+
+    font-family: "Plus Jakarta Sans", sans-serif;
+
+    background: var(--bg-color);
+    color: var(--text-color);
+
+    -webkit-font-smoothing: antialiased;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+    font-family: inherit;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+}
+
+input {
+    outline: none;
+}
+
+/* ======================================================
+   Scrollbar
+====================================================== */
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, .35);
+    border-radius: 999px;
+}
+
+/* ======================================================
+   Animations
+====================================================== */
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    35% {
+        transform: translateY(-10px);
+    }
+
+    70% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes floatB {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-14px);
+    }
+}
+
+@keyframes twinkle {
+
+    0%,
+    100% {
+        opacity: .3;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.3);
+    }
+}
+
+@keyframes roadPulse {
+
+    0%,
+    100% {
+        opacity: .5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes barIn {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: var(--w);
+    }
+}
+
+@keyframes cardIn {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes searchGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 rgba(34, 211, 238, 0);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(34, 211, 238, .15);
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ======================================================
+   Utility Classes
+====================================================== */
+
+/* ======================================================
+   Page Container
+====================================================== */
+
+.pageContainer {
+    min-height: 100vh;
+    margin-top: 5%;
+
+    background: var(--bg-color);
+}
+
+/* ======================================================
+   Responsive
+====================================================== */
+
+@media (max-width: 992px) {
+
+    .pageContainer {
+        margin-top: 70px;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .pageContainer {
+        margin-top: 64px;
+    }
+
+}
+
+@media (max-width: 576px) {
+
+    .pageContainer {
+        margin-top: 60px;
+    }
+
+}
+
+.fadeUp {
+    animation: fadeUp .5s ease;
+}
+
+.cardAnimate {
+    animation: cardIn .45s ease both;
+}
+
+.flexCenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    width: min(1600px, calc(100% - 48px));
+    margin: auto;
+}
+
+/* ======================================================
+   Responsive
+====================================================== */
+
+@media (max-width:1200px) {
+
+    .container {
+        width: calc(100% - 40px);
+    }
+
+}
+
+@media (max-width:992px) {
+
+    .container {
+        width: calc(100% - 32px);
+    }
+
+}
+
+@media (max-width:768px) {
+
+    .container {
+        width: calc(100% - 24px);
+    }
+
+}
+
+@media (max-width:576px) {
+
+    .container {
+        width: calc(100% - 20px);
+    }
+
+}
+
+/* ===========================
+   Hero Section
+=========================== */
+
+.heroSection {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 52px 48px 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+}
+
+.heroContent {
+    flex: 1;
+}
+
+.heroImage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ===========================
+   Typography
+=========================== */
+
+.heroTitle {
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+    color: var(--text-color);
+}
+
+.heroDescription {
+    max-width: 420px;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text-secondary);
+}
+
+/* ===========================
+   Search
+=========================== */
+
+.searchForm {
+    display: flex;
+    gap: 10px;
+    margin-top: 28px;
+    max-width: 640px;
+}
+
+.searchWrapper {
+    flex: 1;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 0 16px;
+
+    background: var(--surface-color);
+
+    border: 1.5px solid var(--border-color);
+
+    border-radius: 14px;
+
+    transition: 0.3s ease;
+}
+
+.searchWrapper:focus-within {
+    border-color: var(--primary-color);
+}
+
+.searchIcon {
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.searchInput {
+    flex: 1;
+
+    height: 50px;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: var(--text-color);
+
+    font-size: 14px;
+}
+
+.searchInput::placeholder {
+    color: var(--text-muted);
+}
+
+.clearButton {
+    border: none;
+    background: transparent;
+
+    color: var(--text-muted);
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    transition: .25s;
+}
+
+.clearButton:hover {
+    color: #fff;
+}
+
+.searchButton {
+    height: 50px;
+
+    padding: 0 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border: none;
+    border-radius: 14px;
+
+    cursor: pointer;
+
+    flex-shrink: 0;
+
+    color: #fff;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    background: linear-gradient(135deg,
+            var(--cyan-color),
+            var(--blue-color));
+
+    box-shadow: 0 4px 20px rgba(34, 211, 238, .35);
+
+    transition: all .3s ease;
+}
+
+.searchButton:hover {
+    opacity: .9;
+    transform: translateY(-2px);
+}
+
+.searchButton:active {
+    transform: scale(.97);
+}
+
+/* ===========================
+   Loader
+=========================== */
+
+.loader {
+    width: 14px;
+    height: 14px;
+
+    border: 2px solid rgba(255, 255, 255, .3);
+    border-top-color: #fff;
+
+    border-radius: 50%;
+
+    animation: spin .7s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media (max-width:1200px) {
+
+    .heroSection {
+        padding: 48px 32px;
+        gap: 28px;
+    }
+
+}
+
+@media (max-width:992px) {
+
+    .heroSection {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .heroContent {
+        width: 100%;
+    }
+
+    .heroDescription {
+        max-width: 100%;
+        margin: auto;
+    }
+
+    .searchForm {
+        margin: 28px auto 0;
+        max-width: 700px;
+    }
+
+}
+
+@media (max-width:768px) {
+
+    .heroSection {
+        padding: 40px 20px;
+    }
+
+    .searchForm {
+        flex-direction: column;
+    }
+
+    .searchButton {
+        width: 100%;
+    }
+
+    .heroImage {
+        margin-top: 24px;
+        width: 100%;
+    }
+
+}
+
+@media (max-width:576px) {
+
+    .heroTitle {
+        font-size: 2rem;
+    }
+
+    .heroDescription {
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .searchInput {
+        font-size: 13px;
+    }
+
+}
+
+/* ======================================================
+   Filter Section
+====================================================== */
+
+.filterSection {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 48px 24px;
+}
+
+.filterContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.filterChips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* ======================================================
+   Filter Chip
+====================================================== */
+
+.filterChip {
+    padding: 8px 18px;
+
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-secondary);
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: all var(--transition);
+}
+
+.filterChip:hover {
+    color: var(--cyan);
+    border-color: rgba(34, 211, 238, 0.4);
+    background: rgba(34, 211, 238, 0.08);
+    transform: translateY(-2px);
+}
+
+.activeFilter {
+    color: #fff;
+    font-weight: 700;
+
+    border-color: transparent;
+
+    background: var(--gradient-primary);
+
+    box-shadow: 0 4px 14px rgba(34, 211, 238, 0.28);
+}
+
+.activeFilter:hover {
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* ======================================================
+   Filter Info
+====================================================== */
+
+.filterInfo {
+    margin-left: auto;
+
+    font-size: 13px;
+    color: var(--text-muted);
+
+    white-space: nowrap;
+}
+
+/* ======================================================
+   Responsive
+====================================================== */
+
+@media (max-width: 992px) {
+
+    .filterSection {
+        padding: 0 32px 24px;
+    }
+
+    .filterContainer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .filterInfo {
+        margin-left: 0;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .filterSection {
+        padding: 0 20px 20px;
+    }
+
+    .filterChips {
+        width: 100%;
+    }
+
+}
+
+@media (max-width: 576px) {
+
+    .filterChip {
+        font-size: 12px;
+        padding: 8px 16px;
+    }
+
+    .filterInfo {
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+    }
+
+}
+
+/* ======================================================
+   Career Section
+====================================================== */
+
+.careerSection {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 48px;
+}
+
+/* ======================================================
+   Cards Grid
+====================================================== */
+
+.cardsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+
+    animation: fadeUp .4s ease;
+}
+
+/* ======================================================
+   Empty State
+====================================================== */
+
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 90px 20px;
+}
+
+.emptyIcon {
+    font-size: 56px;
+    margin-bottom: 20px;
+}
+
+.emptyTitle {
+    font-size: 22px;
+    font-weight: 700;
+
+    color: var(--text-color);
+
+    margin-bottom: 12px;
+}
+
+.emptyDescription {
+    color: var(--text-secondary);
+
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.clearSearchButton {
+    margin-top: 28px;
+
+    padding: 12px 28px;
+
+    border: none;
+    border-radius: var(--radius-md);
+
+    background: var(--gradient-primary);
+
+    color: #fff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all var(--transition);
+
+    box-shadow: 0 10px 25px rgba(34, 211, 238, 0.25);
+}
+
+.clearSearchButton:hover {
+    transform: translateY(-3px);
+
+    box-shadow: 0 15px 35px rgba(34, 211, 238, 0.35);
+}
+
+.clearSearchButton:active {
+    transform: scale(.97);
+}
+
+/* ======================================================
+   Responsive
+====================================================== */
+
+@media (max-width: 1400px) {
+
+    .cardsGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+}
+
+@media (max-width: 992px) {
+
+    .careerSection {
+        padding: 0 32px;
+    }
+
+    .cardsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .careerSection {
+        padding: 0 20px;
+    }
+
+    .cardsGrid {
+        gap: 16px;
+    }
+
+}
+
+@media (max-width: 576px) {
+
+    .cardsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .emptyState {
+        padding: 70px 10px;
+    }
+
+    .emptyIcon {
+        font-size: 48px;
+    }
+
+    .emptyTitle {
+        font-size: 20px;
+    }
+
+    .emptyDescription {
+        font-size: 14px;
+    }
+
+    .clearSearchButton {
+        width: 100%;
+        max-width: 260px;
+    }
+}
+
+/* ======================================================
+   Information Section
+====================================================== */
+
+.infoSection {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 28px 48px 36px;
+}
+
+.infoContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    text-align: center;
+}
+
+.infoIcon {
+    flex-shrink: 0;
+    color: var(--text-muted);
+}
+
+.infoText {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+/* ======================================================
+   Responsive
+====================================================== */
+
+@media (max-width: 768px) {
+
+    .infoSection {
+        padding: 24px 20px 32px;
+    }
+
+    .infoContainer {
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .infoText {
+        font-size: 12px;
+    }
+
+}
+
+@media (max-width: 576px) {
+
+    .infoContainer {
+        flex-direction: column;
+    }
+
+    .infoIcon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .infoText {
+        max-width: 320px;
+    }
+
+}
+
+/* ======================================================
+   Hero Illustration
+====================================================== */
+
+.heroIllustration {
+    position: relative;
+
+    width: 340px;
+    height: 200px;
+
+    flex-shrink: 0;
+}
+
+.roadSvg {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+}
+
+/* ======================================================
+   Road
+====================================================== */
+
+.roadGlow {
+    fill: none;
+
+    stroke: rgba(99, 102, 241, .35);
+
+    stroke-width: 18;
+    stroke-linecap: round;
+}
+
+.roadPath {
+    fill: none;
+
+    stroke: rgba(139, 92, 246, .5);
+
+    stroke-width: 4;
+
+    stroke-linecap: round;
+
+    stroke-dasharray: 8 6;
+
+    animation: roadPulse 2s ease-in-out infinite;
+}
+
+.roadOuterGlow {
+    fill: none;
+
+    stroke: rgba(99, 102, 241, .15);
+
+    stroke-width: 32;
+
+    stroke-linecap: round;
+}
+
+/* ======================================================
+   Floating Cards
+====================================================== */
+
+.floatCard {
+    position: absolute;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 44px;
+    height: 44px;
+
+    border-radius: 12px;
+
+    background: rgba(99, 102, 241, .18);
+
+    border: 1px solid rgba(139, 92, 246, .35);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    font-size: 18px;
+    animation:
+        floatB var(--duration) var(--delay) ease-in-out infinite;
+}
+
+.largeCard {
+    width: 58px;
+    height: 58px;
+
+    border-radius: 16px;
+
+    font-size: 24px;
+}
+
+/* ======================================================
+   Goal Flag
+====================================================== */
+
+.goalFlag {
+    position: absolute;
+
+    top: 5%;
+    left: 53%;
+
+    font-size: 24px;
+
+    animation:
+        floatB 2.8s .2s ease-in-out infinite;
+}
+
+/* ======================================================
+   Responsive
+====================================================== */
+
+@media (max-width:992px) {
+
+    .heroIllustration {
+        width: 300px;
+        height: 180px;
+    }
+
+}
+
+@media (max-width:768px) {
+
+    .heroIllustration {
+        width: 260px;
+        height: 160px;
+
+        margin: auto;
+    }
+
+    .largeCard {
+        width: 52px;
+        height: 52px;
+
+        font-size: 22px;
+    }
+
+}
+
+@media (max-width:576px) {
+
+    .heroIllustration {
+        display: none;
+    }
+
+}
+
+
+/* ======================================================
+   Card
+====================================================== */
+
+.careerCard {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    padding: 22px;
+
+    background: var(--card-color);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 18px;
+
+    transition: all var(--transition);
+
+    animation: cardIn .45s ease both;
+}
+
+.careerCard:hover {
+    transform: translateY(-6px);
+
+    background: var(--card-hover);
+
+    border-color: rgba(34, 211, 238, .25);
+
+    box-shadow: var(--shadow-lg);
+}
+
+/* ======================================================
+   Bookmark
+====================================================== */
+
+.bookmarkButton {
+    position: absolute;
+
+    top: 16px;
+    right: 16px;
+
+    background: transparent;
+
+    color: var(--text-muted);
+
+    font-size: 18px;
+
+    transition: all var(--transition);
+}
+
+.bookmarkButton:hover {
+    transform: scale(1.15);
+}
+
+.saved {
+    color: var(--cyan);
+}
+
+/* ======================================================
+   Header
+====================================================== */
+
+.cardHeader {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.iconWrapper {
+    width: 56px;
+    height: 56px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    font-size: 28px;
+
+    box-shadow: var(--shadow-sm);
+}
+
+.cardTitleSection {
+    display: flex;
+    flex-direction: column;
+}
+
+.cardTitle {
+    margin-bottom: 6px;
+
+    color: var(--text-color);
+
+    font-size: 17px;
+    font-weight: 800;
+
+    line-height: 1.3;
+}
+
+/* ======================================================
+   Salary
+====================================================== */
+
+.salaryRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+
+.salaryIndia {
+    color: var(--green);
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+.salaryDivider {
+    color: var(--text-muted);
+}
+
+.salaryGlobal {
+    color: var(--cyan);
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+/* ======================================================
+   Tags
+====================================================== */
+
+.tagContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag {
+    padding: 5px 12px;
+
+    border: 1px solid;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+/* ======================================================
+   Button
+====================================================== */
+
+.exploreButton {
+    margin-top: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    width: 100%;
+
+    padding: 12px;
+
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, .05);
+
+    border: 1px solid var(--border-color);
+
+    color: var(--text-color);
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: all var(--transition);
+}
+
+.exploreButton:hover {
+    background: rgba(255, 255, 255, .09);
+
+    border-color: rgba(34, 211, 238, .25);
+
+    transform: translateY(-2px);
+}
+
+.arrow {
+    font-size: 16px;
+
+    transition: transform .3s ease;
+}
+
+.exploreButton:hover .arrow {
+    transform: translateX(4px);
+}
+
+/* ======================================================
+   Responsive
+====================================================== */
+
+@media (max-width:768px) {
+
+    .careerCard {
+        padding: 20px;
+    }
+
+    .cardTitle {
+        font-size: 16px;
+    }
+
+}
+
+@media (max-width:576px) {
+
+    .careerCard {
+        padding: 18px;
+    }
+
+    .iconWrapper {
+        width: 52px;
+        height: 52px;
+
+        font-size: 24px;
+    }
+
+    .exploreButton {
+        font-size: 13px;
+    }
+
+}
+
+/* ======================================================
+   Demand Bar
+====================================================== */
+
+.demandBar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.label {
+    flex-shrink: 0;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.progressTrack {
+    flex: 1;
+
+    height: 6px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.progressFill {
+    width: var(--progress);
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: linear-gradient(90deg,
+            var(--cyan),
+            var(--progress-color));
+
+    animation: barIn .9s ease forwards;
+}
+
+.percentage {
+    min-width: 36px;
+
+    text-align: right;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* ======================================================
+   Responsive
+====================================================== */
+
+@media (max-width: 576px) {
+
+    .label {
+        font-size: 11px;
+    }
+
+    .percentage {
+        font-size: 11px;
+        min-width: 32px;
+    }
+
+    .progressTrack {
+        height: 5px;
+    }
+
+}
+
+/* ======================================================
+   Star
+====================================================== */
+
+.star {
+    position: absolute;
+
+    left: var(--x);
+    top: var(--y);
+
+    width: var(--size);
+    height: var(--size);
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, var(--opacity));
+
+    animation:
+        twinkle var(--duration) var(--delay) ease-in-out infinite;
+}

@@ -626,12 +626,14 @@ button {
 }
 
 .resultRow {
-    display: flex;
-    gap: 12px;
+    display: grid;
+    grid-template-columns: 2.2fr 3fr;
+    gap: 20px;
+    align-items: stretch;
     margin-bottom: 12px;
 }
 
-.atsCard {
+/* .atsCard {
     min-width: 270px;
 
     display: flex;
@@ -643,6 +645,18 @@ button {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 14px;
+} */
+
+.atsCard {
+    background: #151d2f;
+    border: 1px solid #2b3550;
+    border-radius: 18px;
+    padding: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
 }
 
 .atsTitle {
@@ -663,18 +677,23 @@ button {
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+
+    gap: 2px;
+    pointer-events: none;
 }
 
 .scoreValue {
-    font-size: 26px;
-    font-weight: 900;
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1;
 }
 
 .scoreOutOf {
-    font-size: 10px;
+    font-size: 11px;
     color: var(--sub);
+    line-height: 1;
 }
 
 .atsLabel {
@@ -684,11 +703,15 @@ button {
 }
 
 .atsMessage {
-    max-width: 140px;
-
-    font-size: 12px;
+    margin-top: 10px;
+    color: #aab3cf;
     line-height: 1.6;
-    color: var(--sub);
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
 }
 
 .detailsBtn {
@@ -719,6 +742,20 @@ button {
     display: flex;
     gap: 10px;
 }
+
+/* .metricCard {
+    background: #151d2f;
+    border: 1px solid #2b3550;
+    border-radius: 18px;
+
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    min-height: 170px;
+} */
 
 .statsRow {
     display: flex;

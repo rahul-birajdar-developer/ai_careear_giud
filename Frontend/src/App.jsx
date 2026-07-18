@@ -6,7 +6,7 @@ import AiLearningRoadMap from "./Component/AiLearningRoadMap";
 import AiResumeAnalyze from "./Component/AiResumeAnalyze";
 import AiTools from "./Component/AiTools";
 // import AppNavBar from './Component/AppNavbar'
-import CareerPaths from "./Component/CareerPaths";
+// import CareerPaths from "./Component/CareerPaths";
 // import Footer from "./Component/Footer";
 import HomePage from "./Component/HomePage";
 import CareerDetails from "./Component/CareerDetails";
@@ -21,6 +21,7 @@ import PublicLayout from "./context/publicLayout";
 import PrivateLayout from "./context/privateLayout";
 import AuthoLayout from "./context/AuthLayout";
 import ResumeAnalyze from "./Component/resumeAnalyze.jsx";
+import AiCareearPath from "./Component/AiCareearPath.jsx";
 function App() {
   return (
     <>
@@ -45,7 +46,7 @@ function App() {
           }
         >
           <Route path="/home" element={<HomePage />} />
-          <Route path="/careerpaths" element={<CareerPaths />} />
+          <Route path="/careerpaths" element={<AiCareearPath />} />
           <Route path="/resumeanalyze" element={<AiResumeAnalyze />} />
           <Route path="/skillgapanalyze" element={<SkillGapAnalyzer />} />
           <Route path="/resume" element={<ResumeAnalyze />} />

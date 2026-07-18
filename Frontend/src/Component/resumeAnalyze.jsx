@@ -86,36 +86,6 @@ function ScoreRing({
             </svg>
 
             {/* Score */}
-            <div
-                style={{
-                    position: "absolute",
-                    inset: 0,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}
-            >
-                <h2
-                    style={{
-                        margin: 0,
-                        fontSize: 32,
-                        fontWeight: 800,
-                        color: scoreColor,
-                    }}
-                >
-                    {progress}
-                </h2>
-
-                <span
-                    style={{
-                        fontSize: 12,
-                        color: C.sub,
-                    }}
-                >
-                    ATS Score
-                </span>
-            </div>
         </div>
     );
 }
@@ -284,7 +254,8 @@ export default function ResumeAnalyze() {
 
             console.log(response.data);
 
-            setAnalysis(response.data);
+            setAnalysis(response.data.data.resumeData);
+            console.log("Analysis : ", analysis)
 
             setShowNext(true);
 
@@ -576,20 +547,16 @@ export default function ResumeAnalyze() {
 
                             {/* ── ROW 1: ATS + 4 METRICS ── */}
                             <div className={`${styles.resultRow} fadeUp`}>
-
                                 {/* ATS Score */}
                                 <div className={styles.atsCard}>
-
                                     <div>
                                         <div className={styles.atsTitle}>ATS Score</div>
-
                                         <div className={styles.scoreWrapper}>
                                             <ScoreRing
                                                 score={analysis.atsScore}
                                                 size={110}
                                                 stroke={9}
                                             />
-
                                             <div className={styles.scoreContent}>
                                                 <div
                                                     className={styles.scoreValue}
@@ -597,14 +564,12 @@ export default function ResumeAnalyze() {
                                                 >
                                                     {analysis.atsScore}
                                                 </div>
-
                                                 <div className={styles.scoreOutOf}>
                                                     /100
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
                                     <div>
                                         <div
                                             className={styles.atsLabel}
@@ -612,22 +577,16 @@ export default function ResumeAnalyze() {
                                         >
                                             {analysis.atsLabel}
                                         </div>
-
                                         <div className={styles.atsMessage}>
                                             {analysis.atsMessage}
                                         </div>
-
                                         <button className={styles.detailsBtn}>
                                             View Details →
                                         </button>
                                     </div>
-
                                 </div>
-
                                 {/* Metric Cards */}
-
                                 <div className={styles.metricCards}>
-
                                     <MetricCard
                                         label="Keyword Match"
                                         value={`${analysis.keywordMatch.pct}%`}
@@ -636,7 +595,6 @@ export default function ResumeAnalyze() {
                                         barColor={metricColor(analysis.keywordMatch.color)}
                                         barPct={analysis.keywordMatch.pct}
                                     />
-
                                     <MetricCard
                                         label="Formatting"
                                         value={`${analysis.formatting.pct}%`}
@@ -645,7 +603,6 @@ export default function ResumeAnalyze() {
                                         barColor={metricColor(analysis.formatting.color)}
                                         barPct={analysis.formatting.pct}
                                     />
-
                                     <MetricCard
                                         label="Content Quality"
                                         value={`${analysis.contentQuality.pct}%`}
@@ -654,7 +611,6 @@ export default function ResumeAnalyze() {
                                         barColor={metricColor(analysis.contentQuality.color)}
                                         barPct={analysis.contentQuality.pct}
                                     />
-
                                     <MetricCard
                                         label="Skills Match"
                                         value={`${analysis.skillsMatch.pct}%`}
@@ -663,9 +619,7 @@ export default function ResumeAnalyze() {
                                         barColor={metricColor(analysis.skillsMatch.color)}
                                         barPct={analysis.skillsMatch.pct}
                                     />
-
                                 </div>
-
                             </div>
 
                             {/* ── ROW 2: STAT PILLS ── */}
