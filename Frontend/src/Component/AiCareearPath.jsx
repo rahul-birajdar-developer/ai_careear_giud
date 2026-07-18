@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "../CSS/AiCarrearPath.module.css"
+import { STARS } from "../utils/generateStar";
 
 /* ── PALETTE ─────────────────────────────────────────────── */
 
@@ -95,18 +96,6 @@ const CAREERS = [
     },
 ];
 
-const STARS = useMemo(
-    () =>
-        Array.from({ length: 18 }, () => ({
-            x: 10 + Math.random() * 80,
-            y: 5 + Math.random() * 90,
-            size: 2 + Math.random() * 3,
-            opacity: 0.3 + Math.random() * 0.4,
-            duration: 2 + Math.random() * 2,
-            delay: Math.random() * 3,
-        })),
-    []
-);
 const FILTERS = ["All", "Engineering", "Design", "Data", "Management", "Security", "Cloud"];
 
 /* ── STAR SVG ────────────────────────────────────────────── */
@@ -357,22 +346,44 @@ export default function AiCareearPath() {
 
     /* filter logic */
     useEffect(() => {
-        const q = query.toLowerCase().trim();
-        const FILTER_MAP = {
-            Engineering: ["AI / ML Engineer", "DevOps Engineer", "Full Stack Developer", "Cloud Architect"],
+        const searchQuery = query.toLowerCase().trim();
+
+        const filterMap = {
+            Engineering: [
+                "AI / ML Engineer",
+                "DevOps Engineer",
+                "Full Stack Developer",
+                "Cloud Architect",
+            ],
             Design: ["UX / UI Designer"],
             Data: ["Data Scientist", "AI / ML Engineer"],
             Management: ["Product Manager"],
             Security: ["Cybersecurity Analyst"],
             Cloud: ["Cloud Architect", "DevOps Engineer"],
         };
-        let pool = careers;
-        if (active !== "All") pool = pool.filter(c => FILTER_MAP[active]?.includes(c.title));
-        if (q) pool = pool.filter(c =>
-            c.title.toLowerCase().includes(q) ||
-            c.tags.some(t => t.toLowerCase().includes(q))
-        );
-        setFiltered(pool);
+
+        let filteredCareers = [...careers];
+
+        // Category Filter
+        if (active !== "All") {
+            filteredCareers = filteredCareers.filter((career) =>
+                filterMap[active]?.includes(career.title)
+            );
+        }
+
+        // Search Filter
+        if (searchQuery) {
+            filteredCareers = filteredCareers.filter(
+                (career) =>
+                    career.title.toLowerCase().includes(searchQuery) ||
+                    career.tags.some((tag) =>
+                        tag.toLowerCase().includes(searchQuery)
+                    )
+            );
+        }
+
+        setFiltered(filteredCareers);
+
     }, [query, active, careers]);
 
     const handleSearch = (e) => {
