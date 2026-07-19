@@ -1,6 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
-import AppNavBar from "../Component/AppNavbar";
-import Footer from "../Component/Footer";
+import AppNavBar from "../pages/AppNavbar";
+import Footer from "../pages/Footer";
 
 const PrivateLayout = () => {
     const location = useLocation();
