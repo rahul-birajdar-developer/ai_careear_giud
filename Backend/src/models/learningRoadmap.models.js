@@ -121,6 +121,26 @@ const roadmapSchema = new Schema(
             type: String,
             required: true,
         },
+        careerGoal: {
+            type: String,
+            required: true,
+        },
+
+        weeklyHours: {
+            type: String,
+            required: true,
+        },
+
+        preferredDuration: {
+            type: String,
+            required: true,
+        },
+
+        focusAreas: [
+            {
+                type: String,
+            },
+        ],
     },
     {
         timestamps: true,

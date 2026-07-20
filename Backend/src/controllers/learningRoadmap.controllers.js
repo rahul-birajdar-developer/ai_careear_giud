@@ -14,22 +14,33 @@ const learningRoadmap = asyncHandler(async (req, res, next) => {
     if (!goal || !exp || !hours || !duration || !focus) {
         throw new ApiErrorHandling(400, "All Field Are Required !!")
     }
-    console.log({
-        goal,
-        exp,
-        hours,
-        duration,
-        focus,
-    });
+    // console.log({
+    //     goal,
+    //     exp,
+    //     hours,
+    //     duration,
+    //     focus,
+    // });
     const getRoadmap = generateRoadmap({ goal, exp, hours, duration, focus });
-    console.log(getRoadmap);
+    // console.log(getRoadmap);
 
     const roadmapData = await Roadmap.create({
         user: req.user._id,
-        goal: goal,
-        experience: exp,
-        estimatedTime: duration,
-        ...getRoadmap,
+        goal: getRoadmap.goal,
+        experience: getRoadmap.experience,
+        estimatedTime: getRoadmap.estimatedTime,
+        weeklyCommitment: getRoadmap.weeklyCommitment,
+        totalTopics: getRoadmap.totalTopics,
+        totalResources: getRoadmap.totalResources,
+        totalProjects: getRoadmap.totalProjects,
+        stages: getRoadmap.stages,
+        finalGoal: getRoadmap.finalGoal,
+        proTip: getRoadmap.proTip,
+        //user input
+        careerGoal: goal,
+        weeklyHours: hours,
+        preferredDuration: duration,
+        focusAreas: focus
     })
 
     return res.status(200).json(
