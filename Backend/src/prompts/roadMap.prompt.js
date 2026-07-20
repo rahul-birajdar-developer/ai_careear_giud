@@ -1,3 +1,4 @@
+
 const learningRoadmap = ({ goal, exp, hours, duration, focus }) => `
 You are an expert AI Career Coach.
 
@@ -8,7 +9,7 @@ User Details:
 - Experience Level: ${exp}
 - Weekly Commitment: ${hours}
 - Preferred Duration: ${duration}
-- Focus Areas: ${focus.join(", ")}
+- Focus Areas: ${Array.isArray(focus) ? focus.join(", ") : focus}
 
 IMPORTANT RULES
 
