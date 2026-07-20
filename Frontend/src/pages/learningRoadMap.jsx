@@ -339,28 +339,28 @@ export default function LearningRoadMap() {
             formData.append("duration", duration);
             formData.append("focus", focus)
             const res = api.post("/learning/roadmap", formData);
-            const d = await res.json();
-            const raw = d.content?.map(b => b.text || "").join("") || "";
-            const clean = raw.replace(/```json|```/g, "").trim();
-            setRoadmap(JSON.parse(clean));
+            // const d = await res.json();
+            // const raw = d.content?.map(b => b.text || "").join("") || "";
+            // const clean = raw.replace(/```json|```/g, "").trim();
+            setRoadmap(res.data);
         } catch (error) {
             console.log("Something Wrong : ", error)
             // fallback
-            setRoadmap({
-                goal, experience: exp,
-                estimatedTime: "6 - 9 Months", weeklyCommitment: "10 - 15 hours",
-                totalTopics: 78, totalResources: 45, totalProjects: 12,
-                stages: [
-                    { title: "Foundation - Web Basics", duration: "2-3 Weeks", desc: "Learn the fundamental building blocks of web development.", tags: ["HTML", "CSS", "JavaScript Basics", "Responsive Design", "Git & GitHub"], progress: 0, total: 12, resources: 8, projects: 1, subtopics: ["HTML5 Semantics", "CSS Flexbox", "CSS Grid", "Box Model", "JS Variables", "DOM Basics", "Git Basics", "GitHub Repo", "Media Queries", "Forms", "DevTools", "VS Code"] },
-                    { title: "Frontend Development", duration: "4-6 Weeks", desc: "Dive deep into JavaScript and modern frontend frameworks.", tags: ["JavaScript (ES6+)", "DOM Manipulation", "React.js", "State Management", "API Calls"], progress: 0, total: 18, resources: 12, projects: 2, subtopics: ["Arrow Functions", "Promises", "Async/Await", "Fetch API", "React Hooks", "useState", "useEffect", "Props", "React Router", "Context API", "Redux Basics", "Component Design", "Error Boundaries", "Lazy Loading", "Performance", "CSS Modules", "Styled Components", "Testing Basics"] },
-                    { title: "Backend Development", duration: "6-8 Weeks", desc: "Build server-side applications and RESTful APIs.", tags: ["Node.js", "Express.js", "REST APIs", "Authentication", "JWT"], progress: 0, total: 16, resources: 10, projects: 2, subtopics: ["Node Basics", "Express Setup", "Routing", "Middleware", "REST Conventions", "GET POST PUT DELETE", "JWT Tokens", "bcrypt Hashing", "Sessions", "Cookies", "Error Handling", "Logging", "API Rate Limiting", "Testing APIs", "Deployment", "Environment Variables"] },
-                    { title: "Database & Storage", duration: "3-4 Weeks", desc: "Learn databases and how to work with data efficiently.", tags: ["MongoDB", "SQL Basics", "Mongoose", "Data Modeling", "CRUD Operations"], progress: 0, total: 10, resources: 6, projects: 1, subtopics: ["SQL vs NoSQL", "MongoDB Atlas", "Mongoose Schema", "CRUD Operations", "Aggregation", "Indexes", "Relations", "PostgreSQL Basics", "Joins", "ORM Prisma", "Migrations", "Backups", "Redis Intro", "Connection Pooling"] },
-                    { title: "DevOps & Deployment", duration: "3-4 Weeks", desc: "Deploy your applications and learn DevOps best practices.", tags: ["Git Advanced", "CI/CD Basics", "Docker", "Cloud Deployment", "Nginx"], progress: 0, total: 8, resources: 5, projects: 1, subtopics: ["Docker Containers", "Docker Compose", "GitHub Actions", "Vercel Deploy", "AWS EC2 Basics", "Nginx Config", "SSL Certificates", "Environment Config", "PM2", "Logs", "Monitoring", "Health Checks"] },
-                    { title: "Advanced & Real World", duration: "2-3 Weeks", desc: "Advanced concepts and building real-world applications.", tags: ["Performance", "Security", "Testing", "Best Practices", "System Design"], progress: 0, total: 14, resources: 4, projects: 3, subtopics: ["Web Vitals", "Lighthouse", "Code Splitting", "Tree Shaking", "OWASP Top 10", "XSS Prevention", "CSRF", "Rate Limiting", "Unit Testing", "Integration Testing", "E2E Cypress", "System Design Basics", "Scalability", "Portfolio Building"] },
-                ],
-                finalGoal: `Build a complete portfolio and land your dream job as a ${goal}!`,
-                proTip: "Consistency is key! Follow the roadmap step by step and build real projects to master your skills.",
-            });
+            // setRoadmap({
+            //     goal, experience: exp,
+            //     estimatedTime: "6 - 9 Months", weeklyCommitment: "10 - 15 hours",
+            //     totalTopics: 78, totalResources: 45, totalProjects: 12,
+            //     stages: [
+            //         { title: "Foundation - Web Basics", duration: "2-3 Weeks", desc: "Learn the fundamental building blocks of web development.", tags: ["HTML", "CSS", "JavaScript Basics", "Responsive Design", "Git & GitHub"], progress: 0, total: 12, resources: 8, projects: 1, subtopics: ["HTML5 Semantics", "CSS Flexbox", "CSS Grid", "Box Model", "JS Variables", "DOM Basics", "Git Basics", "GitHub Repo", "Media Queries", "Forms", "DevTools", "VS Code"] },
+            //         { title: "Frontend Development", duration: "4-6 Weeks", desc: "Dive deep into JavaScript and modern frontend frameworks.", tags: ["JavaScript (ES6+)", "DOM Manipulation", "React.js", "State Management", "API Calls"], progress: 0, total: 18, resources: 12, projects: 2, subtopics: ["Arrow Functions", "Promises", "Async/Await", "Fetch API", "React Hooks", "useState", "useEffect", "Props", "React Router", "Context API", "Redux Basics", "Component Design", "Error Boundaries", "Lazy Loading", "Performance", "CSS Modules", "Styled Components", "Testing Basics"] },
+            //         { title: "Backend Development", duration: "6-8 Weeks", desc: "Build server-side applications and RESTful APIs.", tags: ["Node.js", "Express.js", "REST APIs", "Authentication", "JWT"], progress: 0, total: 16, resources: 10, projects: 2, subtopics: ["Node Basics", "Express Setup", "Routing", "Middleware", "REST Conventions", "GET POST PUT DELETE", "JWT Tokens", "bcrypt Hashing", "Sessions", "Cookies", "Error Handling", "Logging", "API Rate Limiting", "Testing APIs", "Deployment", "Environment Variables"] },
+            //         { title: "Database & Storage", duration: "3-4 Weeks", desc: "Learn databases and how to work with data efficiently.", tags: ["MongoDB", "SQL Basics", "Mongoose", "Data Modeling", "CRUD Operations"], progress: 0, total: 10, resources: 6, projects: 1, subtopics: ["SQL vs NoSQL", "MongoDB Atlas", "Mongoose Schema", "CRUD Operations", "Aggregation", "Indexes", "Relations", "PostgreSQL Basics", "Joins", "ORM Prisma", "Migrations", "Backups", "Redis Intro", "Connection Pooling"] },
+            //         { title: "DevOps & Deployment", duration: "3-4 Weeks", desc: "Deploy your applications and learn DevOps best practices.", tags: ["Git Advanced", "CI/CD Basics", "Docker", "Cloud Deployment", "Nginx"], progress: 0, total: 8, resources: 5, projects: 1, subtopics: ["Docker Containers", "Docker Compose", "GitHub Actions", "Vercel Deploy", "AWS EC2 Basics", "Nginx Config", "SSL Certificates", "Environment Config", "PM2", "Logs", "Monitoring", "Health Checks"] },
+            //         { title: "Advanced & Real World", duration: "2-3 Weeks", desc: "Advanced concepts and building real-world applications.", tags: ["Performance", "Security", "Testing", "Best Practices", "System Design"], progress: 0, total: 14, resources: 4, projects: 3, subtopics: ["Web Vitals", "Lighthouse", "Code Splitting", "Tree Shaking", "OWASP Top 10", "XSS Prevention", "CSRF", "Rate Limiting", "Unit Testing", "Integration Testing", "E2E Cypress", "System Design Basics", "Scalability", "Portfolio Building"] },
+            //     ],
+            //     finalGoal: `Build a complete portfolio and land your dream job as a ${goal}!`,
+            //     proTip: "Consistency is key! Follow the roadmap step by step and build real projects to master your skills.",
+            // });
         } finally {
             setLoading(false);
             setTimeout(() => rightRef.current?.scrollTo({ top: 0, behavior: "smooth" }), 100);
