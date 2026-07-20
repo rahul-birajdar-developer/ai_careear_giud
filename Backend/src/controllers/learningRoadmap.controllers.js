@@ -13,7 +13,8 @@ const learningRoadmap = asyncHandler(async (req, res, next) => {
     if (!goal || !exp || !hours || !duration || !focus) {
         throw new ApiErrorHandling(400, "All Field Are Required !!")
     }
-    const getRoadmap = generateRoadmap(goal, exp, hours, duration, focus)
+    const getRoadmap = generateRoadmap(goal, exp, hours, duration, focus);
+    console.log(getRoadmap);
     return res.status(200).json(
         new ApiResponse(200, getRoadmap, "Roadmap generated successfully")
     );
