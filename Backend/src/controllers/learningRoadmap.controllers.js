@@ -21,7 +21,7 @@ const learningRoadmap = asyncHandler(async (req, res, next) => {
     //     duration,
     //     focus,
     // });
-    const getRoadmap = generateRoadmap({ goal, exp, hours, duration, focus });
+    const getRoadmap = await generateRoadmap({ goal, exp, hours, duration, focus });
     console.log("getRoadmap:", getRoadmap);
     console.log("Type:", typeof getRoadmap);
 
