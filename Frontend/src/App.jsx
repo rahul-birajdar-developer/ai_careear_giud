@@ -3,13 +3,8 @@ import AiCoverLetterWriter from "./pages/AiCoverLetterWriter";
 import AiGuide from "./pages/AiGuide";
 import AiInterviewCoach from "./pages/AiInterviewCoach";
 import LearningRoadMap from "./pages/learningRoadMap.jsx";
-// import AiLearningRoadMap from "./pages/AiLearningRoadMap";
 import AiResumeAnalyze from "./pages/AiResumeAnalyze";
 import AllAiTools from "./pages/AllAiTools.jsx";
-// import AiTools from "./pages/AiTools";
-// import AppNavBar from './pages/AppNavbar'
-// import CareerPaths from "./pages/CareerPaths";
-// import Footer from "./pages/Footer";
 import HomePage from "./pages/HomePage";
 import CareerDetails from "./pages/CareerDetails";
 import LoginPage from "./pages/LoginPage";

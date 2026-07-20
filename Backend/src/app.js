@@ -5,6 +5,7 @@ import userRoute from "./routes/user.route.js"
 import resumeRouter from "./routes/resume.route.js"
 import skillGap from "./routes/skillGap.route.js"
 import coverLetter from "./routes/coverLatter.route.js"
+import roadmap from "./routes/learningRoadmap.route.js"
 
 const app = express();
 
@@ -47,5 +48,6 @@ app.use("/api/users", userRoute)
 app.use("/api/resume", resumeRouter);
 app.use("/api/skill-gap", skillGap)
 app.use("/api/coverLetter", coverLetter)
+app.use("/api/learning", roadmap)
 
 export default app;

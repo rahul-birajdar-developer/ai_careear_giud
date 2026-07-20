@@ -11,7 +11,7 @@ const PrivateLayout = () => {
 
             <Outlet />
 
-            {!["/interview", "/careerpaths", "/roadmap"].includes(location.pathname) && (
+            {!["/interview", "/careerpaths", "/roadmap", "/resume"].includes(location.pathname) && (
                 <Footer />
             )}
             {/* {location.pathname !== "/roadmap" && <Footer />} */}

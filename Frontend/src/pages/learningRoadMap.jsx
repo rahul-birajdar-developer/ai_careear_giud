@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import styles from "../CSS/learningRoadMap.module.css"
+import api from "../api/axios.js"
 
 /* ─── PALETTE ───────────────────────────────────────────── */
 const C = {
@@ -44,30 +45,93 @@ const TABS = [
 
 /* ─── HELPERS ───────────────────────────────────────────── */
 const Sel = ({ value, onChange, options, placeholder }) => (
-    <div className="sel-wrap" style={{ position: "relative" }}>
-        <select value={value} onChange={e => onChange(e.target.value)}
-            style={{ width: "100%", padding: "9px 34px 9px 12px", background: C.card, border: `1px solid ${C.border}`, borderRadius: 9, color: value ? C.text : C.sub, fontSize: 13, outline: "none" }}>
-            {placeholder && <option value="">{placeholder}</option>}
-            {options.map(o => <option key={o} value={o}>{o}</option>)}
+    <div className={styles.selWrap}>
+        <select
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            className={`${styles.select} ${!value ? styles.placeholder : ""}`}
+        >
+            {placeholder && (
+                <option value="">
+                    {placeholder}
+                </option>
+            )}
+
+            {options.map((o) => (
+                <option key={o} value={o}>
+                    {o}
+                </option>
+            ))}
         </select>
-        <svg style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={C.sub} strokeWidth="2.5" strokeLinecap="round"><path d="M6 9l6 6 6-6" /></svg>
+
+        <svg
+            className={styles.arrow}
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+        >
+            <path d="M6 9l6 6 6-6" />
+        </svg>
     </div>
 );
 
-const Tag = ({ label, color = "rgba(99,102,241,0.15)", text = C.indigoL, border = "rgba(99,102,241,0.25)" }) => (
-    <span style={{ display: "inline-block", fontSize: 11, fontWeight: 500, padding: "3px 10px", borderRadius: 20, background: color, color: text, border: `1px solid ${border}`, marginRight: 5, marginBottom: 4, whiteSpace: "nowrap" }}>{label}</span>
-);
+const Tag = ({
+    label,
+    color = "rgba(99,102,241,0.15)",
+    text = "var(--indigo-light)",
+    border = "rgba(99,102,241,0.25)"
+}) => {
+    return (
+        <span
+            className={styles.tag}
+            style={{
+                "--tag-bg": color,
+                "--tag-color": text,
+                "--tag-border": border,
+            }}
+        >
+            {label}
+        </span>
+    );
+};
 
 const Chip = ({ label, bg, color }) => (
-    <span style={{ display: "inline-block", fontSize: 10.5, fontWeight: 600, padding: "2px 9px", borderRadius: 6, background: bg, color, border: `1px solid ${color}30`, marginLeft: 8 }}>{label}</span>
+    <span
+        className={styles.chip}
+        style={{
+            "--chip-bg": bg,
+            "--chip-color": color,
+            "--chip-border": `${color}30`,
+        }}
+    >
+        {label}
+    </span>
 );
 
 const InfoCard = ({ icon, label, value, color }) => (
-    <div style={{ flex: 1, minWidth: 130, display: "flex", alignItems: "center", gap: 12, background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: "14px 16px" }}>
-        <div style={{ width: 38, height: 38, borderRadius: 10, background: `${color}18`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>{icon}</div>
-        <div>
-            <div style={{ fontSize: 11, color: C.sub, marginBottom: 3 }}>{label}</div>
-            <div style={{ fontSize: 14, fontWeight: 700, color }}>{value}</div>
+    <div
+        className={styles.statCard}
+        style={{
+            "--icon-bg": `${color}18`,
+            "--value-color": color,
+        }}
+    >
+        <div className={styles.statCardIcon}>
+            {icon}
+        </div>
+
+        <div className={styles.statCardContent}>
+            <div className={styles.statCardLabel}>
+                {label}
+            </div>
+
+            <div className={styles.statCardValue}>
+                {value}
+            </div>
         </div>
     </div>
 );
@@ -76,72 +140,165 @@ const InfoCard = ({ icon, label, value, color }) => (
 function StageRow({ stage, idx, color, icon, expanded, onToggle }) {
     const pct = stage.progress / stage.total * 100;
     return (
-        <div className="stage-row fade-in"
+        <div
+            className={`${styles.stageRow} ${styles.fadeIn}`}
             style={{
-                background: C.card, border: `1px solid ${C.border}`, borderRadius: 14, marginBottom: 10, overflow: "hidden",
-                animationDelay: `${idx * 0.07}s`
-            }}>
+                "--animation-delay": `${idx * 0.07}s`,
+            }}
+        >
 
             {/* main row */}
-            <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "18px 20px", cursor: "pointer" }} onClick={onToggle}>
+            <div
+                className={styles.stageHeader}
+                onClick={onToggle}
+            >
 
-                {/* step bubble */}
-                <div style={{ width: 36, height: 36, borderRadius: "50%", background: `linear-gradient(135deg,${color}CC,${color}66)`, border: `2px solid ${color}55`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 800, color: "#fff", flexShrink: 0 }}>{idx + 1}</div>
+                {/* Step Bubble */}
+                <div
+                    className={styles.stepBubble}
+                    style={{
+                        "--step-gradient": `linear-gradient(135deg, ${color}CC, ${color}66)`,
+                        "--step-border": `${color}55`,
+                    }}
+                >
+                    {idx + 1}
+                </div>
 
-                {/* stage icon */}
-                <div style={{ width: 46, height: 46, borderRadius: 12, background: `${color}18`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>{icon}</div>
+                {/* Stage Icon */}
+                <div
+                    className={styles.stageIcon}
+                    style={{
+                        "--icon-bg": `${color}18`,
+                    }}
+                >
+                    {icon}
+                </div>
 
-                {/* title + tags */}
-                <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 4, marginBottom: 5 }}>
-                        <span style={{ fontWeight: 700, fontSize: 15 }}>{stage.title}</span>
-                        <Chip label={stage.duration} bg={`${color}18`} color={color} />
+                {/* Title & Tags */}
+                <div className={styles.stageContent}>
+
+                    <div className={styles.stageTitleRow}>
+
+                        <span className={styles.stageTitle}>
+                            {stage.title}
+                        </span>
+
+                        <Chip
+                            label={stage.duration}
+                            bg={`${color}18`}
+                            color={color}
+                        />
+
                     </div>
-                    <p style={{ fontSize: 12.5, color: C.sub, marginBottom: 8 }}>{stage.desc}</p>
-                    <div style={{ display: "flex", flexWrap: "wrap" }}>
-                        {stage.tags.map(t => <Tag key={t} label={t} color={`${color}12`} text={color} border={`${color}28`} />)}
+
+                    <p className={styles.stageDescription}>
+                        {stage.desc}
+                    </p>
+
+                    <div className={styles.stageTags}>
+                        {stage.tags.map((t) => (
+                            <Tag
+                                key={t}
+                                label={t}
+                                color={`${color}12`}
+                                text={color}
+                                border={`${color}28`}
+                            />
+                        ))}
                     </div>
+
                 </div>
 
                 {/* progress + stats */}
-                <div style={{ minWidth: 160, flexShrink: 0 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
-                        <span style={{ fontSize: 11.5, color: C.sub }}>Progress</span>
-                        <span style={{ fontSize: 11.5, fontWeight: 600, color: C.sub }}>{stage.progress} / {stage.total}</span>
+                <div className={styles.progressSection}>
+
+                    <div className={styles.progressHeader}>
+                        <span className={styles.progressLabel}>
+                            Progress
+                        </span>
+
+                        <span className={styles.progressCount}>
+                            {stage.progress} / {stage.total}
+                        </span>
                     </div>
-                    <div style={{ width: "100%", height: 5, background: "rgba(255,255,255,0.07)", borderRadius: 3, overflow: "hidden", marginBottom: 10 }}>
-                        <div style={{ "--w": `${pct}%`, width: `${pct}%`, height: "100%", background: `linear-gradient(90deg,${color},${color}AA)`, borderRadius: 3, animation: "barIn .8s ease forwards" }} />
+
+                    <div className={styles.progressBar}>
+
+                        <div
+                            className={styles.progressFill}
+                            style={{
+                                "--progress-width": `${pct}%`,
+                                "--progress-gradient": `linear-gradient(90deg, ${color}, ${color}AA)`,
+                            }}
+                        />
+
                     </div>
-                    <div style={{ display: "flex", gap: 14 }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                            <span style={{ fontSize: 14 }}>📚</span>
+
+                    <div className={styles.stats}>
+
+                        <div className={styles.statItem}>
+
+                            <span className={styles.statIcon}>📚</span>
+
                             <div>
-                                <div style={{ fontSize: 11, color: C.muted }}>Resources</div>
-                                <div style={{ fontSize: 12, fontWeight: 700 }}>{stage.resources}</div>
+
+                                <div className={styles.statLabel}>
+                                    Resources
+                                </div>
+
+                                <div className={styles.statValue}>
+                                    {stage.resources}
+                                </div>
+
                             </div>
+
                         </div>
-                        <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                            <span style={{ fontSize: 14 }}>💡</span>
+
+                        <div className={styles.statItem}>
+
+                            <span className={styles.statIcon}>💡</span>
+
                             <div>
-                                <div style={{ fontSize: 11, color: C.muted }}>Projects</div>
-                                <div style={{ fontSize: 12, fontWeight: 700 }}>{stage.projects}</div>
+
+                                <div className={styles.statLabel}>
+                                    Projects
+                                </div>
+
+                                <div className={styles.statValue}>
+                                    {stage.projects}
+                                </div>
+
                             </div>
+
                         </div>
+
                     </div>
+
                 </div>
 
                 {/* chevron */}
-                <div style={{ color: C.muted, fontSize: 14, transition: "transform .25s", transform: expanded ? "rotate(180deg)" : "rotate(0deg)", flexShrink: 0 }}>▼</div>
+                <div
+                    className={`${styles.expandIcon} ${expanded ? styles.expanded : ""
+                        }`}
+                >
+                    ▼
+                </div>
             </div>
 
             {/* expanded detail */}
             {expanded && (
-                <div style={{ borderTop: `1px solid ${C.border}`, padding: "16px 20px 20px", background: C.cardB, animation: "fadeIn .25s ease" }}>
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))", gap: 10 }}>
+                <div className={styles.subtopicsSection}>
+                    <div className={styles.subtopicsGrid}>
                         {stage.subtopics?.map((s, i) => (
-                            <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 13px", background: C.card, border: `1px solid ${C.border}`, borderRadius: 10 }}>
-                                <div style={{ width: 7, height: 7, borderRadius: "50%", background: color, flexShrink: 0 }} />
-                                <span style={{ fontSize: 12.5, color: C.sub }}>{s}</span>
+                            <div
+                                key={i}
+                                className={styles.subtopicCard}
+                                style={{ "--dot-color": color }}
+                            >
+                                <div className={styles.subtopicDot} />
+                                <span className={styles.subtopicText}>
+                                    {s}
+                                </span>
                             </div>
                         ))}
                     </div>
@@ -172,54 +329,22 @@ export default function LearningRoadMap() {
     /* ── GENERATE ── */
     const generate = async () => {
         setLoading(true);
-        setRoadmap(null);
+        // setRoadmap(null);
         setExpanded({});
-
-        const prompt = `Create a career roadmap for: "${goal}" | Experience: ${exp} | Weekly hours: ${hours} | Duration: ${duration} | Focus areas: ${focus.join(", ")}.
-
-Return ONLY valid JSON (no markdown):
-{
-  "goal": "${goal}",
-  "experience": "${exp}",
-  "estimatedTime": "6 - 9 Months",
-  "weeklyCommitment": "10 - 15 hours",
-  "totalTopics": 78,
-  "totalResources": 45,
-  "totalProjects": 12,
-  "stages": [
-    {
-      "title": "Foundation - Web Basics",
-      "duration": "2-3 Weeks",
-      "desc": "Learn the fundamental building blocks of web development.",
-      "tags": ["HTML","CSS","JavaScript Basics","Responsive Design","Git & GitHub"],
-      "progress": 0,
-      "total": 12,
-      "resources": 8,
-      "projects": 1,
-      "subtopics": ["HTML5 Semantic Tags","CSS Flexbox & Grid","Box Model","Basic JS Variables","DOM Basics","Git Init & Commit","GitHub Repo","Responsive Units","Media Queries","Forms & Validation","Browser DevTools","VS Code Setup"]
-    }
-  ],
-  "finalGoal": "Build a complete portfolio and land your dream job as a ${goal}!",
-  "proTip": "Consistency is key! Follow the roadmap step by step and build real projects to master your skills."
-}
-
-Generate 6 realistic stages for ${goal} with ${exp} level. Each stage needs relevant tags, subtopics (8-14 items), realistic resource/project counts. Return only the JSON.`;
-
         try {
-            const res = await fetch("https://api.anthropic.com/v1/messages", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    model: "claude-sonnet-4-6",
-                    max_tokens: 1000,
-                    messages: [{ role: "user", content: prompt }],
-                }),
-            });
+            const formData = new FormData();
+            formData.append("goal", goal);
+            formData.append("exp", exp);
+            formData.append("hours", hours);
+            formData.append("duration", duration);
+            formData.append("focus", focus)
+            const res = api.post("/learning/roadmap", formData);
             const d = await res.json();
             const raw = d.content?.map(b => b.text || "").join("") || "";
             const clean = raw.replace(/```json|```/g, "").trim();
             setRoadmap(JSON.parse(clean));
-        } catch {
+        } catch (error) {
+            console.log("Something Wrong : ", error)
             // fallback
             setRoadmap({
                 goal, experience: exp,
