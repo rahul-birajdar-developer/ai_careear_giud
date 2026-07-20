@@ -42,8 +42,22 @@ Return this exact JSON structure:
       "tags": [],
       "progress": 0,
       "total": 0,
-      "resources": 0,
-      "projects": 0,
+      "resources": [
+  {
+    "title": "",
+    "type": "Documentation | YouTube | Course | Article | GitHub",
+    "url": ""
+  }
+]
+      "projects": [
+  {
+    "title": "",
+    "difficulty": "",
+    "description": "",
+    "estimatedTime": "",
+    "skills": []
+  }
+],
       "subtopics": []
     }
   ],
@@ -75,13 +89,33 @@ Stages:
   - progress = 0
   - total
   - resources
-  - projects
+  - 1-3 practical projects
   - 8-14 subtopics
+
+  Projects:
+
+For every stage generate 1-3 practical real-world projects.
+
+Each project must contain:
+
+- title
+- difficulty (Beginner, Intermediate, Advanced)
+- description
+- estimatedTime
+- skills (array of 3-6 skills)
+
+Rules:
+
+- Stage 1 projects should be beginner-friendly.
+- Each next stage should increase in complexity.
+- The final stage must include portfolio-quality projects suitable for interviews.
+- Do not repeat project ideas.
+- Projects must directly relate to the skills taught in that stage.
 
 Totals:
 - totalTopics = sum of all stage.total
 - totalResources = sum of all stage.resources
-- totalProjects = sum of all stage.projects
+- totalProjects = sum of stage.projects.length
 
 finalGoal:
 "Build a complete portfolio and land your dream job as a ${goal}!"

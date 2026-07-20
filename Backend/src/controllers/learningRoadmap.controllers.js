@@ -39,7 +39,10 @@ const learningRoadmap = asyncHandler(async (req, res, next) => {
         weeklyCommitment: getRoadmap.weeklyCommitment,
         totalTopics: getRoadmap.totalTopics,
         totalResources: getRoadmap.totalResources,
-        totalProjects: getRoadmap.totalProjects,
+        totalProjects: getRoadmap.stages.reduce(
+            (sum, stage) => sum + stage.projects.length,
+            0
+        ),
         stages: getRoadmap.stages,
         finalGoal: getRoadmap.finalGoal,
         proTip: getRoadmap.proTip,

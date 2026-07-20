@@ -35,6 +35,9 @@ const generateRoadmap = async ({ goal, exp, hours, duration, focus }) => {
     const roadmap = JSON.parse(clean);
 
     console.log("Parsed Roadmap:", roadmap);
+    console.log(roadmap.stages);
+    console.log(roadmap.stages[0].projects);
+    console.log(typeof roadmap.stages[0].projects);
 
     return roadmap;
 };

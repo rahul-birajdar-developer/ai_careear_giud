@@ -337,7 +337,8 @@ export default function LearningRoadMap() {
             // const raw = d.content?.map(b => b.text || "").join("") || "";
             // const clean = raw.replace(/```json|```/g, "").trim();
             console.log(res)
-            setRoadmap(res.data);
+            console.log("Responce Data : ", res.data)
+            setRoadmap(res.data.data);
         } catch (error) {
             console.log("Status:", error.response?.status);
             console.log("Response:", error.response?.data);
@@ -399,73 +400,58 @@ export default function LearningRoadMap() {
     /* ─── PROJECTS TAB ─── */
     const ProjectsTab = () => (
         <div className={`${styles.projectsGrid} fadeIn`}>
-            {roadmap?.stages
-                ?.flatMap((stage, stageIndex) =>
-                    Array.from({ length: stage.projects }).map((_, projectIndex) => ({
-                        stage,
-                        stageIndex,
-                        projectIndex,
-                    }))
-                )
-                .map(({ stage, stageIndex, projectIndex }, cardIndex) => (
-                    <div
-                        key={cardIndex}
-                        className={styles.projectCard}
-                    >
-                        <div className={styles.projectHeader}>
-                            <div
-                                className={styles.projectIcon}
-                                style={{ "--stage-color": STAGE_COLORS[stageIndex % 6] }}
-                            >
-                                {STAGE_ICONS[stageIndex % 6]}
-                            </div>
-
-                            <Chip
-                                label={`Stage ${stageIndex + 1}`}
-                                bg={`${STAGE_COLORS[stageIndex % 6]}18`}
-                                color={STAGE_COLORS[stageIndex % 6]}
-                            />
+            {roadmap?.stages?.flatMap((stage, stageIndex) =>
+                (stage.projects || []).map((project, projectIndex) => ({
+                    stage,
+                    stageIndex,
+                    project,
+                    projectIndex,
+                }))
+            ).map(({ stageIndex, project }, cardIndex) => (
+                <div
+                    key={`${stageIndex}-${cardIndex}`}
+                    className={styles.projectCard}
+                >
+                    <div className={styles.projectHeader}>
+                        <div
+                            className={styles.projectIcon}
+                            style={{ "--stage-color": STAGE_COLORS[stageIndex % 6] }}
+                        >
+                            {STAGE_ICONS[stageIndex % 6]}
                         </div>
 
-                        <h4 className={styles.projectTitle}>
-                            {
-                                [
-                                    "Portfolio Website",
-                                    "Todo App",
-                                    "REST API",
-                                    "Chat App",
-                                    "Dashboard",
-                                    "Admin Panel",
-                                    "E-commerce",
-                                    "Blog Platform",
-                                    "Weather App",
-                                    "Quiz App",
-                                    "Social App",
-                                    "Real-time Board",
-                                ][cardIndex % 12]
-                            }
-                        </h4>
-
-                        <p className={styles.projectDescription}>
-                            Build a{" "}
-                            {["beginner", "intermediate", "advanced"][projectIndex % 3]}{" "}
-                            project using {stage.tags[0]} and{" "}
-                            {stage.tags[1] || stage.tags[0]}.
-                        </p>
-
-                        <div className={styles.tagContainer}>
-                            {stage.tags.slice(0, 3).map((tag) => (
-                                <Tag
-                                    key={tag}
-                                    label={tag}
-                                    color={`${STAGE_COLORS[stageIndex % 6]}12`}
-                                    text={STAGE_COLORS[stageIndex % 6]}
-                                    border={`${STAGE_COLORS[stageIndex % 6]}28`}
-                                />
-                            ))}
-                        </div>
+                        <Chip
+                            label={project.difficulty}
+                            bg={`${STAGE_COLORS[stageIndex % 6]}18`}
+                            color={STAGE_COLORS[stageIndex % 6]}
+                        />
                     </div>
-                ))}
+
+                    <h4 className={styles.projectTitle}>
+                        {project.title}
+                    </h4>
+
+                    <p className={styles.projectDescription}>
+                        {project.description}
+                    </p>
+
+                    <p className={styles.projectTime}>
+                        ⏱ {project.estimatedTime}
+                    </p>
+
+                    <div className={styles.tagContainer}>
+                        {(project.skills || []).map((skill) => (
+                            <Tag
+                                key={skill}
+                                label={skill}
+                                color={`${STAGE_COLORS[stageIndex % 6]}12`}
+                                text={STAGE_COLORS[stageIndex % 6]}
+                                border={`${STAGE_COLORS[stageIndex % 6]}28`}
+                            />
+                        ))}
+                    </div>
+                </div>
+            ))}
         </div>
     );
 

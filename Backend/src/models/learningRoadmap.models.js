@@ -43,10 +43,32 @@ const stageSchema = new Schema(
             required: true,
         },
 
-        projects: {
-            type: Number,
-            required: true,
-        },
+        projects: [
+            {
+                title: {
+                    type: String,
+                    required: true
+                },
+                difficulty: {
+                    type: String,
+                    enum: ["Beginner", "Intermediate", "Advanced"],
+                    required: true
+                },
+                description: {
+                    type: String,
+                    required: true
+                },
+                estimatedTime: {
+                    type: String,
+                    required: true
+                },
+                skills: [
+                    {
+                        type: String
+                    }
+                ]
+            }
+        ],
 
         subtopics: [
             {
