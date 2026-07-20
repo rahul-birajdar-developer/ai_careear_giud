@@ -332,13 +332,7 @@ export default function LearningRoadMap() {
         // setRoadmap(null);
         setExpanded({});
         try {
-            const formData = new FormData();
-            formData.append("goal", goal);
-            formData.append("exp", exp);
-            formData.append("hours", hours);
-            formData.append("duration", duration);
-            formData.append("focus", focus)
-            const res = api.post("/learning/roadmap", formData);
+            const res = api.post("/learning/roadmap", goal, exp, hours, duration, focus);
             // const d = await res.json();
             // const raw = d.content?.map(b => b.text || "").join("") || "";
             // const clean = raw.replace(/```json|```/g, "").trim();
