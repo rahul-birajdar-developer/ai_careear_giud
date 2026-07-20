@@ -4,6 +4,6 @@ import { learningRoadmap } from "../controllers/learningRoadmap.controllers.js";
 
 const route = Router();
 
-route("/roadmap").post(verifyJwt, learningRoadmap)
+route.route("/roadmap").post(verifyJwt, learningRoadmap)
 
 export default route;
