@@ -332,7 +332,7 @@ export default function LearningRoadMap() {
         // setRoadmap(null);
         setExpanded({});
         try {
-            const res = api.post("/learning/roadmap", goal, exp, hours, duration, focus);
+            const res = api.post("/learning/roadmap", { goal, exp, hours, duration, focus });
             // const d = await res.json();
             // const raw = d.content?.map(b => b.text || "").join("") || "";
             // const clean = raw.replace(/```json|```/g, "").trim();

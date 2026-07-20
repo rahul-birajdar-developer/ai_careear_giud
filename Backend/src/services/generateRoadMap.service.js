@@ -5,8 +5,8 @@ const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY,
 });
 
-const generateRoadmap = async (roadmapData) => {
-    const prompt = learningRoadmap(roadmapData)
+const generateRoadmap = async ({ goal, exp, hours, duration, focus }) => {
+    const prompt = learningRoadmap(goal, exp, hours, duration, focus)
     const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
         contents: prompt,
