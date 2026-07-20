@@ -22,7 +22,8 @@ const learningRoadmap = asyncHandler(async (req, res, next) => {
     //     focus,
     // });
     const getRoadmap = generateRoadmap({ goal, exp, hours, duration, focus });
-    // console.log(getRoadmap);
+    console.log("getRoadmap:", getRoadmap);
+    console.log("Type:", typeof getRoadmap);
 
     const roadmapData = await Roadmap.create({
         user: req.user._id,

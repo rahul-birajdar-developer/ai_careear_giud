@@ -6,14 +6,37 @@ const ai = new GoogleGenAI({
 });
 
 const generateRoadmap = async ({ goal, exp, hours, duration, focus }) => {
-    const prompt = learningRoadmap({goal, exp, hours, duration, focus})
+    const prompt = learningRoadmap({
+        goal,
+        exp,
+        hours,
+        duration,
+        focus,
+    });
+
     const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
         contents: prompt,
     });
-    console.log(response.text);
 
-    return response.text;
-}
+    // Depending on the SDK version, response.text may be a method or property.
+    const raw =
+        typeof response.text === "function"
+            ? response.text()
+            : response.text;
+
+    console.log("Raw Gemini Response:\n", raw);
+
+    const clean = raw
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
+
+    const roadmap = JSON.parse(clean);
+
+    console.log("Parsed Roadmap:", roadmap);
+
+    return roadmap;
+};
 
 export default generateRoadmap;
