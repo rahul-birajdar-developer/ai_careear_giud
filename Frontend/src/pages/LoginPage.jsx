@@ -6,8 +6,7 @@ import { Auth } from "../context/AuthContext.jsx";
 
 function LoginPage() {
     const { setUser } = Auth();
-    const auth = Auth()
-    console.log("Login Auth:", auth);
+    // console.log("Login Auth:", auth);
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(true);
     const [conformPassowrd, setConformPassword] = useState("");
