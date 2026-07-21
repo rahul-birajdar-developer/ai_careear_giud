@@ -42,27 +42,21 @@ Return this exact JSON structure:
       "tags": [],
       "progress": 0,
       "total": 0,
-      "resources": [
-  {
-    "title": "",
-    "type": "Documentation | YouTube | Course | Article | GitHub",
-    "url": ""
-  }
-]
-      "projects": [
-  {
-    "title": "",
-    "difficulty": "",
-    "description": "",
-    "estimatedTime": "",
-    "skills": []
-  }
-],
+    "resources": [{
+      "title": "",
+      "type": "Documentation | YouTube | Course | Article | GitHub",
+      "url": ""
+    }]
+  "projects": [{
+      "title": "",
+      "difficulty": "",
+      "description": "",
+      "estimatedTime": "",
+      "skills": []
+    }],
       "subtopics": []
-    }
-  ],
-  "finalGoal": "",
-  "proTip": ""
+      "finalGoal": "",
+      "proTip": ""
 }
 
 Requirements:
