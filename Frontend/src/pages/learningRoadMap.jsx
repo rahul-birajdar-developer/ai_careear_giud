@@ -336,8 +336,9 @@ export default function LearningRoadMap() {
             // const d = await res.json();
             // const raw = d.content?.map(b => b.text || "").join("") || "";
             // const clean = raw.replace(/```json|```/g, "").trim();
-            console.log(res)
-            console.log("Responce Data : ", res.data)
+            console.log("Roadmap:", roadmap);
+            console.log("Stage 1 Projects:", roadmap?.stages?.[0]?.projects);
+            console.log("First Project:", roadmap?.stages?.[0]?.projects?.[0]);
             setRoadmap(res.data.data);
         } catch (error) {
             console.log("Status:", error.response?.status);

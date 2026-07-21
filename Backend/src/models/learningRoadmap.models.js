@@ -38,10 +38,22 @@ const stageSchema = new Schema(
             required: true,
         },
 
-        resources: {
-            type: Number,
-            required: true,
-        },
+        resources: [
+            {
+                title: {
+                    type: String,
+                    required: true,
+                },
+                type: {
+                    type: String,
+                    required: true,
+                },
+                url: {
+                    type: String,
+                    required: true,
+                },
+            },
+        ],
 
         projects: [
             {
