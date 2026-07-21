@@ -247,7 +247,7 @@ function StageRow({ stage, idx, color, icon, expanded, onToggle }) {
                                 </div>
 
                                 <div className={styles.statValue}>
-                                    {stage.resources}
+                                    {stage.resources?.length || 0}
                                 </div>
 
                             </div>
@@ -265,7 +265,7 @@ function StageRow({ stage, idx, color, icon, expanded, onToggle }) {
                                 </div>
 
                                 <div className={styles.statValue}>
-                                    {stage.projects}
+                                    {stage.projects?.length || 0}
                                 </div>
 
                             </div>
@@ -332,14 +332,14 @@ export default function LearningRoadMap() {
         // setRoadmap(null);
         setExpanded({});
         try {
-            const res = await api.post("/learning/roadmap", { goal, exp, hours, duration, focus });
+            const roadmap = await api.post("/learning/roadmap", { goal, exp, hours, duration, focus });
             // const d = await res.json();
             // const raw = d.content?.map(b => b.text || "").join("") || "";
             // const clean = raw.replace(/```json|```/g, "").trim();
-            console.log("Roadmap:", roadmap);
-            console.log("Stage 1 Projects:", roadmap?.stages?.[0]?.projects);
-            console.log("First Project:", roadmap?.stages?.[0]?.projects?.[0]);
-            setRoadmap(res.data.data);
+            // console.log("Roadmap:", roadmap.data.data);
+            // console.log("Stage 1 Projects:", roadmap?.stages?.[0]?.projects);
+            // console.log("First Project:", roadmap?.stages?.[0]?.projects?.[0]);
+            setRoadmap(roadmap.data.data);
         } catch (error) {
             console.log("Status:", error.response?.status);
             console.log("Response:", error.response?.data);
@@ -364,33 +364,42 @@ export default function LearningRoadMap() {
                         {stage.title}
                     </h4>
 
-                    {Array.from({ length: Math.min(3, stage.resources) }).map((_, resourceIndex) => (
+                    {(stage.resources || []).map((resource, resourceIndex) => (
                         <div
                             key={resourceIndex}
                             className={styles.resourceCard}
                         >
                             <span className={styles.resourceIcon}>
-                                {"📹📄📖"[resourceIndex]}
+                                {resource.type === "YouTube"
+                                    ? "📹"
+                                    : resource.type === "Documentation"
+                                        ? "📄"
+                                        : resource.type === "Course"
+                                            ? "🎓"
+                                            : "📚"}
                             </span>
 
                             <div className={styles.resourceContent}>
                                 <h5 className={styles.resourceTitle}>
-                                    {["Video Course", "Documentation", "Tutorial Article"][resourceIndex]} — {stage.title}
+                                    {resource.title}
                                 </h5>
 
                                 <p className={styles.resourceMeta}>
-                                    Free · {["YouTube", "Official Docs", "Dev.to"][resourceIndex]}
+                                    {resource.type}
                                 </p>
                             </div>
 
-                            <button
+                            <a
+                                href={resource.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className={styles.openBtn}
                                 style={{
-                                    "--stage-color": STAGE_COLORS[stageIndex % 6]
+                                    "--stage-color": STAGE_COLORS[stageIndex % 6],
                                 }}
                             >
                                 Open →
-                            </button>
+                            </a>
                         </div>
                     ))}
                 </div>
@@ -508,8 +517,8 @@ export default function LearningRoadMap() {
                             className={styles.timelineFooter}
                             style={{ "--stage-color": STAGE_COLORS[index % 6] }}
                         >
-                            ✓ Complete {stage.total} topics · Build {stage.projects} project
-                            {stage.projects > 1 ? "s" : ""}
+                            ✓ Complete {stage.total} topics · Build {stage.projects?.length || 0} project
+                            {(stage.projects?.length || 0) > 1 ? "s" : ""}
                         </div>
                     </div>
                 </div>

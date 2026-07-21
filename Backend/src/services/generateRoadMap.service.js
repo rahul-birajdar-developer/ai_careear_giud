@@ -25,7 +25,7 @@ const generateRoadmap = async ({ goal, exp, hours, duration, focus }) => {
             ? response.text()
             : response.text;
 
-    console.log("Raw Gemini Response:\n", raw);
+    // console.log("Raw Gemini Response:\n", raw);
 
     const clean = raw
         .replace(/```json/g, "")
@@ -34,10 +34,10 @@ const generateRoadmap = async ({ goal, exp, hours, duration, focus }) => {
 
     const roadmap = JSON.parse(clean);
 
-    console.log("Parsed Roadmap : ", roadmap);
-    console.log("Roadmap Stages : ", roadmap.stages);
-    console.log("Roadmap Stage Project : ", roadmap.stages[0].projects);
-    console.log("Roadmap Type : ", typeof roadmap.stages[0].projects);
+    // console.log("Parsed Roadmap : ", roadmap);
+    // console.log("Roadmap Stages : ", roadmap.stages);
+    // console.log("Roadmap Stage Project : ", roadmap.stages[0].projects);
+    // console.log("Roadmap Type : ", typeof roadmap.stages[0].projects);
 
     return roadmap;
 };
