@@ -84,8 +84,15 @@ const stageSchema = new Schema(
 
         subtopics: [
             {
-                type: String,
-                trim: true,
+                title: {
+                    type: String,
+                    required: true,
+                    trim: true,
+                },
+                completed: {
+                    type: Boolean,
+                    default: false,
+                },
             },
         ],
     },

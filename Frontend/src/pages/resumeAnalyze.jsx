@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 import styles from "../CSS/resumeAnalyze.module.css"
 import api from "../api/axios.js"
+import { FaCheckCircle } from "react-icons/fa";
 
 /* ── PALETTE (from screenshot) ──────────────────────────── */
 const C = {
@@ -105,22 +106,6 @@ function Bar({ pct, color }) {
     );
 }
 
-/* ── TAG ─────────────────────────────────────────────────── */
-function Tag({ label, color = "rgba(99,102,241,0.15)", text = "#818CF8", border = "rgba(99,102,241,0.3)" }) {
-    return (
-        <span
-            className={styles.tag}
-            style={{
-                background: color,
-                border: `1px solid ${border}`,
-                color: text,
-            }}
-        >
-            {label}
-        </span>
-    );
-}
-
 /* ── STAT PILL ───────────────────────────────────────────── */
 function StatPill({ icon, label, value, color }) {
     return (
@@ -145,11 +130,28 @@ function StatPill({ icon, label, value, color }) {
     );
 }
 
+/* ── TAG ─────────────────────────────────────────────────── */
+function Tag({ label, color = "rgba(99,102,241,0.15)", text = "#818CF8", border = "rgba(99,102,241,0.3)" }) {
+    return (
+        <span
+            className={styles.tag}
+            style={{
+                background: color,
+                border: `1px solid ${border}`,
+                color: text,
+            }}
+        >
+            {label}
+        </span>
+    );
+}
+
+
 /* ── SECTION CARD ────────────────────────────────────────── */
 function SCard({ title, icon, iconColor, children, style = {} }) {
     return (
         <div
-            className={styles.sCard}
+            className={styles.card}
             style={style}
         >
             <div className={styles.sCardHeader}>
@@ -159,12 +161,10 @@ function SCard({ title, icon, iconColor, children, style = {} }) {
                 >
                     {icon}
                 </span>
-
                 <span className={styles.sCardTitle}>
                     {title}
                 </span>
             </div>
-
             {children}
         </div>
     );
@@ -248,7 +248,7 @@ export default function ResumeAnalyze() {
 
             formData.append("resumeFile", file);
             formData.append("role", role);
-            console.log(role, " ", file)
+            // console.log(role, " ", file)
 
             const response = await api.post("/resume/upload", formData);
 
@@ -291,6 +291,24 @@ export default function ResumeAnalyze() {
             <div style={{ fontSize: 6.5, color: "#718096" }}>Built a responsive portfolio using HTML, CSS, and JavaScript...</div>
         </div>
     );
+
+    const getColor = (score) => {
+        if (score >= 80) return "#22c55e"; // Green
+        if (score >= 60) return "#facc15"; // Yellow
+        return "#ef4444"; // Red
+    };
+
+
+    //Improve component
+    const scores = [
+        { title: "Professional Summary", score: 72 },
+        { title: "Skills", score: 91 },
+        { title: "Projects", score: 84 },
+        { title: "Experience", score: 48 },
+        { title: "Education", score: 95 },
+        { title: "Formatting", score: 62 },
+        { title: "Keywords", score: 72 },
+    ];
 
     /* ─────────────────────────────────────────────────────── */
     return (
@@ -669,7 +687,53 @@ export default function ResumeAnalyze() {
 
                             {/* ── ROW 3: STRENGTHS + MISSING ── */}
                             <div className={`${styles.skillGrid} fadeUp2`}>
-                                <SCard
+
+                                <div className={styles.card}>
+                                    <div className={styles.header}>
+                                        <span className={styles.badge}>4</span>
+                                        <h3>Section-wise Score</h3>
+                                    </div>
+
+                                    {scores.map((item, index) => (
+                                        <div key={index} className={styles.item}>
+                                            <div className={styles.title}>
+                                                <span>{item.title}</span>
+                                                <span>{item.score}%</span>
+                                            </div>
+
+                                            <div className={styles.progress}>
+                                                <div
+                                                    className={styles.progressFill}
+                                                    style={{
+                                                        width: `${item.score}%`,
+                                                        backgroundColor: getColor(item.score),
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className={styles.card}>
+                                    <h3 className={styles.strenghtTitle}>
+                                        <span className={styles.badge}>5</span>
+                                        Strengths
+                                    </h3>
+
+                                    <div className={styles.list}>
+                                        <div className={styles.items}>
+                                            <FaCheckCircle className={styles.icon} />
+                                            <span className={styles.text}>Good technical skills in frontend development.</span>
+                                            <FaCheckCircle className={styles.icon} />
+                                            <span className={styles.text}>Good technical skills in frontend development.</span><FaCheckCircle className={styles.icon} />
+                                            <span className={styles.text}>Good technical skills in frontend development.</span><FaCheckCircle className={styles.icon} />
+                                            <span className={styles.text}>Good technical skills in frontend development.</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Strengths */}
+                                {/* <SCard
                                     title="Strengths"
                                     icon="✅"
                                     iconColor="var(--green)"
@@ -685,8 +749,9 @@ export default function ResumeAnalyze() {
                                             />
                                         ))}
                                     </div>
-                                </SCard>
+                                </SCard> */}
 
+                                {/* Weekness */}
                                 <SCard
                                     title="Missing Skills"
                                     icon="⚡"

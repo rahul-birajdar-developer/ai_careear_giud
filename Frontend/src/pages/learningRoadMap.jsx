@@ -136,7 +136,7 @@ const InfoCard = ({ icon, label, value, color }) => (
     </div>
 );
 
-/* ─── STAGE ROW ─────────────────────────────────────────── */
+/* ────────── STAGE ROW ───────────── */
 function StageRow({ stage, idx, color, icon, expanded, onToggle }) {
     const pct = stage.progress / stage.total * 100;
     return (
@@ -146,13 +146,11 @@ function StageRow({ stage, idx, color, icon, expanded, onToggle }) {
                 "--animation-delay": `${idx * 0.07}s`,
             }}
         >
-
             {/* main row */}
             <div
                 className={styles.stageHeader}
                 onClick={onToggle}
             >
-
                 {/* Step Bubble */}
                 <div
                     className={styles.stepBubble}
@@ -163,7 +161,6 @@ function StageRow({ stage, idx, color, icon, expanded, onToggle }) {
                 >
                     {idx + 1}
                 </div>
-
                 {/* Stage Icon */}
                 <div
                     className={styles.stageIcon}
@@ -173,28 +170,24 @@ function StageRow({ stage, idx, color, icon, expanded, onToggle }) {
                 >
                     {icon}
                 </div>
-
                 {/* Title & Tags */}
                 <div className={styles.stageContent}>
-
                     <div className={styles.stageTitleRow}>
-
+                        <input
+                            type="checkbox"
+                        />
                         <span className={styles.stageTitle}>
                             {stage.title}
                         </span>
-
                         <Chip
                             label={stage.duration}
                             bg={`${color}18`}
                             color={color}
                         />
-
                     </div>
-
                     <p className={styles.stageDescription}>
                         {stage.desc}
                     </p>
-
                     <div className={styles.stageTags}>
                         {stage.tags.map((t) => (
                             <Tag
@@ -206,24 +199,18 @@ function StageRow({ stage, idx, color, icon, expanded, onToggle }) {
                             />
                         ))}
                     </div>
-
                 </div>
-
                 {/* progress + stats */}
                 <div className={styles.progressSection}>
-
                     <div className={styles.progressHeader}>
                         <span className={styles.progressLabel}>
                             Progress
                         </span>
-
                         <span className={styles.progressCount}>
                             {stage.progress} / {stage.total}
                         </span>
                     </div>
-
                     <div className={styles.progressBar}>
-
                         <div
                             className={styles.progressFill}
                             style={{
@@ -231,51 +218,32 @@ function StageRow({ stage, idx, color, icon, expanded, onToggle }) {
                                 "--progress-gradient": `linear-gradient(90deg, ${color}, ${color}AA)`,
                             }}
                         />
-
                     </div>
-
                     <div className={styles.stats}>
-
                         <div className={styles.statItem}>
-
                             <span className={styles.statIcon}>📚</span>
-
                             <div>
-
                                 <div className={styles.statLabel}>
                                     Resources
                                 </div>
-
                                 <div className={styles.statValue}>
                                     {stage.resources?.length || 0}
                                 </div>
-
                             </div>
-
                         </div>
-
                         <div className={styles.statItem}>
-
                             <span className={styles.statIcon}>💡</span>
-
                             <div>
-
                                 <div className={styles.statLabel}>
                                     Projects
                                 </div>
-
                                 <div className={styles.statValue}>
                                     {stage.projects?.length || 0}
                                 </div>
-
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
                 {/* chevron */}
                 <div
                     className={`${styles.expandIcon} ${expanded ? styles.expanded : ""
@@ -284,7 +252,6 @@ function StageRow({ stage, idx, color, icon, expanded, onToggle }) {
                     ▼
                 </div>
             </div>
-
             {/* expanded detail */}
             {expanded && (
                 <div className={styles.subtopicsSection}>
@@ -295,7 +262,11 @@ function StageRow({ stage, idx, color, icon, expanded, onToggle }) {
                                 className={styles.subtopicCard}
                                 style={{ "--dot-color": color }}
                             >
-                                <div className={styles.subtopicDot} />
+                                {/* <div className={styles.subtopicDot} /> */}
+                                <input
+                                    type="checkbox"
+                                    checked={s.completed}
+                                />
                                 <span className={styles.subtopicText}>
                                     {s}
                                 </span>
@@ -322,10 +293,8 @@ export default function LearningRoadMap() {
     const [activeTab, setActiveTab] = useState("roadmap");
     const [expanded, setExpanded] = useState({});
     const rightRef = useRef();
-
     const toggleFocus = (f) => setFocus(p => p.includes(f) ? p.filter(x => x !== f) : [...p, f]);
     const toggleExpand = (i) => setExpanded(p => ({ ...p, [i]: !p[i] }));
-
     /* ── GENERATE ── */
     const generate = async () => {
         setLoading(true);
@@ -349,9 +318,7 @@ export default function LearningRoadMap() {
             setTimeout(() => rightRef.current?.scrollTo({ top: 0, behavior: "smooth" }), 100);
         }
     };
-
     const totalPct = roadmap ? Math.round(roadmap.stages.reduce((a, s) => a + s.progress, 0) / roadmap.stages.reduce((a, s) => a + s.total, 0) * 100) || 0 : 0;
-
     /* ─── RESOURCES TAB ─── */
     const ResourcesTab = () => (
         <div className={`${styles.resourcesSection} fadeIn`}>
@@ -398,7 +365,15 @@ export default function LearningRoadMap() {
                                     "--stage-color": STAGE_COLORS[stageIndex % 6],
                                 }}
                             >
-                                Open →
+                                {
+                                    resource.type === "YouTube"
+                                        ? "▶ Watch"
+                                        : resource.type === "Documentation"
+                                            ? "📖 Read"
+                                            : resource.type === "Course"
+                                                ? "🎓 Start Course"
+                                                : "🔗 Open Resource"
+                                }
                             </a>
                         </div>
                     ))}
@@ -406,7 +381,6 @@ export default function LearningRoadMap() {
             ))}
         </div>
     );
-
     /* ─── PROJECTS TAB ─── */
     const ProjectsTab = () => (
         <div className={`${styles.projectsGrid} fadeIn`}>
@@ -464,7 +438,6 @@ export default function LearningRoadMap() {
             ))}
         </div>
     );
-
     /* ─── MILESTONES TAB ─── */
     const MilestonesTab = () => (
         <div className={`${styles.timelineSection} fadeIn`}>
@@ -474,7 +447,6 @@ export default function LearningRoadMap() {
                     className={styles.timelineItem}
                 >
                     {/* Timeline */}
-
                     <div className={styles.timelineLeft}>
                         <div
                             className={styles.timelineIcon}
@@ -482,7 +454,6 @@ export default function LearningRoadMap() {
                         >
                             🏁
                         </div>
-
                         {index < roadmap.stages.length - 1 && (
                             <div
                                 className={styles.timelineLine}
@@ -493,26 +464,21 @@ export default function LearningRoadMap() {
                             />
                         )}
                     </div>
-
                     {/* Content */}
-
                     <div className={styles.timelineContent}>
                         <div className={styles.timelineHeader}>
                             <h4 className={styles.timelineTitle}>
                                 {stage.title}
                             </h4>
-
                             <Chip
                                 label={stage.duration}
                                 bg={`${STAGE_COLORS[index % 6]}18`}
                                 color={STAGE_COLORS[index % 6]}
                             />
                         </div>
-
                         <p className={styles.timelineDescription}>
                             {stage.desc}
                         </p>
-
                         <div
                             className={styles.timelineFooter}
                             style={{ "--stage-color": STAGE_COLORS[index % 6] }}
@@ -525,15 +491,12 @@ export default function LearningRoadMap() {
             ))}
         </div>
     );
-
     /* ─── RENDER ────────────────────────────────────────────── */
     return (
         <>
             <div className={styles.roadmapLayout}>
-
                 {/* ══ LEFT SIDEBAR ══ */}
                 <div className={styles.sidebar}>
-
                     {/* header */}
                     <div className={styles.sidebarHeader}>
                         <div className={styles.headerTop}>
@@ -650,17 +613,12 @@ export default function LearningRoadMap() {
                     {/* overview + pro tip */}
                     {roadmap && (
                         <div className={styles.roadmapOverview}>
-
                             <h4 className={styles.overviewTitle}>
                                 Roadmap Overview
                             </h4>
-
                             <div className={styles.overviewContent}>
-
                                 {/* Progress Ring */}
-
                                 <div className={styles.progressRingWrapper}>
-
                                     <svg
                                         width="56"
                                         height="56"
@@ -672,7 +630,6 @@ export default function LearningRoadMap() {
                                             r="22"
                                             className={styles.progressTrack}
                                         />
-
                                         <circle
                                             cx="28"
                                             cy="28"
@@ -681,7 +638,6 @@ export default function LearningRoadMap() {
                                             strokeDasharray={138.2}
                                             strokeDashoffset={138.2 * (1 - totalPct / 100)}
                                         />
-
                                         <defs>
                                             <linearGradient
                                                 id="roadmapGradient"
@@ -695,50 +651,35 @@ export default function LearningRoadMap() {
                                             </linearGradient>
                                         </defs>
                                     </svg>
-
                                     <div className={styles.progressText}>
                                         {totalPct}%
                                     </div>
-
                                 </div>
-
                                 {/* Statistics */}
-
                                 <div className={styles.overviewStats}>
-
                                     <div className={styles.statItem}>
                                         <strong>0 / {roadmap.totalTopics}</strong>
                                         <span>Topics</span>
                                     </div>
-
                                     <div className={styles.statItem}>
                                         <strong>0 / {roadmap.totalResources}</strong>
                                         <span>Resources</span>
                                     </div>
-
                                     <div className={styles.statItem}>
                                         <strong>0 / {roadmap.totalProjects}</strong>
                                         <span>Projects</span>
                                     </div>
-
                                 </div>
-
                             </div>
-
                             {/* Pro Tip */}
-
                             <div className={styles.proTipCard}>
-
                                 <h5 className={styles.proTipTitle}>
                                     💡 Pro Tip
                                 </h5>
-
                                 <p className={styles.proTipText}>
                                     {roadmap.proTip}
                                 </p>
-
                             </div>
-
                         </div>
                     )}
                 </div>
@@ -753,17 +694,14 @@ export default function LearningRoadMap() {
                         <div className={styles.headerContent}>
                             <div className={styles.headerTitleWrapper}>
                                 <span className={styles.headerIcon}>✨</span>
-
                                 <h1 className={styles.headerTitle}>
                                     AI Roadmap Generator
                                 </h1>
                             </div>
-
                             <p className={styles.headerSubtitle}>
                                 Personalized step-by-step roadmap to achieve your career goals
                             </p>
                         </div>
-
                         <div className={styles.headerActions}>
                             <button
                                 type="button"
@@ -772,7 +710,6 @@ export default function LearningRoadMap() {
                                 <span>⬇️</span>
                                 Export Roadmap
                             </button>
-
                             <button
                                 type="button"
                                 className={styles.shareButton}
@@ -787,21 +724,17 @@ export default function LearningRoadMap() {
                     {/* empty state */}
                     {!roadmap && !loading && (
                         <div className={styles.emptyState}>
-
                             <div className={styles.emptyIcon}>
                                 🗺️
                             </div>
-
                             <h2 className={styles.emptyTitle}>
                                 Your Personalized Roadmap Awaits
                             </h2>
-
                             <p className={styles.emptyDescription}>
                                 Choose your career goal and preferences on the left, then click
                                 <strong> Generate Roadmap </strong>
                                 to create your step-by-step learning path.
                             </p>
-
                             <button
                                 type="button"
                                 onClick={generate}
@@ -809,30 +742,27 @@ export default function LearningRoadMap() {
                             >
                                 ✨ Generate My Roadmap
                             </button>
-
                         </div>
                     )}
 
                     {/* loading state */}
                     {loading && (
                         <div className={styles.loadingContainer}>
-
                             <div className={styles.loadingSpinner}></div>
-
                             <h3 className={styles.loadingTitle}>
                                 Building your roadmap...
                             </h3>
-
                             <p className={styles.loadingSubtitle}>
                                 AI is crafting a personalized path for <strong>{goal}</strong>
                             </p>
-
                             <div className={styles.loadingSteps}>
                                 {[
-                                    "Analyzing Goal",
-                                    "Mapping Skills",
-                                    "Creating Stages",
-                                    "Finalizing",
+                                    "Understanding your goal",
+                                    "Selecting technologies",
+                                    "Creating learning stages",
+                                    "Finding resources",
+                                    "Designing projects",
+                                    "Finalizing roadmap"
                                 ].map((step, index) => (
                                     <div
                                         key={step}
@@ -845,7 +775,6 @@ export default function LearningRoadMap() {
                                     </div>
                                 ))}
                             </div>
-
                         </div>
                     )}
 
@@ -854,42 +783,35 @@ export default function LearningRoadMap() {
                         <div className={styles.roadmapContent}>
                             {/* info cards row */}
                             <div className={styles.infoCards}>
-
                                 <InfoCard
                                     icon="🎯"
                                     label="Career Goal"
                                     value={roadmap.goal}
                                     color="var(--indigo)"
                                 />
-
                                 <InfoCard
                                     icon="📊"
                                     label="Experience Level"
                                     value={roadmap.experience}
                                     color="var(--cyan)"
                                 />
-
                                 <InfoCard
                                     icon="⏱️"
                                     label="Estimated Time"
                                     value={roadmap.estimatedTime}
                                     color="var(--amber)"
                                 />
-
                                 <InfoCard
                                     icon="📅"
                                     label="Weekly Commitment"
                                     value={roadmap.weeklyCommitment}
                                     color="var(--purple)"
                                 />
-
                             </div>
-
                             {/* tabs */}
                             <div className={styles.tabsContainer}>
                                 {TABS.map((tab) => {
                                     const isActive = activeTab === tab.id;
-
                                     return (
                                         <button
                                             key={tab.id}
@@ -901,7 +823,6 @@ export default function LearningRoadMap() {
                                             <span className={styles.tabIcon}>
                                                 {tab.icon}
                                             </span>
-
                                             <span className={styles.tabLabel}>
                                                 {tab.label}
                                             </span>
@@ -909,11 +830,9 @@ export default function LearningRoadMap() {
                                     );
                                 })}
                             </div>
-
                             {/* tab content */}
                             {activeTab === "roadmap" && (
                                 <div className={`${styles.roadmapTab} fade-in`}>
-
                                     {roadmap.stages?.map((stage, index) => (
                                         <StageRow
                                             key={index}
@@ -925,29 +844,21 @@ export default function LearningRoadMap() {
                                             onToggle={() => toggleExpand(index)}
                                         />
                                     ))}
-
                                     {/* Final Goal */}
-
                                     <div className={styles.finalGoalCard}>
-
                                         <div className={styles.finalGoalContent}>
-
                                             <div className={styles.finalGoalIcon}>
                                                 🏆
                                             </div>
-
                                             <div className={styles.finalGoalInfo}>
                                                 <h3 className={styles.finalGoalTitle}>
                                                     Final Goal
                                                 </h3>
-
                                                 <p className={styles.finalGoalDescription}>
                                                     {roadmap.finalGoal}
                                                 </p>
                                             </div>
-
                                         </div>
-
                                         <button
                                             type="button"
                                             className={styles.careerGuideButton}
@@ -955,12 +866,9 @@ export default function LearningRoadMap() {
                                             View Career Guide
                                             <span>→</span>
                                         </button>
-
                                     </div>
-
                                 </div>
                             )}
-
                             {activeTab === "resources" && <ResourcesTab />}
                             {activeTab === "projects" && <ProjectsTab />}
                             {activeTab === "milestones" && <MilestonesTab />}

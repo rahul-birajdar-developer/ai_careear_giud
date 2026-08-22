@@ -633,20 +633,6 @@ button {
     margin-bottom: 12px;
 }
 
-/* .atsCard {
-    min-width: 270px;
-
-    display: flex;
-    align-items: center;
-    gap: 20px;
-
-    padding: 18px 20px;
-
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-} */
-
 .atsCard {
     background: #151d2f;
     border: 1px solid #2b3550;
@@ -743,20 +729,6 @@ button {
     gap: 10px;
 }
 
-/* .metricCard {
-    background: #151d2f;
-    border: 1px solid #2b3550;
-    border-radius: 18px;
-
-    padding: 20px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    min-height: 170px;
-} */
-
 .statsRow {
     display: flex;
     gap: 10px;
@@ -765,7 +737,7 @@ button {
 
 .skillGrid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px;
     margin-bottom: 12px;
 }
@@ -781,6 +753,88 @@ button {
     grid-template-columns: 1fr 1fr;
     gap: 12px;
     margin-bottom: 12px;
+}
+
+.card {
+    background: #111827;
+    border: 1px solid #273449;
+    border-radius: 16px;
+    padding: 20px;
+    color: #fff;
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.badge {
+    width: 30px;
+    height: 30px;
+    background: #6d4cff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.item {
+    margin-bottom: 18px;
+}
+
+.item:last-child {
+    margin-bottom: 0;
+}
+
+.title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.strenghtTitle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.icon {
+    color: #22c55e;
+    font-size: 18px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.progress {
+    width: 100%;
+    height: 5px;
+    background: #1f2937;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.4s ease;
 }
 
 .listItem {
@@ -1041,7 +1095,7 @@ button {
 
     border-radius: 20px;
 
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 500;
 
     white-space: nowrap;
@@ -1087,7 +1141,7 @@ button {
 }
 
 .sCard {
-    padding: 18px;
+    padding: 10px;
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 14px;
@@ -1146,4 +1200,14 @@ button {
 
     font-size: 11px;
     font-weight: 500;
+}
+
+/* New CSS Add  */
+.items {
+    display: flex;
+    justify-content: space-between;
+}
+
+.items .text {
+    margin: 5px;
 }
