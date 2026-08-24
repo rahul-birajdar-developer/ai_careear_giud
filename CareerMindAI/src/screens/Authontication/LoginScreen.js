@@ -12,158 +12,160 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../../style/LoginScreen";
+import COLORS from "../../constants/Colors";
+
 
 const LoginScreen = ({ navigation }) => {
-    const [isLogin, setIsLogin] = useState(true);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
-    const handleSubmit = () => {
-        // For now go to dashboard.
-        // Later we will connect your backend authentication.
-        navigation.replace("Dashboard");
+    const handleLogin = () => {
+        console.log("Login:", email, password);
+
+        // Later:
+        // navigation.replace("Main");
     };
 
     return (
         <LinearGradient
-            colors={["#05091F", "#080B2E", "#0A0D38"]}
+            colors={[
+                COLORS.background,
+                COLORS.background2,
+                COLORS.background,
+            ]}
             style={styles.container}
         >
             <StatusBar
                 barStyle="light-content"
-                backgroundColor="#05091F"
+                backgroundColor={COLORS.background}
             />
+
+            <View style={styles.glowTop} />
+            <View style={styles.glowBottom} />
 
             <KeyboardAvoidingView
                 style={styles.keyboardView}
                 behavior={Platform.OS === "ios" ? "padding" : undefined}
             >
                 <ScrollView
+                    showsVerticalScrollIndicator={false}
                     contentContainerStyle={styles.scrollContent}
                     keyboardShouldPersistTaps="handled"
-                    showsVerticalScrollIndicator={false}
                 >
 
                     {/* Header */}
 
                     <View style={styles.header}>
+                        <TouchableOpacity
+                            style={styles.backButton}
+                            onPress={() => navigation.goBack()}
+                        >
+                            <Ionicons
+                                name="arrow-back"
+                                size={21}
+                                color={COLORS.text}
+                            />
+                        </TouchableOpacity>
 
-                        <Text style={styles.welcome}>
+                        <View style={styles.smallLogo}>
+                            <LinearGradient
+                                colors={["#9B5CFF", "#3B82F6"]}
+                                style={styles.logoGradient}
+                            >
+                                <Ionicons
+                                    name="sparkles"
+                                    size={20}
+                                    color="#fff"
+                                />
+                            </LinearGradient>
+                        </View>
+                    </View>
+
+                    {/* Title */}
+
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.title}>
                             Welcome Back 👋
                         </Text>
 
                         <Text style={styles.subtitle}>
-                            Login to continue your journey
+                            Login to continue your career journey
                         </Text>
-
                     </View>
 
-
-                    {/* Login / Signup switch */}
+                    {/* Login / Signup Toggle */}
 
                     <View style={styles.switchContainer}>
 
-                        <TouchableOpacity
-                            style={[
-                                styles.switchButton,
-                                isLogin && styles.activeSwitch,
-                            ]}
-                            onPress={() => setIsLogin(true)}
+                        <LinearGradient
+                            colors={["#7B3CFF", "#5D31F5"]}
+                            style={styles.activeSwitch}
                         >
-                            {isLogin ? (
-                                <LinearGradient
-                                    colors={["#7C3AED", "#4F46E5"]}
-                                    style={styles.activeSwitchGradient}
-                                >
-                                    <Text style={styles.activeSwitchText}>
-                                        Login
-                                    </Text>
-                                </LinearGradient>
-                            ) : (
-                                <Text style={styles.switchText}>
-                                    Login
-                                </Text>
-                            )}
-                        </TouchableOpacity>
-
+                            <Text style={styles.activeSwitchText}>
+                                Login
+                            </Text>
+                        </LinearGradient>
 
                         <TouchableOpacity
-                            style={[
-                                styles.switchButton,
-                                !isLogin && styles.activeSwitch,
-                            ]}
-                            onPress={() => setIsLogin(false)}
+                            style={styles.inactiveSwitch}
+                            onPress={() => navigation.navigate("Signup")}
                         >
-                            {!isLogin ? (
-                                <LinearGradient
-                                    colors={["#7C3AED", "#4F46E5"]}
-                                    style={styles.activeSwitchGradient}
-                                >
-                                    <Text style={styles.activeSwitchText}>
-                                        Sign Up
-                                    </Text>
-                                </LinearGradient>
-                            ) : (
-                                <Text style={styles.switchText}>
-                                    Sign Up
-                                </Text>
-                            )}
+                            <Text style={styles.inactiveSwitchText}>
+                                Sign Up
+                            </Text>
                         </TouchableOpacity>
 
                     </View>
-
 
                     {/* Email */}
 
                     <View style={styles.inputContainer}>
-
                         <Ionicons
                             name="mail-outline"
                             size={19}
-                            color="#8B91B5"
+                            color={COLORS.secondary}
                         />
 
                         <View style={styles.inputContent}>
-
                             <Text style={styles.inputLabel}>
                                 Email or Phone
                             </Text>
 
                             <TextInput
+                                value={email}
+                                onChangeText={setEmail}
                                 placeholder="rahul@gmail.com"
-                                placeholderTextColor="#747A9C"
-                                style={styles.input}
+                                placeholderTextColor="#69739D"
                                 keyboardType="email-address"
                                 autoCapitalize="none"
+                                style={styles.input}
                             />
-
                         </View>
-
                     </View>
-
 
                     {/* Password */}
 
                     <View style={styles.inputContainer}>
-
                         <Ionicons
                             name="lock-closed-outline"
                             size={19}
-                            color="#8B91B5"
+                            color={COLORS.secondary}
                         />
 
                         <View style={styles.inputContent}>
-
                             <Text style={styles.inputLabel}>
                                 Password
                             </Text>
 
                             <TextInput
-                                placeholder="••••••••"
-                                placeholderTextColor="#747A9C"
-                                style={styles.input}
+                                value={password}
+                                onChangeText={setPassword}
+                                placeholder="Enter your password"
+                                placeholderTextColor="#69739D"
                                 secureTextEntry={!showPassword}
+                                style={styles.input}
                             />
-
                         </View>
 
                         <TouchableOpacity
@@ -178,58 +180,49 @@ const LoginScreen = ({ navigation }) => {
                                         : "eye-off-outline"
                                 }
                                 size={19}
-                                color="#8B91B5"
+                                color={COLORS.secondary}
                             />
                         </TouchableOpacity>
-
                     </View>
 
+                    {/* Forgot Password */}
 
-                    {/* Forgot password */}
+                    <TouchableOpacity
+                        style={styles.forgotContainer}
+                        onPress={() => navigation.navigate("forget")}
+                    >
+                        <Text style={styles.forgotText}>
+                            Forgot Password?
+                        </Text>
+                    </TouchableOpacity>
 
-                    {isLogin && (
-                        <TouchableOpacity
-                            style={styles.forgotContainer}
-                        >
-                            <Text style={styles.forgot}>
-                                Forgot Password?
-                            </Text>
-                        </TouchableOpacity>
-                    )}
-
-
-                    {/* Main button */}
+                    {/* Login Button */}
 
                     <TouchableOpacity
                         activeOpacity={0.85}
-                        onPress={handleSubmit}
-                        style={styles.mainButtonWrapper}
+                        onPress={handleLogin}
                     >
                         <LinearGradient
-                            colors={["#7C3AED", "#4F46E5"]}
+                            colors={["#9B5CFF", "#6335FF", "#3B82F6"]}
                             start={{ x: 0, y: 0 }}
                             end={{ x: 1, y: 0 }}
-                            style={styles.mainButton}
+                            style={styles.loginButton}
                         >
-
-                            <Text style={styles.mainButtonText}>
-                                {isLogin
-                                    ? "Login"
-                                    : "Create Account"}
+                            <Text style={styles.loginButtonText}>
+                                Login
                             </Text>
 
-                            <Text style={styles.arrow}>
-                                →
-                            </Text>
-
+                            <Ionicons
+                                name="arrow-forward"
+                                size={19}
+                                color="#fff"
+                            />
                         </LinearGradient>
                     </TouchableOpacity>
-
 
                     {/* Divider */}
 
                     <View style={styles.dividerContainer}>
-
                         <View style={styles.divider} />
 
                         <Text style={styles.orText}>
@@ -237,83 +230,55 @@ const LoginScreen = ({ navigation }) => {
                         </Text>
 
                         <View style={styles.divider} />
-
                     </View>
 
+                    {/* Social Buttons */}
 
-                    {/* Social login */}
-
-                    <View style={styles.socialContainer}>
+                    <View style={styles.socialRow}>
 
                         <TouchableOpacity style={styles.socialButton}>
-
-                            <Text style={styles.googleIcon}>
-                                G
-                            </Text>
+                            <Text style={styles.googleIcon}>G</Text>
 
                             <Text style={styles.socialText}>
                                 Google
                             </Text>
-
                         </TouchableOpacity>
 
-
                         <TouchableOpacity style={styles.socialButton}>
-
                             <Ionicons
                                 name="logo-github"
                                 size={20}
-                                color="#FFFFFF"
+                                color="#fff"
                             />
 
                             <Text style={styles.socialText}>
                                 GitHub
                             </Text>
-
                         </TouchableOpacity>
 
                     </View>
 
+                    {/* Signup */}
 
-                    {/* Bottom */}
+                    <View style={styles.bottomText}>
+                        <Text style={styles.bottomNormal}>
+                            Don't have an account?{" "}
+                        </Text>
 
-                    <View style={styles.bottomContainer}>
-
-                        {isLogin ? (
-                            <Text style={styles.bottomText}>
-                                Don't have an account?{" "}
-                                <Text
-                                    style={styles.link}
-                                    onPress={() =>
-                                        setIsLogin(false)
-                                    }
-                                >
-                                    Sign Up
-                                </Text>
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate("Signup")}
+                        >
+                            <Text style={styles.signupLink}>
+                                Sign Up
                             </Text>
-                        ) : (
-                            <Text style={styles.bottomText}>
-                                Already have an account?{" "}
-                                <Text
-                                    style={styles.link}
-                                    onPress={() =>
-                                        setIsLogin(true)
-                                    }
-                                >
-                                    Login
-                                </Text>
-                            </Text>
-                        )}
-
+                        </TouchableOpacity>
                     </View>
 
                 </ScrollView>
             </KeyboardAvoidingView>
-
         </LinearGradient>
     );
 };
 
 export default LoginScreen;
-
 

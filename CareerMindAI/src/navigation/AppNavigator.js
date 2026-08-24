@@ -3,6 +3,11 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import SplashScreen from "../screens/SplashScreen";
 import LoginScreen from "../screens/Authontication/LoginScreen";
+import SignupScreen from "../screens/Authontication/SignupScreen";
+import ForgotPasswordScreen from "../screens/Authontication/ForgotPasswordScreen";
+import VerifyOTPScreen from "../screens/Authontication/VerifyOTPScreen";
+import NewPasswordScreen from "../screens/Authontication/NewPasswordScreen";
+import HomeScreen from "../screens/HomeScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,9 +24,36 @@ const AppNavigator = () => {
                 component={SplashScreen}
             />
 
+            {/* Authonitication Screens */}
             <Stack.Screen
                 name="Login"
                 component={LoginScreen}
+            />
+
+            <Stack.Screen
+                name="Signup"
+                component={SignupScreen}
+            />
+
+            <Stack.Screen
+                name="forget"
+                component={ForgotPasswordScreen}
+            />
+
+            <Stack.Screen
+                name="VerifyOTP"
+                component={VerifyOTPScreen}
+            />
+
+            <Stack.Screen
+                name="NewPassword"
+                component={NewPasswordScreen}
+            />
+
+            {/* Home Screens */}
+            <Stack.Screen
+                name="Main"
+                component={HomeScreen}
             />
         </Stack.Navigator>
     );

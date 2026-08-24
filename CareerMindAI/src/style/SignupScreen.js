@@ -1,16 +1,22 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, StatusBar } from "react-native";
 import COLORS from "../constants/Colors";
 
 const styles = StyleSheet.create({
+    containerFirst: {
+        flex: 1,
+        backgroundColor: "#070B2D",
+    },
+
     container: {
         flex: 1,
+        marginTop: StatusBar.currentHeight || 0,
     },
 
-    keyboardView: {
+    keyboard: {
         flex: 1,
     },
 
-    scrollContent: {
+    content: {
         flexGrow: 1,
         paddingHorizontal: 24,
         paddingTop: 20,
@@ -56,7 +62,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
 
-    smallLogo: {
+    logo: {
         width: 42,
         height: 42,
         borderRadius: 13,
@@ -69,10 +75,10 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
 
-    titleContainer: {
+    titleBox: {
         alignItems: "center",
-        marginTop: 45,
-        marginBottom: 30,
+        marginTop: 32,
+        marginBottom: 25,
     },
 
     title: {
@@ -95,7 +101,7 @@ const styles = StyleSheet.create({
         borderColor: COLORS.border,
         flexDirection: "row",
         padding: 4,
-        marginBottom: 22,
+        marginBottom: 20,
     },
 
     activeSwitch: {
@@ -105,7 +111,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
 
-    activeSwitchText: {
+    activeText: {
         color: "#fff",
         fontSize: 13,
         fontWeight: "700",
@@ -117,19 +123,18 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
 
-    inactiveSwitchText: {
+    inactiveText: {
         color: COLORS.secondary,
         fontSize: 13,
-        fontWeight: "500",
     },
 
     inputContainer: {
-        minHeight: 68,
+        minHeight: 64,
         backgroundColor: "rgba(17,23,71,0.85)",
         borderWidth: 1,
         borderColor: COLORS.border,
         borderRadius: 12,
-        marginBottom: 13,
+        marginBottom: 11,
         paddingHorizontal: 14,
         flexDirection: "row",
         alignItems: "center",
@@ -140,32 +145,34 @@ const styles = StyleSheet.create({
         flex: 1,
     },
 
-    inputLabel: {
+    label: {
         color: COLORS.muted,
         fontSize: 10,
         marginBottom: 3,
     },
 
     input: {
-        color: COLORS.text,
+        color: "#fff",
         fontSize: 13,
         padding: 0,
-        height: 25,
+        height: 24,
     },
 
-    forgotContainer: {
-        alignItems: "flex-end",
-        marginTop: -3,
-        marginBottom: 20,
+    terms: {
+        color: COLORS.muted,
+        fontSize: 10.5,
+        lineHeight: 17,
+        textAlign: "center",
+        marginTop: 5,
+        marginBottom: 18,
     },
 
-    forgotText: {
+    link: {
         color: "#A66BFF",
-        fontSize: 11,
         fontWeight: "600",
     },
 
-    loginButton: {
+    signupButton: {
         height: 53,
         borderRadius: 13,
         flexDirection: "row",
@@ -183,16 +190,16 @@ const styles = StyleSheet.create({
         elevation: 9,
     },
 
-    loginButtonText: {
+    signupButtonText: {
         color: "#fff",
         fontSize: 14,
         fontWeight: "700",
     },
 
-    dividerContainer: {
+    dividerBox: {
         flexDirection: "row",
         alignItems: "center",
-        marginVertical: 25,
+        marginVertical: 21,
     },
 
     divider: {
@@ -201,7 +208,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.border,
     },
 
-    orText: {
+    or: {
         color: COLORS.muted,
         fontSize: 11,
         marginHorizontal: 12,
@@ -214,7 +221,7 @@ const styles = StyleSheet.create({
 
     socialButton: {
         flex: 1,
-        height: 48,
+        height: 47,
         borderRadius: 11,
         borderWidth: 1,
         borderColor: COLORS.border,
@@ -225,30 +232,30 @@ const styles = StyleSheet.create({
         gap: 9,
     },
 
-    googleIcon: {
+    google: {
         color: "#4285F4",
         fontSize: 19,
         fontWeight: "800",
     },
 
     socialText: {
-        color: COLORS.text,
+        color: "#fff",
         fontSize: 12,
         fontWeight: "600",
     },
 
-    bottomText: {
+    loginTextBox: {
         flexDirection: "row",
         justifyContent: "center",
-        marginTop: 25,
+        marginTop: 22,
     },
 
-    bottomNormal: {
+    normalText: {
         color: COLORS.muted,
         fontSize: 11,
     },
 
-    signupLink: {
+    loginLink: {
         color: "#A66BFF",
         fontSize: 11,
         fontWeight: "700",

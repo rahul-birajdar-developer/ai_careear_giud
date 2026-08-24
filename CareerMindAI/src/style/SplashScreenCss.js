@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 28,
+        paddingVertical:38,
         justifyContent: "space-between",
         overflow: "hidden",
     },
@@ -35,12 +36,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        paddingTop: 60,
+        paddingTop: 10,
     },
 
     logoGlow: {
-        width: 150,
-        height: 150,
+        width: 200,
+        height: 200,
         borderRadius: 75,
         backgroundColor: "rgba(111,53,255,0.12)",
         alignItems: "center",
@@ -56,8 +57,8 @@ const styles = StyleSheet.create({
     },
 
     logoCircle: {
-        width: 105,
-        height: 105,
+        width: 120,
+        height: 120,
         borderRadius: 52.5,
         alignItems: "center",
         justifyContent: "center",
@@ -130,29 +131,7 @@ const styles = StyleSheet.create({
         color: "#FFFFFF",
         fontSize: 15,
         fontWeight: "700",
-    },
-
-    bottomDots: {
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 22,
-        gap: 6,
-    },
-
-    activeDot: {
-        width: 20,
-        height: 5,
-        borderRadius: 3,
-        backgroundColor: "#8B5CFF",
-    },
-
-    dot: {
-        width: 5,
-        height: 5,
-        borderRadius: 3,
-        backgroundColor: "#343A6B",
-    },
+    }
 });
 
 export default styles;
