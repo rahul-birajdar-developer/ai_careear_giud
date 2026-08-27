@@ -40,7 +40,6 @@ const userRegister = asyncHandler(async (req, res) => {
     // get user details from frontend
     // validation - not empty
     // check if user already exists: username, email
-    // check for images, check for avatar
     // upload them to cloudinary, avatar
     // create user object - create entry in db
     // remove password and refresh token field from response
@@ -71,27 +70,11 @@ const userRegister = asyncHandler(async (req, res) => {
     if (userExists) {
         throw new ApiErrorHandling(400, "User already exists");
     }
-
-    // upload the image in the cloudinary
-    const profileImage = req.files?.profileImage?.[0]?.path;
-    //console.log("profileImage", profileImage);
-    if (!profileImage) {
-        throw new ApiErrorHandling(400, "Profile image is required");
-    }
-    const uploadedImage = await uploadOncloudnary(profileImage);
-    if (!uploadedImage) {
-        throw new ApiErrorHandling(500, "Failed to upload profile image");
-    }
-
-    // step 4 : create user object - create entry in db
-    // console.log(req.body);
-    // console.log(uploadedImage);
     const user = await User.create({
         userId: "U" + Date.now(),
         name,
         email,
         password,
-        profileImage: uploadedImage.url
     });
     // console.log("user", user.refreshToken);
 
@@ -339,44 +322,6 @@ const userChangePassword = asyncHandler(async (req, res) => {
 //     );
 // })
 
-const updateUserProfileImage = asyncHandler(async (req, res) => {
-    // get the profile Image to change
-    const profileImage = req.files?.profileImage?.[0]?.path;
-
-    // console.log(profileImage);
-    // console.log(profileImage);
-
-    //cheack the profile image is upload or not
-    if (!profileImage) {
-        throw new ApiErrorHandling(400, "Upload a profile image ");
-    }
-
-    // upload the image to cloudinary
-    const avatar = await uploadOncloudnary(profileImage);
-    // console.log(avatar)
-
-    if (!avatar) {
-        throw new ApiErrorHandling(500, "Error occure when image upload on server")
-    }
-
-    //find the user
-    const user = await User.findByIdAndUpdate(
-        req.user?._id, {
-        $set: {
-            profileImage: avatar.url
-        }
-    },
-        { returnDocument: "after" }
-    ).select("-password")
-
-    // console.log("User : ", user)
-
-    return res
-        .status(200)
-        .json(
-            new ApiResponse(200, user, "Profile Image is upload successfully")
-        )
-})
 
 const userViewProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user?._id).select("-password -refreshToken")
@@ -403,4 +348,4 @@ const getCurrentUser = asyncHandler(async (req, res) => {
         ))
 })
 
-export { userRegister, userLogin, userLogOut, refreshAccessToken, userChangePassword, updateUserProfileImage, userViewProfile, getCurrentUser }
+export { userRegister, userLogin, userLogOut, refreshAccessToken, userChangePassword, userViewProfile, getCurrentUser }

@@ -260,6 +260,8 @@ const styles = StyleSheet.create({
         fontSize: 11,
         fontWeight: "700",
     },
+
+
 });
 
 export default styles;

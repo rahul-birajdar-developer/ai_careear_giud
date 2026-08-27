@@ -14,7 +14,6 @@ function LoginPage() {
         name: "",
         email: "",
         password: "",
-        profileImage: null,
     });
 
     const handleRegister = async (e) => {
@@ -37,10 +36,6 @@ function LoginPage() {
             alert("Enter the password !!")
             return;
         }
-        if (!form.profileImage) {
-            alert("Upload the image !!")
-            return;
-        }
         if (form.password != conformPassowrd) {
             alert("password don't match the secound password !!")
             return;
@@ -50,8 +45,6 @@ function LoginPage() {
         data.append("name", form.name);
         data.append("email", form.email);
         data.append("password", form.password);
-        data.append("profileImage", form.profileImage);
-        //console.log(form.profileImage)
         try {
             const response = await api.post(
                 "/users/register",
@@ -166,15 +159,6 @@ function LoginPage() {
                                 value={conformPassowrd}
                                 onChange={(e) => setConformPassword(e.target.value)}
                                 required
-                            />
-                        )}
-                        {!isLogin && (
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) =>
-                                    setForm({ ...form, profileImage: e.target.files[0] })
-                                }
                             />
                         )}
                         {isLogin && (

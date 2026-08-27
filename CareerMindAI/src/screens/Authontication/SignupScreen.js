@@ -30,12 +30,6 @@ const SignupScreen = ({ navigation }) => {
             return;
         }
 
-        console.log({
-            name,
-            email,
-            password,
-        });
-
         // Later:
         navigation.replace("Main");
     };
@@ -283,6 +277,7 @@ const SignupScreen = ({ navigation }) => {
                             </TouchableOpacity>
 
                         </View>
+
 
                         {/* Terms */}
 
