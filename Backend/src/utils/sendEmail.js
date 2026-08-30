@@ -2,8 +2,8 @@ import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
+    port: 587,
+    secure: false,
     family: 4,
 
     auth: {
@@ -22,7 +22,6 @@ const sendEmail = async ({
     message,
 }) => {
     try {
-
         console.log("Sending email to:", email);
 
         const info = await transporter.sendMail({
@@ -37,7 +36,6 @@ const sendEmail = async ({
         return info;
 
     } catch (error) {
-
         console.log("❌ EMAIL ERROR");
         console.log("Code:", error.code);
         console.log("Command:", error.command);
