@@ -4,6 +4,8 @@ import ApiErrorHandling from "../utils/ApiErrorHandling.js";
 import { ApiResponse } from "../utils/ApiResponceHandling.js";
 import jwt from "jsonwebtoken";
 import sendEmail from "../utils/sendEmail.js";
+import crypto from "crypto";
+import bcrypt from "bcrypt";
 // import crypto from "crypto";
 // import sendEmail from "../utils/sendEmails.js";
 
@@ -323,6 +325,74 @@ const forgetPassword = asyncHandler(async (req, res) => {
     );
 })
 
+const resetPassword = asyncHandler(async (req, res) => {
+
+    const { token } = req.params;
+    const { password } = req.body;
+
+    // 1. Validate password
+    if (!password) {
+        throw new ApiErrorHandling(
+            400,
+            "New password is required"
+        );
+    }
+
+    // 2. Password validation
+    const passwordRegex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+        throw new ApiErrorHandling(
+            400,
+            "Password must contain 8+ characters, uppercase, lowercase, number and special character"
+        );
+    }
+
+    // 3. Hash token received from URL
+    const hashedToken = crypto
+        .createHash("sha256")
+        .update(token)
+        .digest("hex");
+
+    // 4. Find user with valid token
+    const user = await User.findOne({
+        resetPasswordToken: hashedToken,
+        resetPasswordExpire: {
+            $gt: Date.now()
+        }
+    });
+
+    if (!user) {
+        throw new ApiErrorHandling(
+            400,
+            "Invalid or expired password reset link"
+        );
+    }
+
+    // 5. Hash new password
+    const hashedPassword = await bcrypt.hash(
+        password,
+        10
+    );
+
+    // 6. Update password
+    user.password = hashedPassword;
+
+    // 7. Remove reset token
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save();
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {},
+            "Password reset successfully"
+        )
+    );
+});
 
 const userViewProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user?._id).select("-password -refreshToken")
@@ -349,4 +419,4 @@ const getCurrentUser = asyncHandler(async (req, res) => {
         ))
 })
 
-export { userRegister, userLogin, userLogOut, refreshAccessToken, userChangePassword, userViewProfile, getCurrentUser, forgetPassword }
+export { userRegister, userLogin, userLogOut, refreshAccessToken, userChangePassword, userViewProfile, getCurrentUser, forgetPassword, resetPassword }
