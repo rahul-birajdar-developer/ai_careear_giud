@@ -5,6 +5,8 @@ const transporter = nodemailer.createTransport({
     port: 465,
     secure: true,
 
+    family: 4,
+
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD,
@@ -22,8 +24,7 @@ const sendEmail = async ({
 }) => {
     try {
 
-        console.log("Email user:", process.env.EMAIL_USER);
-        console.log("Sending to:", email);
+        console.log("Sending email to:", email);
 
         const info = await transporter.sendMail({
             from: `"CareerMind AI" <${process.env.EMAIL_USER}>`,
@@ -32,16 +33,13 @@ const sendEmail = async ({
             text: message,
         });
 
-        console.log("Email sent successfully:", info.messageId);
+        console.log("Email sent:", info.messageId);
 
         return info;
 
     } catch (error) {
 
-        console.error("EMAIL ERROR:");
-        console.error("Code:", error.code);
-        console.error("Command:", error.command);
-        console.error("Message:", error.message);
+        console.log("EMAIL ERROR:", error);
 
         throw error;
     }
