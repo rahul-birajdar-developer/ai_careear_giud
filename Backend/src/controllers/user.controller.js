@@ -283,38 +283,62 @@ const userChangePassword = asyncHandler(async (req, res) => {
 });
 
 const forgetPassword = asyncHandler(async (req, res) => {
-    // get the email from the user 
+
+    console.log("1. Forgot password request received");
+
     const { email } = req.body;
-    const user = await User.findOne({ email });
+
+    console.log("2. Email:", email);
+
+    const user = await User.findOne({
+        email: email.trim().toLowerCase()
+    });
+
+    console.log("3. User found:", !!user);
 
     if (!user) {
-        throw new ApiErrorHandling(404, "User Not Found");
+        throw new ApiErrorHandling(
+            404,
+            "User Not Found"
+        );
     }
-    //console.log("User : ", user)
-    //generate reset token to send the user
-    const resetToken = crypto.randomBytes(32).toString("hex");
+
+    const resetToken = crypto
+        .randomBytes(32)
+        .toString("hex");
 
     user.resetPasswordToken = crypto
         .createHash("sha256")
         .update(resetToken)
         .digest("hex");
 
-    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
-    await user.save({ validateBeforeSave: false });
-    //reset link to send the user email
-    const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
+    user.resetPasswordExpire =
+        Date.now() + 15 * 60 * 1000;
+
+    await user.save({
+        validateBeforeSave: false
+    });
+
+    console.log("4. Token saved");
+
+    const resetLink =
+        `https://YOUR-WEBSITE.com/reset-password/${resetToken}`;
+
+    console.log("5. Sending email...");
 
     await sendEmail({
         email: user.email,
-        subject: "Password Reset",
+        subject: "CareerMind AI - Password Reset",
         message: `
-        Click the link below to reset your password:
+Click the link below to reset your password:
 
-        ${resetLink}
+${resetLink}
 
-        This link expires in 15 minutes.
-    `
+This link expires in 15 minutes.
+        `
     });
+
+    console.log("6. Email sent");
 
     return res.status(200).json(
         new ApiResponse(
@@ -323,7 +347,7 @@ const forgetPassword = asyncHandler(async (req, res) => {
             "Password reset email sent successfully"
         )
     );
-})
+});
 
 const resetPassword = asyncHandler(async (req, res) => {
 

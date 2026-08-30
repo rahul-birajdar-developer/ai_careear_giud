@@ -8,24 +8,92 @@ import {
     KeyboardAvoidingView,
     Platform,
     ScrollView,
+    Alert
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../../style/ForgotPasswordScreen";
+import api from "../../services/api";
 
 const ForgotPasswordScreen = ({ navigation }) => {
-    const [email, setEmail] = useState("");
+    const [form, setForm] = useState({
+        email: "",
+    });
+    const [loading, setLoading] = useState(false)
 
-    const handleSendCode = () => {
-        if (!email.trim()) {
-            console.log("Please enter your email");
+    const handleSendCode = async () => {
+        const email = String(form.email ?? "").trim().toLowerCase();
+
+        if (!email) {
+            Alert.alert(
+                "Required",
+                "Please enter your email"
+            );
             return;
         }
 
-        navigation.navigate("VerifyOTP", {
-            email: email,
-        });
+        const emailRegex =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(email)) {
+            Alert.alert(
+                "Invalid Email",
+                "Please enter a valid email address"
+            );
+            return;
+        }
+
+        try {
+
+            setLoading(true);
+
+            const response = await api.post(
+                "users/forgetpasword",
+                {
+                    email: email,
+                }
+            );
+
+            console.log(
+                "Forgot password response:",
+                response.data
+            );
+
+            if (response.data?.success) {
+
+                Alert.alert(
+                    "Email Sent",
+                    "Password reset link has been sent to your email."
+                );
+
+            } else {
+
+                Alert.alert(
+                    "Error",
+                    response.data?.message ||
+                    "Unable to send reset link"
+                );
+            }
+
+        } catch (error) {
+
+            console.log(
+                "Forgot password error:",
+                error.response?.data || error.message
+            );
+
+            Alert.alert(
+                "Error",
+                error.response?.data?.message ||
+                "Something went wrong. Please try again."
+            );
+
+        } finally {
+
+            setLoading(false);
+
+        }
     };
 
     return (
@@ -144,8 +212,13 @@ const ForgotPasswordScreen = ({ navigation }) => {
                                 </Text>
 
                                 <TextInput
-                                    value={email}
-                                    onChangeText={setEmail}
+                                    value={form.email}
+                                    onChangeText={(text) =>
+                                        setForm({
+                                            ...form,
+                                            email: text,
+                                        })
+                                    }
                                     placeholder="rahul@gmail.com"
                                     placeholderTextColor="#69739D"
                                     keyboardType="email-address"
@@ -159,6 +232,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
                         <TouchableOpacity
                             activeOpacity={0.85}
                             onPress={handleSendCode}
+                            disabled={loading}
                         >
                             <LinearGradient
                                 colors={["#9B5CFF", "#6335FF", "#3B82F6"]}
@@ -166,15 +240,23 @@ const ForgotPasswordScreen = ({ navigation }) => {
                                 end={{ x: 1, y: 0 }}
                                 style={styles.sendButton}
                             >
-                                <Text style={styles.sendText}>
-                                    Send Verification Code
-                                </Text>
+                                {loading ? (
+                                    <Text style={styles.sendText}>
+                                        Sending...
+                                    </Text>
+                                ) : (
+                                    <>
+                                        <Text style={styles.sendText}>
+                                            Send Reset Link
+                                        </Text>
 
-                                <Ionicons
-                                    name="arrow-forward"
-                                    size={19}
-                                    color="#FFFFFF"
-                                />
+                                        <Ionicons
+                                            name="arrow-forward"
+                                            size={19}
+                                            color="#FFFFFF"
+                                        />
+                                    </>
+                                )}
                             </LinearGradient>
                         </TouchableOpacity>
 
