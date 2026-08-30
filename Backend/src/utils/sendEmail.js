@@ -4,7 +4,6 @@ const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
     secure: true,
-
     family: 4,
 
     auth: {
@@ -33,13 +32,16 @@ const sendEmail = async ({
             text: message,
         });
 
-        console.log("Email sent:", info.messageId);
+        console.log("✅ Email sent:", info.messageId);
 
         return info;
 
     } catch (error) {
 
-        console.log("EMAIL ERROR:", error);
+        console.log("❌ EMAIL ERROR");
+        console.log("Code:", error.code);
+        console.log("Command:", error.command);
+        console.log("Message:", error.message);
 
         throw error;
     }
