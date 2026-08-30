@@ -8,30 +8,135 @@ import {
     KeyboardAvoidingView,
     Platform,
     ScrollView,
+    ActivityIndicator
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../../style/SignupScreen";
 import COLORS from "../../constants/Colors";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import api from "../../services/api";
 
 const SignupScreen = ({ navigation }) => {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        password: "",
+    })
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
 
-    const handleSignup = () => {
-        if (password !== confirmPassword) {
-            console.log("Passwords do not match");
+    const handleSignup = async () => {
+
+        // 1. Validate required fields FIRST
+        if (
+            !formData.name.trim() ||
+            !formData.email.trim() ||
+            !formData.password
+        ) {
+            alert("All fields are required!");
             return;
         }
 
-        // Later:
-        navigation.replace("Main");
+        // 2. Confirm password
+        if (formData.password !== confirmPassword) {
+            alert("Passwords do not match");
+            return;
+        }
+
+        // 3. Validate email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(formData.email.trim())) {
+            alert("Please enter a valid email");
+            return;
+        }
+
+        // const phoneRegex = /^[6-9]\d{9}$/;
+
+        const passwordRegex =
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+        // if (!phoneRegex.test(formData.phone.trim())) {
+        //     alert("Please enter a valid 10-digit mobile number");
+        //     return;
+        // }
+
+        if (!passwordRegex.test(formData.password)) {
+            alert(
+                "Password must have 8+ characters, " +
+                "uppercase, lowercase, number and special character."
+            );
+            return;
+        }
+
+        try {
+            setLoading(true);
+
+            // 4. Create FormData AFTER validation
+            const data = new FormData();
+
+            data.append("name", formData.name.trim());
+            data.append("email", formData.email.trim().toLowerCase());
+            data.append("password", formData.password);
+
+            console.log("Creating account...");
+
+            const response = await api.post(
+                "users/register",
+                data,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+
+            console.log("Signup response:", response.data);
+
+            // 6. Check successful response
+            if (response.data?.success) {
+
+                alert(
+                    "Signup Successful",
+                    [
+                        {
+                            text: "Continue",
+                            onPress: () => {
+                                navigation.replace("Main");
+                            },
+                        },
+                    ]
+                );
+
+                setLoading(false);
+
+            } else {
+
+                alert(
+                    response.data?.message ||
+                    "Something went wrong!"
+                );
+            }
+
+        } catch (error) {
+            console.log(
+                "Signup error:",
+                error.response?.data || error.message
+            );
+
+            if (error.response?.status === 400) {
+                alert(
+                    error.response?.data?.message ||
+                    "Email already exists"
+                );
+                return;
+            }
+
+            alert("Something went wrong. Please try again.");
+        }
     };
 
     return (
@@ -147,8 +252,13 @@ const SignupScreen = ({ navigation }) => {
                                 </Text>
 
                                 <TextInput
-                                    value={name}
-                                    onChangeText={setName}
+                                    value={formData.name}
+                                    onChangeText={(text) =>
+                                        setFormData({
+                                            ...formData,
+                                            name: text,
+                                        })
+                                    }
                                     placeholder="Rahul Birajdar"
                                     placeholderTextColor="#69739D"
                                     style={styles.input}
@@ -175,8 +285,13 @@ const SignupScreen = ({ navigation }) => {
                                 </Text>
 
                                 <TextInput
-                                    value={email}
-                                    onChangeText={setEmail}
+                                    value={formData.email}
+                                    onChangeText={(text) =>
+                                        setFormData({
+                                            ...formData,
+                                            email: text,
+                                        })
+                                    }
                                     placeholder="rahul@gmail.com"
                                     placeholderTextColor="#69739D"
                                     keyboardType="email-address"
@@ -205,8 +320,13 @@ const SignupScreen = ({ navigation }) => {
                                 </Text>
 
                                 <TextInput
-                                    value={password}
-                                    onChangeText={setPassword}
+                                    value={formData.password}
+                                    onChangeText={(text) =>
+                                        setFormData({
+                                            ...formData,
+                                            password: text,
+                                        })
+                                    }
                                     placeholder="Create password"
                                     placeholderTextColor="#69739D"
                                     secureTextEntry={!showPassword}
@@ -306,15 +426,30 @@ const SignupScreen = ({ navigation }) => {
                                 style={styles.signupButton}
                             >
 
-                                <Text style={styles.signupButtonText}>
-                                    Create Account
-                                </Text>
+                                {loading ? (
+                                    <>
+                                        <ActivityIndicator
+                                            size="small"
+                                            color="#fff"
+                                        />
 
-                                <Ionicons
-                                    name="arrow-forward"
-                                    size={19}
-                                    color="#fff"
-                                />
+                                        <Text style={styles.signupButtonText}>
+                                            Creating Account...
+                                        </Text>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Text style={styles.signupButtonText}>
+                                            Create Account
+                                        </Text>
+
+                                        <Ionicons
+                                            name="arrow-forward"
+                                            size={19}
+                                            color="#fff"
+                                        />
+                                    </>
+                                )}
 
                             </LinearGradient>
 

@@ -8,6 +8,8 @@ import ForgotPasswordScreen from "../screens/Authontication/ForgotPasswordScreen
 import VerifyOTPScreen from "../screens/Authontication/VerifyOTPScreen";
 import NewPasswordScreen from "../screens/Authontication/NewPasswordScreen";
 import HomeScreen from "../screens/HomeScreen";
+import ToolsScreen from "../screens/userScreens/ToolsScreen";
+import ProfileScreen from "../screens/userScreens/ProfileScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -54,6 +56,16 @@ const AppNavigator = () => {
             <Stack.Screen
                 name="Main"
                 component={HomeScreen}
+            />
+
+            <Stack.Screen
+                name="Tools"
+                component={ToolsScreen}
+            />
+
+            <Stack.Screen
+                name="Profile"
+                component={ProfileScreen}
             />
         </Stack.Navigator>
     );

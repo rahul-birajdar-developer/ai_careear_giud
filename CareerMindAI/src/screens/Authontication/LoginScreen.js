@@ -8,24 +8,146 @@ import {
     KeyboardAvoidingView,
     Platform,
     ScrollView,
+    Alert,
+    ActivityIndicator
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../../style/LoginScreen";
 import COLORS from "../../constants/Colors";
+import api from "../../services/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 const LoginScreen = ({ navigation }) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
-    const handleLogin = () => {
-        console.log("Login:", email, password);
+    const [form, setForm] = useState({
+        email: "",
+        password: "",
+    });
 
-        // Later:
-        // navigation.replace("Main");
+    const handleLogin = async () => {
+
+        // Validate fields
+        if (!form.email.trim() || !form.password) {
+            Alert.alert(
+                "Required",
+                "Please enter email and password."
+            );
+            return;
+        }
+
+        // Email validation
+        const emailRegex =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(form.email.trim())) {
+            Alert.alert(
+                "Invalid Email",
+                "Please enter a valid email address."
+            );
+            return;
+        }
+
+        try {
+            setLoading(true);
+            const response = await api.post(
+                "users/login",
+                {
+                    email: form.email.trim().toLowerCase(),
+                    password: form.password,
+                }
+            );
+
+            console.log(
+                "Login Response:",
+                response.data
+            );
+
+            if (response.data?.success) {
+
+                // Save token
+                if (response.data?.token) {
+                    await AsyncStorage.setItem(
+                        "token",
+                        response.data.token
+                    );
+                }
+
+                // Save user
+                if (response.data?.user) {
+                    await AsyncStorage.setItem(
+                        "user",
+                        JSON.stringify(response.data.user)
+                    );
+                }
+
+                Alert.alert(
+                    "Login Successful",
+                    "Welcome back!",
+                    [
+                        {
+                            text: "Continue",
+                            onPress: () => {
+                                navigation.replace("Main");
+                            },
+                        },
+                    ]
+                );
+
+                setLoading(false);
+
+
+
+            } else {
+
+                Alert.alert(
+                    "Login Failed",
+                    response.data?.message ||
+                    "Invalid email or password."
+                );
+            }
+
+        } catch (error) {
+
+            console.log(
+                "Login Error:",
+                error.response?.data || error.message
+            );
+
+            const status =
+                error.response?.status;
+
+            if (status === 400 || status === 401) {
+
+                Alert.alert(
+                    "Login Failed",
+                    error.response?.data?.message ||
+                    "Invalid email or password."
+                );
+
+                return;
+            }
+
+            if (status === 404) {
+
+                Alert.alert(
+                    "User Not Found",
+                    "No account was found with this email."
+                );
+
+                return;
+            }
+
+            Alert.alert(
+                "Error",
+                "Something went wrong. Please try again."
+            );
+        }
     };
+
 
     return (
         <LinearGradient
@@ -133,8 +255,13 @@ const LoginScreen = ({ navigation }) => {
                             </Text>
 
                             <TextInput
-                                value={email}
-                                onChangeText={setEmail}
+                                value={form.email}
+                                onChangeText={(text) =>
+                                    setForm({
+                                        ...form,
+                                        email: text,
+                                    })
+                                }
                                 placeholder="rahul@gmail.com"
                                 placeholderTextColor="#69739D"
                                 keyboardType="email-address"
@@ -159,8 +286,13 @@ const LoginScreen = ({ navigation }) => {
                             </Text>
 
                             <TextInput
-                                value={password}
-                                onChangeText={setPassword}
+                                value={form.password}
+                                onChangeText={(text) =>
+                                    setForm({
+                                        ...form,
+                                        password: text,
+                                    })
+                                }
                                 placeholder="Enter your password"
                                 placeholderTextColor="#69739D"
                                 secureTextEntry={!showPassword}
@@ -201,6 +333,7 @@ const LoginScreen = ({ navigation }) => {
                     <TouchableOpacity
                         activeOpacity={0.85}
                         onPress={handleLogin}
+                        disabled={loading}
                     >
                         <LinearGradient
                             colors={["#9B5CFF", "#6335FF", "#3B82F6"]}
@@ -208,15 +341,30 @@ const LoginScreen = ({ navigation }) => {
                             end={{ x: 1, y: 0 }}
                             style={styles.loginButton}
                         >
-                            <Text style={styles.loginButtonText}>
-                                Login
-                            </Text>
+                            {loading ? (
+                                <>
+                                    <ActivityIndicator
+                                        size="small"
+                                        color="#fff"
+                                    />
 
-                            <Ionicons
-                                name="arrow-forward"
-                                size={19}
-                                color="#fff"
-                            />
+                                    <Text style={styles.loginButtonText}>
+                                        Logging in...
+                                    </Text>
+                                </>
+                            ) : (
+                                <>
+                                    <Text style={styles.loginButtonText}>
+                                        Login
+                                    </Text>
+
+                                    <Ionicons
+                                        name="arrow-forward"
+                                        size={19}
+                                        color="#fff"
+                                    />
+                                </>
+                            )}
                         </LinearGradient>
                     </TouchableOpacity>
 

@@ -7,7 +7,6 @@ import {
     ScrollView,
     Image,
     StatusBar,
-    SafeAreaView,
 } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -66,7 +65,7 @@ const HomeScreen = ({ navigation }) => {
     const [resumeAnalyzed, setResumeAnalyzed] = useState(false);
 
     return (
-        <SafeAreaView style={styles.safeArea}>
+        <View style={styles.safeArea}>
             <StatusBar
                 barStyle="light-content"
                 backgroundColor={COLORS.background}
@@ -623,7 +622,7 @@ const HomeScreen = ({ navigation }) => {
                     <BottomItem
                         icon="construct-outline"
                         label="Tools"
-                        onPress={() => navigation?.navigate("Reports")}
+                        onPress={() => navigation?.navigate("Tools")}
                     />
 
                     <BottomItem
@@ -636,7 +635,7 @@ const HomeScreen = ({ navigation }) => {
 
             </View>
 
-        </SafeAreaView>
+        </View>
     );
 };
 

@@ -2,8 +2,8 @@ import asyncHandler from "../utils/asycnHandler.js";
 import { User } from "../models/user.models.js";
 import ApiErrorHandling from "../utils/ApiErrorHandling.js";
 import { ApiResponse } from "../utils/ApiResponceHandling.js";
-import uploadOncloudnary from "../utils/cloudnary.js";
 import jwt from "jsonwebtoken";
+import sendEmail from "../utils/sendEmail.js";
 // import crypto from "crypto";
 // import sendEmail from "../utils/sendEmails.js";
 
@@ -66,9 +66,10 @@ const userRegister = asyncHandler(async (req, res) => {
     // }
 
     // step 3 : check if user already exists: username, email
-    const userExists = await User.findOne({ $or: [{ email }] });
+    const userExists = await User.findOne({ email });
+
     if (userExists) {
-        throw new ApiErrorHandling(400, "User already exists");
+        throw new ApiErrorHandling(400, "Email already exists");
     }
     const user = await User.create({
         userId: "U" + Date.now(),
@@ -279,48 +280,48 @@ const userChangePassword = asyncHandler(async (req, res) => {
 
 });
 
-// const forgetPassword = asyncHandler(async (req, res) => {
-//     // get the email from the user 
-//     const { email } = req.body;
-//     const user = await User.findOne({ email });
+const forgetPassword = asyncHandler(async (req, res) => {
+    // get the email from the user 
+    const { email } = req.body;
+    const user = await User.findOne({ email });
 
-//     if (!user) {
-//         throw new ApiErrorHandling(404, "User Not Found");
-//     }
-//     //console.log("User : ", user)
-//     //generate reset token to send the user
-//     const resetToken = crypto.randomBytes(32).toString("hex");
+    if (!user) {
+        throw new ApiErrorHandling(404, "User Not Found");
+    }
+    //console.log("User : ", user)
+    //generate reset token to send the user
+    const resetToken = crypto.randomBytes(32).toString("hex");
 
-//     user.resetPasswordToken = crypto
-//         .createHash("sha256")
-//         .update(resetToken)
-//         .digest("hex");
+    user.resetPasswordToken = crypto
+        .createHash("sha256")
+        .update(resetToken)
+        .digest("hex");
 
-//     user.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
-//     await user.save({ validateBeforeSave: false });
-//     //reset link to send the user email
-//     const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
+    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
+    await user.save({ validateBeforeSave: false });
+    //reset link to send the user email
+    const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
 
-//     await sendEmail({
-//         email: user.email,
-//         subject: "Password Reset",
-//         message: `
-//         Click the link below to reset your password:
+    await sendEmail({
+        email: user.email,
+        subject: "Password Reset",
+        message: `
+        Click the link below to reset your password:
 
-//         ${resetLink}
+        ${resetLink}
 
-//         This link expires in 15 minutes.
-//     `
-//     });
+        This link expires in 15 minutes.
+    `
+    });
 
-//     return res.status(200).json(
-//         new ApiResponse(
-//             200,
-//             {},
-//             "Password reset email sent successfully"
-//         )
-//     );
-// })
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {},
+            "Password reset email sent successfully"
+        )
+    );
+})
 
 
 const userViewProfile = asyncHandler(async (req, res) => {
@@ -348,4 +349,4 @@ const getCurrentUser = asyncHandler(async (req, res) => {
         ))
 })
 
-export { userRegister, userLogin, userLogOut, refreshAccessToken, userChangePassword, userViewProfile, getCurrentUser }
+export { userRegister, userLogin, userLogOut, refreshAccessToken, userChangePassword, userViewProfile, getCurrentUser, forgetPassword }

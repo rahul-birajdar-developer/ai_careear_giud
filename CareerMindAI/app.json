@@ -4,21 +4,22 @@
     "slug": "CareerMindAI",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true
     },
     "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+      "adaptiveIcon": {},
+      "package": "com.rahulbirajdar.CareerMindAI"
+    },
+    "web": {},
+    "extra": {
+      "eas": {
+        "projectId": "afc0edcc-28d6-41b5-9878-e11b15a12bdf"
       }
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
+    "plugins": [
+      "expo-font"
+    ]
   }
 }
