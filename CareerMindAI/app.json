@@ -4,6 +4,7 @@
     "slug": "CareerMindAI",
     "version": "1.0.0",
     "orientation": "portrait",
+    "scheme": "careermindai",
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true

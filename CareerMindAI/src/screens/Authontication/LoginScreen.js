@@ -111,7 +111,7 @@ const LoginScreen = ({ navigation }) => {
             }
 
         } catch (error) {
-
+            setLoading(false)
             console.log(
                 "Login Error:",
                 error.response?.data || error.message
@@ -121,7 +121,7 @@ const LoginScreen = ({ navigation }) => {
                 error.response?.status;
 
             if (status === 400 || status === 401) {
-
+                setLoading(false)
                 Alert.alert(
                     "Login Failed",
                     error.response?.data?.message ||
@@ -132,7 +132,7 @@ const LoginScreen = ({ navigation }) => {
             }
 
             if (status === 404) {
-
+                setLoading(false)
                 Alert.alert(
                     "User Not Found",
                     "No account was found with this email."
@@ -140,7 +140,7 @@ const LoginScreen = ({ navigation }) => {
 
                 return;
             }
-
+            setLoading(false)
             Alert.alert(
                 "Error",
                 "Something went wrong. Please try again."
