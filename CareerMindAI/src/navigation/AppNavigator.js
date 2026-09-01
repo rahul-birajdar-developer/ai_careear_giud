@@ -9,6 +9,7 @@ import VerifyOTPScreen from "../screens/Authontication/VerifyOTPScreen";
 import NewPasswordScreen from "../screens/Authontication/NewPasswordScreen";
 import MainNavigator from "../navigation/MainNavigator";
 import ResumeAnalyzerScreen from "../screens/AIToolsScreens/ResumeAnalyzerScreen";
+import ResumeAnalysisResultScreen from "../screens/AIToolsScreens/ResumeAnalysisResultScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -62,6 +63,12 @@ const AppNavigator = () => {
                 name="ResumeAnalyzer"
                 component={ResumeAnalyzerScreen}
             />
+
+            <Stack.Screen
+                name="ResumeAnalysisResult"
+                component={ResumeAnalysisResultScreen}
+            />
+
         </Stack.Navigator>
     );
 };

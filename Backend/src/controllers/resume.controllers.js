@@ -12,7 +12,7 @@ const getUserResume = asyncHandler(async (req, res) => {
         console.log("Body:", req.body);
         console.log("File:", req.file);
 
-        // console.log("Step 1")
+        console.log("Step 1")
         // console.log(req.files);
         // console.log(req.body);
         const { role } = req.body;
@@ -30,7 +30,7 @@ const getUserResume = asyncHandler(async (req, res) => {
             mimeType
         )
 
-        // console.log("Step 3")
+        console.log("Step 3")
         // console.log(extractText);
         const analyzeText = await askGemini(extractText, role);
         // console.log("Step 4")
@@ -41,7 +41,7 @@ const getUserResume = asyncHandler(async (req, res) => {
         }
 
         const resumeUrl = await uploadOncloudnary(file.path);
-        // console.log("Step 5")
+        console.log("Step 5")
         // console.log(resumeUrl.url)
         if (!resumeUrl) {
             throw new ApiErrorHandling(500, "Failed to upload resume");
