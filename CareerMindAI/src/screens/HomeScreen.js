@@ -602,98 +602,11 @@ const HomeScreen = ({ navigation }) => {
                 </ScrollView>
 
 
-                {/* ================= BOTTOM NAVIGATION ================= */}
-
-                <View style={styles.bottomNav}>
-
-                    <BottomItem
-                        icon="home"
-                        label="Home"
-                        active
-                        onPress={() => { }}
-                    />
-
-                    <BottomItem
-                        icon="book-outline"
-                        label="Learn"
-                        onPress={() => navigation?.navigate("LearningRoadmap")}
-                    />
-
-                    <BottomItem
-                        icon="construct-outline"
-                        label="Tools"
-                        onPress={() => navigation?.navigate("Tools")}
-                    />
-
-                    <BottomItem
-                        icon="person-outline"
-                        label="Profile"
-                        onPress={() => navigation?.navigate("Profile")}
-                    />
-
-                </View>
 
             </View>
 
         </View>
     );
 };
-
-
-/* =========================================================
-   BOTTOM NAV ITEM
-========================================================= */
-
-const BottomItem = ({
-    icon,
-    label,
-    active,
-    onPress,
-}) => {
-
-    return (
-        <TouchableOpacity
-            style={styles.bottomItem}
-            onPress={onPress}
-        >
-
-            <View
-                style={[
-                    styles.bottomIcon,
-                    active && styles.bottomIconActive,
-                ]}
-            >
-
-                <Ionicons
-                    name={icon}
-                    size={20}
-                    color={
-                        active
-                            ? COLORS.purpleLight
-                            : COLORS.subText
-                    }
-                />
-
-            </View>
-
-            <Text
-                style={[
-                    styles.bottomLabel,
-                    active && styles.bottomLabelActive,
-                ]}
-            >
-                {label}
-            </Text>
-
-        </TouchableOpacity>
-    );
-};
-
-
-/* =========================================================
-   STYLES
-========================================================= */
-
-
 
 export default HomeScreen;

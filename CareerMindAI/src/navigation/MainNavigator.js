@@ -1,34 +1,45 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {
+    createBottomTabNavigator
+} from "@react-navigation/bottom-tabs";
+
 import { Ionicons } from "@expo/vector-icons";
 
-import HomeScreen from "./screens/HomeScreen";
-import LearningRoadmap from "./screens/LearningRoadmap";
-import Reports from "./screens/Reports";
-import Profile from "./screens/Profile";
+import HomeScreen from "../screens/HomeScreen";
+// import LearningRoadmap from "../screens/LearningRoadmap";
+import ToolScreen from "../screens/userScreens/ToolsScreen";
+import ProfileScreen from "../screens/userScreens/ProfileScreen";
 
 const Tab = createBottomTabNavigator();
 
-export default function MainNavigator() {
+const MainNavigator = () => {
+
     return (
         <Tab.Navigator
             initialRouteName="Home"
             screenOptions={({ route }) => ({
+
                 headerShown: false,
 
-                tabBarActiveTintColor: "#6335FF",
-                tabBarInactiveTintColor: "#69739D",
+                tabBarActiveTintColor: "#A855F7",
+                tabBarInactiveTintColor: "#9CA3AF",
 
                 tabBarStyle: {
                     height: 70,
-                    paddingBottom: 8,
                     paddingTop: 8,
-                    backgroundColor: "#FFFFFF",
-                    borderTopWidth: 0,
-                    elevation: 10,
+                    paddingBottom: 15,
+                    backgroundColor: "#05052B",
+                    borderTopWidth: 1,
+                    borderTopColor: "#20205A",
+                    marginBottom: 10
                 },
 
-                tabBarIcon: ({ focused, color }) => {
+                tabBarLabelStyle: {
+                    fontSize: 11,
+                    fontWeight: "600",
+                },
+
+                tabBarIcon: ({ focused, color, size }) => {
 
                     let icon;
 
@@ -48,8 +59,8 @@ export default function MainNavigator() {
 
                         case "Tools":
                             icon = focused
-                                ? "time"
-                                : "time-outline";
+                                ? "sparkles-outline"
+                                : "sparkles";
                             break;
 
                         case "Profile":
@@ -57,12 +68,16 @@ export default function MainNavigator() {
                                 ? "person"
                                 : "person-outline";
                             break;
+
+                        default:
+                            icon = "help-outline";
+                            break;
                     }
 
                     return (
                         <Ionicons
                             name={icon}
-                            size={23}
+                            size={size}
                             color={color}
                         />
                     );
@@ -75,21 +90,23 @@ export default function MainNavigator() {
                 component={HomeScreen}
             />
 
-            <Tab.Screen
+            {/* <Tab.Screen
                 name="Learn"
                 component={LearningRoadmap}
-            />
+            /> */}
 
             <Tab.Screen
                 name="Tools"
-                component={Reports}
+                component={ToolScreen}
             />
 
             <Tab.Screen
                 name="Profile"
-                component={Profile}
+                component={ProfileScreen}
             />
 
         </Tab.Navigator>
     );
-}
+};
+
+export default MainNavigator;

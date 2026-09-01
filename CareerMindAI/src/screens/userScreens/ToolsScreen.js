@@ -5,7 +5,6 @@ import {
     StyleSheet,
     ScrollView,
     TouchableOpacity,
-    SafeAreaView,
 } from "react-native";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -33,7 +32,7 @@ const ToolsScreen = ({ navigation }) => {
             description: "Analyze your resume with AI",
             icon: "document-text-outline",
             color: "#8B5CF6",
-            screen: "ResumeAnalysis",
+            screen: "ResumeAnalyzer",
         },
         {
             id: "skills",
@@ -98,7 +97,7 @@ const ToolsScreen = ({ navigation }) => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
 
             <ScrollView
                 showsVerticalScrollIndicator={false}
@@ -197,9 +196,7 @@ const ToolsScreen = ({ navigation }) => {
                 {/* Tools */}
 
                 <View style={styles.toolsGrid}>
-
                     {tools.map((tool) => (
-
                         <TouchableOpacity
                             key={tool.id}
                             activeOpacity={0.8}
@@ -208,7 +205,6 @@ const ToolsScreen = ({ navigation }) => {
                                 openTool(tool.screen)
                             }
                         >
-
                             <View
                                 style={[
                                     styles.toolIcon,
@@ -218,28 +214,22 @@ const ToolsScreen = ({ navigation }) => {
                                     },
                                 ]}
                             >
-
                                 <Ionicons
                                     name={tool.icon}
                                     size={25}
                                     color={tool.color}
                                 />
-
                             </View>
-
                             <Text style={styles.toolTitle}>
                                 {tool.title}
                             </Text>
-
                             <Text
                                 style={styles.toolDescription}
                                 numberOfLines={2}
                             >
                                 {tool.description}
                             </Text>
-
                             <View style={styles.openRow}>
-
                                 <Text
                                     style={[
                                         styles.openText,
@@ -250,19 +240,14 @@ const ToolsScreen = ({ navigation }) => {
                                 >
                                     Open
                                 </Text>
-
                                 <Ionicons
                                     name="arrow-forward"
                                     size={16}
                                     color={tool.color}
                                 />
-
                             </View>
-
                         </TouchableOpacity>
-
                     ))}
-
                 </View>
 
 
@@ -295,7 +280,7 @@ const ToolsScreen = ({ navigation }) => {
 
             </ScrollView>
 
-        </SafeAreaView>
+        </View>
     );
 };
 

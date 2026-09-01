@@ -1,6 +1,5 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NavigationContainer } from "@react-navigation/native";
 
 import SplashScreen from "../screens/SplashScreen";
 import LoginScreen from "../screens/Authontication/LoginScreen";
@@ -8,57 +7,62 @@ import SignupScreen from "../screens/Authontication/SignupScreen";
 import ForgotPasswordScreen from "../screens/Authontication/ForgotPasswordScreen";
 import VerifyOTPScreen from "../screens/Authontication/VerifyOTPScreen";
 import NewPasswordScreen from "../screens/Authontication/NewPasswordScreen";
-import MainNavigator from "./MainNavigator";
+import MainNavigator from "../navigation/MainNavigator";
+import ResumeAnalyzerScreen from "../screens/AIToolsScreens/ResumeAnalyzerScreen";
 
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
     return (
-        <NavigationContainer>
-            <Stack.Navigator
-                initialRouteName="Splash"
-                screenOptions={{
-                    headerShown: false,
-                }}
-            >
-                <Stack.Screen
-                    name="Splash"
-                    component={SplashScreen}
-                />
+        <Stack.Navigator
+            initialRouteName="Splash"
+            screenOptions={{
+                headerShown: false,
+            }}
+        >
+            <Stack.Screen
+                name="Splash"
+                component={SplashScreen}
+            />
 
-                {/* Authonitication Screens */}
-                <Stack.Screen
-                    name="Login"
-                    component={LoginScreen}
-                />
+            {/* Authonitication Screens */}
+            <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+            />
 
-                <Stack.Screen
-                    name="Signup"
-                    component={SignupScreen}
-                />
+            <Stack.Screen
+                name="Signup"
+                component={SignupScreen}
+            />
 
-                <Stack.Screen
-                    name="forget"
-                    component={ForgotPasswordScreen}
-                />
+            <Stack.Screen
+                name="forget"
+                component={ForgotPasswordScreen}
+            />
 
-                <Stack.Screen
-                    name="VerifyOTP"
-                    component={VerifyOTPScreen}
-                />
+            <Stack.Screen
+                name="VerifyOTP"
+                component={VerifyOTPScreen}
+            />
 
-                <Stack.Screen
-                    name="NewPassword"
-                    component={NewPasswordScreen}
-                />
+            <Stack.Screen
+                name="NewPassword"
+                component={NewPasswordScreen}
+            />
 
-                {/* Home Screens */}
-                <Stack.Screen
-                    name="Main"
-                    component={MainNavigator}
-                />
-            </Stack.Navigator>
-        </NavigationContainer>
+            {/* Home Screens */}
+            <Stack.Screen
+                name="Main"
+                component={MainNavigator}
+            />
+
+            {/* AI Tools Screens Nevigation */}
+            <Stack.Screen
+                name="ResumeAnalyzer"
+                component={ResumeAnalyzerScreen}
+            />
+        </Stack.Navigator>
     );
 };
 

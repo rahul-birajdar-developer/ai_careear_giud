@@ -24,6 +24,9 @@ const COLORS = {
     pink: "#EC4899",
     orange: "#F59E0B",
 
+    card2: "#142653",
+    danger: "#EF4444",
+
 };
 
 export default COLORS;
