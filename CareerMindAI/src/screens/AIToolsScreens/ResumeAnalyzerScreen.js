@@ -69,7 +69,7 @@ const ResumeAnalyzerScreen = ({ navigation }) => {
 
             const formData = new FormData();
 
-            formData.append("resume", {
+            formData.append("resumeFile", {
                 uri: resume.uri,
                 name: resume.name || "resume.pdf",
                 type: resume.mimeType || "application/pdf",
