@@ -5,6 +5,7 @@ import {
     ScrollView,
     TouchableOpacity,
     StyleSheet,
+    StatusBar,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -18,29 +19,15 @@ const ResumeAnalysisResultScreen = ({ navigation, route }) => {
 
     // Temporary sample data
     // Later these values will come from your backend AI response
-    const score = result.score || 82;
-    const atsScore = result.atsScore || 76;
+    const score = result.atsScore ;
+    const atsScore = result.atsScore ;
+    const atsLabel = result.atsLabel ;
+    const keywordMatch = result.keywordMatch.pct ;
+    const strengths = result.strengths ;
 
-    const strengths = result.strengths || [
-        "Good technical skills section",
-        "Clear educational background",
-        "Relevant project experience",
-        "Good resume structure",
-    ];
+    const improvements = result.suggestions;
 
-    const improvements = result.improvements || [
-        "Add more measurable achievements",
-        "Improve professional summary",
-        "Add missing industry keywords",
-    ];
-
-    const skills = result.skills || [
-        "React Native",
-        "JavaScript",
-        "Node.js",
-        "MongoDB",
-        "Git",
-    ];
+    const skills = result.skills;
 
     const missingSkills = result.missingSkills || [
         "TypeScript",
@@ -154,7 +141,7 @@ const ResumeAnalysisResultScreen = ({ navigation, route }) => {
                         <View style={styles.scoreMessage}>
 
                             <Text style={styles.scoreMessageTitle}>
-                                Good Resume
+                                {atsLabel+" ATS Score"}
                             </Text>
 
                             <Text style={styles.scoreMessageText}>
@@ -188,7 +175,13 @@ const ResumeAnalysisResultScreen = ({ navigation, route }) => {
                     <ScoreCard
                         icon="briefcase-outline"
                         title="Career Match"
-                        score={79}
+                        score={keywordMatch}
+                    />
+
+                    <ScoreCard
+                        icon="briefcase-outline"
+                        title="Skill Match"
+                        score={keywordMatch}
                     />
 
                 </View>
@@ -497,6 +490,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: COLORS.background,
+        paddingTop: StatusBar.currentHeight || 0,
     },
 
     header: {

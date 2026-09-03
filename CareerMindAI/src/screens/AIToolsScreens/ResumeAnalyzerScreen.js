@@ -90,7 +90,7 @@ const ResumeAnalyzerScreen = ({ navigation }) => {
 
             console.log(
                 "Resume analysis:",
-                response.data
+                response.data.data.resumeData
             );
 
             if (response.data?.success) {
@@ -98,7 +98,7 @@ const ResumeAnalyzerScreen = ({ navigation }) => {
                 navigation.navigate(
                     "ResumeAnalysisResult",
                     {
-                        result: response.data.data,
+                        result: response.data.data.resumeData,
                     }
                 );
 
