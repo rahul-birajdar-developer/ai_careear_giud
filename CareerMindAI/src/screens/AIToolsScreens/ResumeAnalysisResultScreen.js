@@ -24,10 +24,11 @@ const ResumeAnalysisResultScreen = ({ navigation, route }) => {
     const atsLabel = result.atsLabel ;
     const keywordMatch = result.keywordMatch.pct ;
     const strengths = result.strengths ;
-
+    const atsMessage=result.atsMessage;
     const improvements = result.suggestions;
 
     const skills = result.skills;
+
 
     const missingSkills = result.missingSkills || [
         "TypeScript",
@@ -145,8 +146,7 @@ const ResumeAnalysisResultScreen = ({ navigation, route }) => {
                             </Text>
 
                             <Text style={styles.scoreMessageText}>
-                                Your resume has a strong foundation.
-                                A few improvements can make it stronger.
+                                {atsMessage}
                             </Text>
 
                         </View>
@@ -637,7 +637,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.card,
         borderRadius: 17,
-        padding: 13,
+        padding: 10,
         borderWidth: 1,
         borderColor: COLORS.border,
     },
