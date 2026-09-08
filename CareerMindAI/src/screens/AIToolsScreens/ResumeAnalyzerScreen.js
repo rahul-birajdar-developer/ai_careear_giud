@@ -344,11 +344,8 @@ const ResumeAnalyzerScreen = ({ navigation }) => {
                                     size={20}
                                     color="#FFFFFF"
                                 />
-
                             </>
-
                         )}
-
                     </LinearGradient>
 
                 </TouchableOpacity>
