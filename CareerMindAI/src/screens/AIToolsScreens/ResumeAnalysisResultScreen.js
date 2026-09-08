@@ -145,7 +145,7 @@ const ResumeAnalysisResultScreen = ({ navigation, route }) => {
                             </Text>
 
                             <Text style={styles.scoreMessageText}>
-                                {atsMessage}
+                                {atsMessage.substring(0, 150) + "  ..."}
                             </Text>
 
                         </View>
@@ -194,7 +194,6 @@ const ResumeAnalysisResultScreen = ({ navigation, route }) => {
                 />
 
                 <View style={styles.card}>
-
                     {strengths.map((item, index) => (
 
                         <View

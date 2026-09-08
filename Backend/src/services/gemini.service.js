@@ -272,7 +272,6 @@ IMPORTANT CONSISTENCY RULES
 - skillsFound must equal the number of items in skills.
 - missingSkillsCount must equal the number of items in missingSkills.
 - All percentages must be integers between 0 and 100.
-- atsMessage must explain the main reasons for the ATS score.
 - Do not use information outside the provided resume and target role.
 - Do not duplicate the same item unnecessarily.
 - Keep recommendations practical.

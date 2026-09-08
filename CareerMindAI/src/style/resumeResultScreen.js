@@ -1,4 +1,4 @@
-import { StyleSheet,StatusBar } from "react-native";
+import { StyleSheet, StatusBar } from "react-native";
 import COLORS from "../constants/Colors";
 
 const styles = StyleSheet.create({
@@ -208,12 +208,13 @@ const styles = StyleSheet.create({
         marginBottom: 22,
     },
 
+
     listItem: {
         flexDirection: "row",
         alignItems: "center",
         marginBottom: 13,
     },
-    
+
     greenIcon: {
         width: 27,
         height: 27,
