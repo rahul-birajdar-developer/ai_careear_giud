@@ -75,10 +75,11 @@ const ResumeAnalyzerScreen = ({ navigation }) => {
                 uri: resume.uri,
                 name: resume.name || "resume.pdf",
                 type: resume.mimeType || "application/pdf",
-                jobTitle:resume.jobTitle,
             });
+            formData.append("jobTitle", jobTitle);
 
             console.log("Uploading resume...");
+            console.log(formData);
 
             const response = await api.post(
                 "/resume/upload",
@@ -245,7 +246,7 @@ const ResumeAnalyzerScreen = ({ navigation }) => {
                         value={jobTitle}
                         onChangeText={setJobTitle}
                         placeholder="Example: Frontend Developer, Java Developer"
-                        placeholderTextColor={"#6F78A5"}
+                        placeholderTextColor={"black"}
                         style={styles.jobRoleInput}
                     />
                 </View>

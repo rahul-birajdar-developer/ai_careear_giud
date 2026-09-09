@@ -1,4 +1,4 @@
-import { StyleSheet,StatusBar } from "react-native";
+import { StyleSheet, StatusBar } from "react-native";
 import COLORS from "../constants/Colors";
 
 const styles = StyleSheet.create({
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         paddingHorizontal: 14,
         paddingVertical: 13,
-        color: COLORS.white,
+        color: COLORS.background,
         fontSize: 15,
     },
 
