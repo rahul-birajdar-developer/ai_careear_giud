@@ -247,7 +247,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
                                 ) : (
                                     <>
                                         <Text style={styles.sendText}>
-                                            Send Reset Link
+                                            Send OTP
                                         </Text>
 
                                         <Ionicons

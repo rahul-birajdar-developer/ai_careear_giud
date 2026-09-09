@@ -61,10 +61,10 @@ const LoginScreen = ({ navigation }) => {
                 }
             );
 
-            console.log(
-                "Login Response:",
-                response.data
-            );
+            // console.log(
+            //     "Login Response:",
+            //     response.data
+            // );
 
             if (response.data?.success) {
 

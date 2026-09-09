@@ -732,25 +732,6 @@ export default function ResumeAnalyze() {
                                     </div>
                                 </div>
 
-                                {/* Strengths */}
-                                {/* <SCard
-                                    title="Strengths"
-                                    icon="✅"
-                                    iconColor="var(--green)"
-                                >
-                                    <div className={styles.tagContainer}>
-                                        {analysis.strengths.map((skill) => (
-                                            <Tag
-                                                key={skill}
-                                                label={skill}
-                                                color="rgba(16,185,129,0.1)"
-                                                text="#34D399"
-                                                border="rgba(16,185,129,0.25)"
-                                            />
-                                        ))}
-                                    </div>
-                                </SCard> */}
-
                                 {/* Weekness */}
                                 <SCard
                                     title="Missing Skills"
